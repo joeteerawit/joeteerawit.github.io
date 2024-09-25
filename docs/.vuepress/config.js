@@ -2,6 +2,8 @@ import { blogPlugin } from '@vuepress/plugin-blog'
 import { defaultTheme } from '@vuepress/theme-default'
 import { defineUserConfig } from 'vuepress'
 import { webpackBundler } from '@vuepress/bundler-webpack'
+import { prismjsPlugin } from '@vuepress/plugin-prismjs'
+import { mdEnhancePlugin } from 'vuepress-plugin-md-enhance'
 
 export default defineUserConfig({
   lang: 'en-US',
@@ -132,6 +134,15 @@ export default defineUserConfig({
         },
       ],
       hotReload: true,
+    }),
+    prismjsPlugin({
+      theme: 'one-light',
+    }),
+    mdEnhancePlugin({
+      chart: true,
+      echarts: true,
+      mermaid: true,
+
     }),
   ],
 

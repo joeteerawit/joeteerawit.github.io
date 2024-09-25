@@ -17,3 +17,11 @@ Here is the content.
 ### Heading 3
 
 Here is the content.
+
+```mermaid
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+    Alice-)John: See you later!
+
+```

@@ -1,5 +1,6 @@
 <template>
-  <div class="flex overflow-x-scroll no-scrollbar">
+  <!-- <div class="flex overflow-x-scroll no-scrollbar"> -->
+  <div class="flex justify-between">
     <div v-for="n in 4" :key="n" class="flex-none px-2">
       <CardContent :category="category" :tag-bg-color="tagBgColor"/>
     </div>
