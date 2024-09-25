@@ -5,6 +5,8 @@ import Tag from './layouts/Tag.vue'
 import Timeline from './layouts/Timeline.vue'
 import HomeLayout from './layouts/HomeLayout.vue'
 
+import './styles/index.css';
+
 export default defineClientConfig({
   // we provide some blog layouts
   layouts: {

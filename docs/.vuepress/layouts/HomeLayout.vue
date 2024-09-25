@@ -1,45 +1,24 @@
 <template>
-  <div class="home-layout">
-    <nav class="navbar">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/guide/">Guide</a></li>
-        <li><a href="/about/">About</a></li>
-      </ul>
-    </nav>
-    <main class="content">
-      <h1>Hello</h1>
-    </main>
+  <div>
+    <div class="md:pb-10">
+      <Navbar />
+    </div>
+    <div class="container mx-auto">
+      <ContentCategories category="Technology" text-color="hover:text-blue-400" tag-bg-color="bg-blue-400" />
+      <ContentCategories category="Liftstyle" text-color="hover:text-red-400" tag-bg-color="bg-red-400" />
+    </div>
   </div>
 </template>
 
-<style scoped>
-.home-layout {
-  text-align: center;
-  margin: 20px;
-}
+<script>
+import ContentCategories from '../components/ContentCategories.vue'
+import Navbar from '../components/Navbar.vue'
 
-.navbar {
-  background-color: #333;
-  padding: 10px;
-}
-
-.navbar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.navbar ul li {
-  display: inline;
-  margin-right: 20px;
-}
-
-.navbar ul li a {
-  color: white;
-  text-decoration: none;
-}
-
-.content {
-  margin-top: 40px;
-}
-</style>
+export default {
+  name: 'HomeLayout',
+  components: {
+    ContentCategories,
+    Navbar,
+  },
+};
+</script>

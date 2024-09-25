@@ -1,17 +1,15 @@
 import { blogPlugin } from '@vuepress/plugin-blog'
 import { defaultTheme } from '@vuepress/theme-default'
 import { defineUserConfig } from 'vuepress'
-import { viteBundler } from '@vuepress/bundler-vite'
+import { webpackBundler } from '@vuepress/bundler-webpack'
 
 export default defineUserConfig({
   lang: 'en-US',
 
-  title: 'VuePress',
+  title: 'Teerawit',
   description: 'My first VuePress Site',
-
+  head: [['link', { rel: 'icon', href: 'https://shorturl.at/aqs4v' }]],
   theme: defaultTheme({
-    logo: 'https://vuejs.press/images/hero.png',
-
     navbar: [
       '/',
       {
@@ -137,5 +135,8 @@ export default defineUserConfig({
     }),
   ],
 
-  bundler: viteBundler(),
+  bundler: webpackBundler({
+    postcss: {},
+    vue: {},
+  }),
 })

@@ -14,3 +14,8 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+
+design idea
+- [jinko](https://www.3forty.media/jinko/demo-4/)
+- [zento-personal](https://themes.estudiopatagon.com/wordpress/zento-personal/home-masonry-full/)
