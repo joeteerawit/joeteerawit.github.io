@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Search, Menu, X } from 'lucide-react'
+import Pagination from '../components/Pagination'
+import Footer from '../components/Footer'
 
 const BlogHomepage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -162,7 +164,7 @@ const BlogHomepage = () => {
           </p>
         </div>
 
-        <div className="w-16 h-px bg-gray-200 mx-auto mt-8"></div>
+        <div className="max-w-7xl h-px bg-gray-200 mx-auto mt-8"></div>
 
         {/* Topics Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -231,6 +233,9 @@ const BlogHomepage = () => {
             ))}
           </div>
         </div>
+
+        <Pagination />
+        <Footer />
       </div>
     </div>
   )
