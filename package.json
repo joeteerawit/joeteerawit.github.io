@@ -1,28 +1,17 @@
 {
-  "name": "joeteerawit.github.io",
-  "version": "1.0.0",
-  "private": true,
-  "description": "joeteerawit.github.io",
-  "author": "joewalker",
-  "keywords": [
-    "gatsby"
-  ],
+  "name": "spiffy-series",
+  "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "autoprefixer": "^10.4.20",
-    "gatsby": "^5.13.7",
-    "gatsby-plugin-manifest": "^5.13.1",
-    "gatsby-plugin-postcss": "^6.13.1",
-    "lucide-react": "^0.454.0",
-    "postcss": "^8.4.47",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwindcss": "^3.4.14"
+    "@astrojs/mdx": "^4.2.4",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.3.0",
+    "astro": "^5.7.4"
   }
 }
