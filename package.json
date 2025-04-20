@@ -1,7 +1,13 @@
 {
-  "name": "spiffy-series",
+  "name": "joeteerawit.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "joeteerawit.github.io",
+  "author": "joewalker",
+  "keywords": [
+    "astro"
+  ],
   "type": "module",
-  "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
