@@ -19,32 +19,24 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.9.0'
-          cache: 'yarn'
+          node-version: '23.7.0'
+          cache: 'npm'
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Get Yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-
-      - name: Cache Yarn dependencies
+      - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build Astro Site
-        run: yarn build
+        run: npm run build
         env:
-          # For Astro's base path config if you're not deploying to root
-          # ASTRO_BASE_PATH may not be needed depending on your settings
+          # For Astro's base path config if needed
           ASTRO_BASE_PATH: ${{ github.repository_owner == github.event.repository.owner.login && github.event.repository.name || '' }}
 
       - name: Create .nojekyll file
