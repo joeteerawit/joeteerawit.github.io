@@ -1,9 +1,9 @@
-name: Deploy Gatsby Site
+name: Deploy Astro Site
 
 on:
   push:
     branches:
-      - main  # Set this to your default branch
+      - main # Set this to your default branch
 
 permissions:
   contents: write
@@ -11,7 +11,7 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
           node-version: '20.9.0'
           cache: 'yarn'
 
-      - name: Install Yarn
+      - name: Enable Corepack
         run: corepack enable
 
       - name: Get Yarn cache directory path
@@ -40,21 +40,22 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build Gatsby Site
+      - name: Build Astro Site
         run: yarn build
         env:
-          PREFIX_PATHS: true
+          # For Astro's base path config if you're not deploying to root
+          # ASTRO_BASE_PATH may not be needed depending on your settings
+          ASTRO_BASE_PATH: ${{ github.repository_owner == github.event.repository.owner.login && github.event.repository.name || '' }}
+
+      - name: Create .nojekyll file
+        run: touch dist/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: public # The folder the action should deploy
+          folder: dist # Astro outputs to dist by default
           branch: gh-pages # The branch the action should deploy to
           clean: true # Automatically remove deleted files from the deployment branch
           clean-exclude: |
             .nojekyll
             CNAME
-
-      - name: Create .nojekyll file
-        run: |
-          touch public/.nojekyll
