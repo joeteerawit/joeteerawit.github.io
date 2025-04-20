@@ -68,6 +68,11 @@ const posts = (await getCollection('blog'))
       ul a:hover img {
         box-shadow: var(--box-shadow);
       }
+
+      ul li:not(:first-child) img {
+        height: 240px;
+      }
+
       @media (max-width: 720px) {
         ul {
           gap: 0.5em;
