@@ -9,11 +9,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts'
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .filter((p) => (import.meta.env.PROD ? p.data.draft !== true : true))
-
-const x = (await getCollection('book')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-)
-console.log(x[0].rendered?.metadata)
 ---
 
 <!doctype html>
