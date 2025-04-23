@@ -1,0 +1,28 @@
+---
+export interface Subchapter {
+  id: string
+  name: string
+  path: string
+  fullPath: string
+}
+
+export interface Chapter {
+  id: number
+  name: string
+  path: string
+  fullPath: string
+  subchapters: Subchapter[]
+}
+
+export interface BookCollection {
+  name: string
+  chapters: Chapter[]
+}
+
+export type NavigationItem =
+  | {
+      path: string
+      name: string
+    }
+  | undefined
+---

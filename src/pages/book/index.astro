@@ -1,90 +1,17 @@
 ---
-import { getCollection } from 'astro:content'
 import BaseHead from '../../components/BaseHead.astro'
 import CardContent from '../../components/CardContent.astro'
 import Footer from '../../components/Footer.astro'
 import Header from '../../components/Header.astro'
+
+import {
+  getBookCollection,
+  getFirstChapterPath,
+} from '../../computes/book.astro'
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts'
+import type { BookCollection } from '../../types/interfaces.astro'
 
-interface Subchapter {
-  subchapterId: string
-  subchapterName: string
-}
-
-interface Chapter {
-  chapterName: string
-  subchapter: Subchapter[]
-}
-
-interface Metadata {
-  [bookName: string]: {
-    [chapterKey: string]: Chapter
-  }
-}
-
-const books = (await getCollection('book'))
-  .filter((p) => (import.meta.env.PROD ? p.data.draft !== true : true))
-  .reduce<Metadata>((result, book) => {
-    // Split the ID to get book name and filename
-    const [bookName, fileName] = book.id.split('/')
-
-    // Skip if this is a cover page (starts with 0) or no filename
-    if (!fileName || fileName.startsWith('0-')) {
-      return result
-    }
-
-    // Initialize book entry if it doesn't exist
-    if (!result[bookName]) {
-      result[bookName] = {}
-    }
-
-    const parts: string[] = fileName.split('-')
-    const chapterNum: string = parts[0]
-    const chapterKey: string = `chapter${chapterNum}`
-
-    // Check if it's a subchapter (has at least 3 parts: chapterNum-subchapterNum-name)
-    if (parts.length >= 3 && parts[1].match(/^\d+$/)) {
-      // This is a subchapter (e.g., 1-1-bigjoe.md)
-      // Get subchapter name (everything after the second dash)
-
-      const subchapterId: string = parts.slice(0, 2).join('-')
-      const subchapterName: string = parts
-        .slice(2)
-        .join('-')
-        .replace(/\.md$/, '')
-
-      // Initialize chapter if it doesn't exist
-      if (!result[bookName][chapterKey]) {
-        result[bookName][chapterKey] = {
-          chapterName: '',
-          subchapter: [],
-        }
-      }
-
-      // Add subchapter
-      result[bookName][chapterKey].subchapter.push({
-        subchapterId,
-        subchapterName,
-      })
-    } else {
-      // This is a main chapter (e.g., 1-intro.md)
-      // Get chapter name (everything after the first dash)
-      const chapterName: string = parts.slice(1).join('-').replace(/\.md$/, '')
-
-      // Initialize or update chapter
-      if (!result[bookName][chapterKey]) {
-        result[bookName][chapterKey] = {
-          chapterName,
-          subchapter: [],
-        }
-      } else {
-        result[bookName][chapterKey].chapterName = chapterName
-      }
-    }
-
-    return result
-  }, {})
-
+const books: BookCollection[] = await getBookCollection()
 // console.dir(books, { depth: null })
 ---
 
@@ -98,10 +25,7 @@ const books = (await getCollection('book'))
     <main
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center p-4"
     >
-      <CardContent bookId="test1/0-convert" />
-      <CardContent bookId="test1/0-convert" />
-      <CardContent bookId="test1/0-convert" />
-      <CardContent bookId="test1/0-convert" />
+      {books.map((book) => <CardContent book={getFirstChapterPath(book)} />)}
     </main>
     <Footer />
   </body>

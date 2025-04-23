@@ -1,12 +1,14 @@
 ---
+import type { Chapter } from '../types/interfaces.astro'
+
 interface Props {
-  bookId: string
+  book: Chapter
 }
 
-const { bookId } = Astro.props
+const { book } = Astro.props
 ---
 
-<a href={`/book/${bookId}`}>
+<a href={`/book/${book.fullPath}`}>
   <div class="relative max-w-sm rounded overflow-hidden shadow-lg">
     <!-- Image -->
     <img

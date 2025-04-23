@@ -1,0 +1,147 @@
+---
+import { render, type CollectionEntry } from 'astro:content'
+import type { BookCollection } from '../types/interfaces.astro'
+import { findAdjacentItems, getChapters } from '../computes/book.astro'
+import BookContent from '../layouts/BookContent.astro'
+
+interface Props {
+  content: CollectionEntry<'book'>
+  books: BookCollection[]
+}
+
+const { content, books } = Astro.props
+const { Content } = await render(content)
+
+const bookTitle = content.id.split('/').shift() ?? ''
+const details = getChapters(books, bookTitle)
+const { next, previous } = findAdjacentItems(details, content.id)
+
+// console.dir(details, { depth: null })
+// console.dir(content, { depth: null })
+---
+
+<style>
+  a {
+    color: oklch(44.6% 0.03 256.802);
+  }
+  a:hover {
+    color: oklch(44.6% 0.03 256.802);
+  }
+</style>
+
+<div class="flex flex-col md:flex-row flex-grow">
+  <!-- Sidebar -->
+  <div
+    class="w-full md:w-xs px-3 py-6 border-b md:border-r-2 md:border-b-0 border-gray-200"
+  >
+    <h3 class="text-gray-700 font-medium mb-2">{details?.name}</h3>
+    <ul class="space-y-1">
+      {
+        details?.chapters.map((chapter) => (
+          <li class="sidebar-item">
+            <a
+              id="chapter"
+              href={chapter.path}
+              class="w-full text-left flex items-center justify-between px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg font-medium"
+            >
+              {chapter.name}
+              {/* <ChevronLeftIon /> */}
+            </a>
+
+            {chapter.subchapters.map((subchapter) => (
+              <ul class="pl-6 mt-1 space-y-1 nested-menu">
+                <li>
+                  <a
+                    id="subchapter"
+                    href={subchapter.path}
+                    class="flex w-full items-center px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg"
+                  >
+                    {subchapter.name}
+                  </a>
+                </li>
+              </ul>
+            ))}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="flex-1 py-6 flex flex-col">
+    <BookContent {...content.data}>
+      <Content />
+    </BookContent>
+
+    <!-- Navigation buttons at bottom of content -->
+    <div class="mt-8 pt-4 border-t border-gray-200">
+      <div class="grid grid-cols-2 gap-4">
+        <a
+          id="previous"
+          href={previous?.path}
+          class="w-full border border-gray-200 rounded-md p-3 hover:border-blue-600 transition-colors"
+        >
+          <div class="text-gray-500 text-lg">Previous</div>
+          <div class="text-blue-600 font-medium">
+            <span>«</span>
+            {previous?.name}
+          </div>
+        </a>
+        <a
+          id="next"
+          href={next?.path}
+          class="w-full border border-gray-200 rounded-md p-3 hover:border-blue-600 transition-colors text-right"
+        >
+          <div class="text-gray-500 text-lg">Next</div>
+          <div class="text-blue-600 font-medium">
+            {next?.name}
+            <span>»</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebarItems = document.querySelectorAll('.sidebar-item')
+    const currentPath = window.location.pathname
+
+    const lastSegment = currentPath.split('/').pop()
+
+    sidebarItems.forEach((item) => {
+      const chapter = item.querySelector('#chapter')
+      const subchapter = item.querySelector('#subchapter')
+      const addActiveStyle = 'bg-gray-200'
+
+      if (chapter?.getAttribute('href') === lastSegment) {
+        chapter?.classList.add(addActiveStyle)
+      } else {
+        chapter?.classList.remove(addActiveStyle)
+      }
+
+      if (subchapter?.getAttribute('href') === lastSegment) {
+        subchapter?.classList.add(addActiveStyle)
+      } else {
+        subchapter?.classList.remove(addActiveStyle)
+      }
+    })
+
+    const previousElem = document.getElementById('previous')
+    const previousChapterElem = previousElem?.querySelector('.font-medium')
+    const previous = previousChapterElem?.textContent?.trim().replace('«', '')
+
+    if (!previous) {
+      previousElem?.classList.add('invisible')
+    }
+
+    const nextElem = document.getElementById('next')
+    const nextChapterElem = nextElem?.querySelector('.font-medium')
+    const next = nextChapterElem?.textContent?.trim().replace('»', '')
+
+    if (!next) {
+      nextElem?.classList.add('invisible')
+    }
+  })
+</script>

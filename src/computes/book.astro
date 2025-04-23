@@ -1,0 +1,207 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content'
+import type {
+  BookCollection,
+  Chapter,
+  NavigationItem,
+  Subchapter,
+} from '../types/interfaces.astro'
+
+export const getBookCollection = async (): Promise<BookCollection[]> => {
+  // Get all book entries
+  const bookEntries: CollectionEntry<'book'>[] = await getCollection('book')
+
+  // Create an interim structure to build our data
+  const bookMap: Record<
+    string,
+    {
+      name: string
+      chapters: Record<
+        string,
+        {
+          id: number
+          name: string
+          path: string
+          fullPath: string
+          subchapters: Subchapter[]
+        }
+      >
+    }
+  > = {}
+
+  // Process each book entry
+  bookEntries
+    .filter((p) => (import.meta.env.PROD ? p.data.draft !== true : true))
+    .forEach((book) => {
+      // Split the ID to get book name and filename
+      const [bookName, fileName] = book.id.split('/')
+
+      if (!fileName || fileName.startsWith('0-')) {
+        return bookMap
+      }
+
+      // Initialize book entry if it doesn't exist
+      if (!bookMap[bookName]) {
+        bookMap[bookName] = {
+          name: bookName,
+          chapters: {},
+        }
+      }
+
+      const parts: string[] = fileName.split('-')
+      const chapterNum: string = parts[0]
+      const chapterId: number = parseInt(chapterNum, 10)
+
+      // Check if it's a subchapter (pattern: 1-1-name)
+      if (parts.length >= 3 && parts[1].match(/^\d+$/)) {
+        // This is a subchapter (e.g., 1-1-bigjoe.md)
+        const subchapterId: string = `${chapterNum}-${parts[1]}`
+        const subchapterName: string = parts
+          .slice(2)
+          .join('-')
+          .replace(/\.md$/, '')
+
+        // Initialize chapter if it doesn't exist
+        if (!bookMap[bookName].chapters[chapterNum]) {
+          bookMap[bookName].chapters[chapterNum] = {
+            id: chapterId,
+            name: '',
+            path: '',
+            fullPath: '',
+            subchapters: [],
+          }
+        }
+
+        // Add subchapter
+        bookMap[bookName].chapters[chapterNum].subchapters.push({
+          id: subchapterId,
+          name: subchapterName,
+          path: fileName,
+          fullPath: book.id,
+        })
+      }
+      // Handle main chapter file (pattern: 1-name)
+      else if (parts.length >= 2) {
+        // This is a main chapter (e.g., 1-intro.md)
+        const chapterName: string = parts
+          .slice(1)
+          .join('-')
+          .replace(/\.md$/, '')
+
+        // Initialize or update chapter
+        if (!bookMap[bookName].chapters[chapterNum]) {
+          bookMap[bookName].chapters[chapterNum] = {
+            id: chapterId,
+            name: chapterName,
+            path: fileName,
+            fullPath: book.id,
+            subchapters: [],
+          }
+        } else {
+          // Update name and path if this is the actual chapter file
+          bookMap[bookName].chapters[chapterNum].name = chapterName
+          bookMap[bookName].chapters[chapterNum].path = fileName
+          bookMap[bookName].chapters[chapterNum].fullPath = book.id
+        }
+      }
+    })
+
+  // Transform the map to an array structure as requested
+  const result: BookCollection[] = Object.values(bookMap).map((book) => {
+    return {
+      name: book.name,
+      chapters: Object.values(book.chapters)
+        .map((chapter) => {
+          // Sort subchapters by their numeric ID
+          const sortedSubchapters = [...chapter.subchapters].sort((a, b) => {
+            // Extract numeric parts from the IDs (e.g., "1-1" -> [1, 1])
+            const [aChap, aSubChap] = a.id.split('-').map(Number)
+            const [bChap, bSubChap] = b.id.split('-').map(Number)
+
+            // First compare chapter numbers
+            if (aChap !== bChap) {
+              return aChap - bChap
+            }
+            // If chapter numbers are the same, compare subchapter numbers
+            return aSubChap - bSubChap
+          })
+
+          return {
+            ...chapter,
+            subchapters: sortedSubchapters,
+          }
+        })
+        .sort((a, b) => a.id - b.id), // Sort chapters by ID
+    }
+  })
+
+  return result
+}
+
+interface Adjacent {
+  previous: NavigationItem
+  next: NavigationItem
+}
+
+export const findAdjacentItems = (
+  details: BookCollection | undefined,
+  currentId: string
+): Adjacent => {
+  if (!details) return { previous: undefined, next: undefined }
+
+  // Flatten the structure into a single array of items for easier navigation
+  const allItems = []
+
+  // Add all chapters and subchapters to a flat array
+  for (const chapter of details.chapters) {
+    allItems.push({
+      path: chapter.path,
+      name: chapter.name,
+      fullPath: chapter.fullPath,
+    })
+
+    for (const subchapter of chapter.subchapters) {
+      allItems.push({
+        path: subchapter.path,
+        name: subchapter.name,
+        fullPath: subchapter.fullPath,
+      })
+    }
+  }
+
+  // Find the current item's index
+  const currentIndex = allItems.findIndex((item) => item.fullPath === currentId)
+
+  // If item wasn't found
+  if (currentIndex === -1) {
+    return { previous: undefined, next: undefined }
+  }
+
+  // Get previous and next items
+  const previous =
+    currentIndex > 0
+      ? {
+          path: allItems[currentIndex - 1].path,
+          name: allItems[currentIndex - 1].name,
+        }
+      : undefined
+
+  const next =
+    currentIndex < allItems.length - 1
+      ? {
+          path: allItems[currentIndex + 1].path,
+          name: allItems[currentIndex + 1].name,
+        }
+      : undefined
+
+  return { previous, next }
+}
+
+export const getChapters = (
+  books: BookCollection[],
+  bookTitle: string
+): BookCollection | undefined => books.find((b) => b.name === bookTitle)
+
+export const getFirstChapterPath = (book: BookCollection): Chapter =>
+  book.chapters[0]
+---
