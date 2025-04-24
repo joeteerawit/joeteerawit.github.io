@@ -1,19 +1,18 @@
 ---
-import type { Chapter } from '../types/interfaces.astro'
-
 interface Props {
-  book: Chapter
+  image: string
+  fullPath: string
 }
 
-const { book } = Astro.props
+const { image, fullPath } = Astro.props
 ---
 
-<a href={`/book/${book.fullPath}`}>
+<a href={`/book/${fullPath}`}>
   <div class="relative max-w-sm rounded overflow-hidden shadow-lg">
     <!-- Image -->
     <img
       class="w-full h-64 object-cover"
-      src="https://picsum.photos/400/500"
+      src={image}
       alt="Card image"
       width={200}
       height={300}

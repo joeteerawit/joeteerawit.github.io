@@ -1,6 +1,6 @@
 ---
-title: 'book 1'
-description: 'book 1'
+title: 'intro'
+description: 'intro'
 pubDate: 'Feb 19 2025'
 heroImage: '/2025/3a913882-55a4-4629-9ef0-08a299843dc6.jpg'
 ---

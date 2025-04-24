@@ -2,11 +2,37 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
 import type {
   BookCollection,
-  Chapter,
   NavigationItem,
   Subchapter,
 } from '../types/interfaces.astro'
 
+/**
+ * 
+ * {
+  id: 'story_1/1-intro',
+  data: {
+    bookTitle: ''
+    title: 'intro',
+    description: 'intro',
+    pubDate: 2025-02-18T17:00:00.000Z
+  },
+  body: 'ลองมาอ่านเรื่องราวที่น่าสนใจเกี่ยวกับ PHP หน่อยครับ ว่ามันกากเหมือนที่ได้ยิน ได้ฟัง ได้อ่านมาหรือป่าว',
+  filePath: 'src/content/book/story_1/1-intro.md',
+  digest: '4507221d3236ba78',
+  rendered: {
+    html: '<p>ลองมาอ่านเรื่องราวที่น่าสนใจเกี่ยวกับ PHP หน่อยครับ ว่ามันกากเหมือนที่ได้ยิน ได้ฟัง ได้อ่านมาหรือป่าว</p>',
+    metadata: {
+      headings: [],
+      localImagePaths: [],
+      remoteImagePaths: [],
+      frontmatter: [Object],
+      imagePaths: []
+    }
+  },
+  collection: 'book'
+}
+ * 
+*/
 export const getBookCollection = async (): Promise<BookCollection[]> => {
   // Get all book entries
   const bookEntries: CollectionEntry<'book'>[] = await getCollection('book')
@@ -15,7 +41,10 @@ export const getBookCollection = async (): Promise<BookCollection[]> => {
   const bookMap: Record<
     string,
     {
-      name: string
+      id: string
+      bookTitle: string
+      coverImage: string
+      pubDate: Date
       chapters: Record<
         string,
         {
@@ -34,18 +63,27 @@ export const getBookCollection = async (): Promise<BookCollection[]> => {
     .filter((p) => (import.meta.env.PROD ? p.data.draft !== true : true))
     .forEach((book) => {
       // Split the ID to get book name and filename
-      const [bookName, fileName] = book.id.split('/')
+      console.log(book.id)
 
-      if (!fileName || fileName.startsWith('0-')) {
-        return bookMap
-      }
+      const [bookName, fileName] = book.id.split('/')
 
       // Initialize book entry if it doesn't exist
       if (!bookMap[bookName]) {
         bookMap[bookName] = {
-          name: bookName,
+          id: book.id,
+          bookTitle: book.data.title ?? '',
+          coverImage: book.data.coverImage ?? '',
+          pubDate: book.data?.pubDate,
           chapters: {},
         }
+      }
+
+      if (fileName.startsWith('0-')) {
+        bookMap[bookName].id = book.id
+        bookMap[bookName].bookTitle = book.data.title
+        bookMap[bookName].coverImage = book.data.coverImage ?? ''
+        bookMap[bookName].pubDate = book.data.pubDate
+        return
       }
 
       const parts: string[] = fileName.split('-')
@@ -109,7 +147,10 @@ export const getBookCollection = async (): Promise<BookCollection[]> => {
   // Transform the map to an array structure as requested
   const result: BookCollection[] = Object.values(bookMap).map((book) => {
     return {
-      name: book.name,
+      id: book.id,
+      bookTitle: book.bookTitle,
+      coverImage: book.coverImage,
+      pubDate: book.pubDate,
       chapters: Object.values(book.chapters)
         .map((chapter) => {
           // Sort subchapters by their numeric ID
@@ -135,7 +176,27 @@ export const getBookCollection = async (): Promise<BookCollection[]> => {
     }
   })
 
-  return result
+  return sortBooksByDate(result)
+}
+
+/**
+ * Sorts an array of BookCollection objects by their publication date
+ * @param books - The array of BookCollection objects to sort
+ * @param order - The sort order: 'asc' for ascending (oldest first), 'desc' for descending (newest first)
+ * @returns A new sorted array of BookCollection objects
+ */
+export const sortBooksByDate = (
+  books: BookCollection[],
+  order: 'asc' | 'desc' = 'desc'
+): BookCollection[] => {
+  return [...books].sort((a, b) => {
+    const dateA = a.pubDate instanceof Date ? a.pubDate : new Date(a.pubDate)
+    const dateB = b.pubDate instanceof Date ? b.pubDate : new Date(b.pubDate)
+
+    return order === 'asc'
+      ? dateA.getTime() - dateB.getTime()
+      : dateB.getTime() - dateA.getTime()
+  })
 }
 
 interface Adjacent {
@@ -200,8 +261,15 @@ export const findAdjacentItems = (
 export const getChapters = (
   books: BookCollection[],
   bookTitle: string
-): BookCollection | undefined => books.find((b) => b.name === bookTitle)
+): BookCollection | undefined =>
+  books.find((b) => {
+    const currentBook = getBookTitleFromId(b.id)
+    return currentBook === bookTitle
+  })
 
-export const getFirstChapterPath = (book: BookCollection): Chapter =>
-  book.chapters[0]
+export const getBookTitleFromId = (id: string): string =>
+  id.split('/').shift() ?? ''
+
+export const getFirstChapterFullPath = (book: BookCollection): string =>
+  book.chapters[0].fullPath
 ---

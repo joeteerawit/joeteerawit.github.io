@@ -15,7 +15,10 @@ export interface Chapter {
 }
 
 export interface BookCollection {
-  name: string
+  id: string
+  bookTitle: string
+  coverImage: string,
+  pubDate: Date
   chapters: Chapter[]
 }
 

@@ -16,7 +16,19 @@ const createCollection = (basePath: string) => {
 }
 
 const blog = createCollection('./src/content/blog')
-const book = createCollection('./src/content/book')
+// const book = createCollection('./src/content/book')
+const book = defineCollection({
+  loader: glob({ base: './src/content/book', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    bookTitle: z.string().optional(),
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    coverImage: z.string().optional(),
+    draft: z.boolean().optional(),
+  }),
+})
 const tutorial = createCollection('./src/content/tutorial')
 
 export const collections = { blog, book, tutorial }

@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content'
+import { type CollectionEntry, getCollection } from 'astro:content'
 import BaseHead from '../../components/BaseHead.astro'
 import BookSideBar from '../../components/BookSideBar.astro'
 import Header from '../../components/Header.astro'
@@ -16,7 +16,6 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'book'>
 
 const content = Astro.props
-const { Content } = await render(content)
 ---
 
 <!doctype html>

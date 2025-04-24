@@ -1,7 +1,11 @@
 ---
 import { render, type CollectionEntry } from 'astro:content'
 import type { BookCollection } from '../types/interfaces.astro'
-import { findAdjacentItems, getChapters } from '../computes/book.astro'
+import {
+  findAdjacentItems,
+  getBookTitleFromId,
+  getChapters,
+} from '../computes/book.astro'
 import BookContent from '../layouts/BookContent.astro'
 
 interface Props {
@@ -12,9 +16,10 @@ interface Props {
 const { content, books } = Astro.props
 const { Content } = await render(content)
 
-const bookTitle = content.id.split('/').shift() ?? ''
-const details = getChapters(books, bookTitle)
+const details = getChapters(books, getBookTitleFromId(content.id))
 const { next, previous } = findAdjacentItems(details, content.id)
+
+// console.log(content, details, content.id)
 
 // console.dir(details, { depth: null })
 // console.dir(content, { depth: null })
@@ -34,7 +39,7 @@ const { next, previous } = findAdjacentItems(details, content.id)
   <div
     class="w-full md:w-xs px-3 py-6 border-b md:border-r-2 md:border-b-0 border-gray-200"
   >
-    <h3 class="text-gray-700 font-medium mb-2">{details?.name}</h3>
+    <h3 class="text-gray-700 font-medium mb-2">{details?.bookTitle}</h3>
     <ul class="space-y-1">
       {
         details?.chapters.map((chapter) => (
@@ -74,14 +79,14 @@ const { next, previous } = findAdjacentItems(details, content.id)
     </BookContent>
 
     <!-- Navigation buttons at bottom of content -->
-    <div class="mt-8 pt-4 border-t border-gray-200">
+    <div class="mt-8 py-4 px-3 border-t border-gray-200">
       <div class="grid grid-cols-2 gap-4">
         <a
           id="previous"
           href={previous?.path}
           class="w-full border border-gray-200 rounded-md p-3 hover:border-blue-600 transition-colors"
         >
-          <div class="text-gray-500 text-lg">Previous</div>
+          <div class="text-blue-600 text-lg">Previous</div>
           <div class="text-blue-600 font-medium">
             <span>«</span>
             {previous?.name}
@@ -92,7 +97,7 @@ const { next, previous } = findAdjacentItems(details, content.id)
           href={next?.path}
           class="w-full border border-gray-200 rounded-md p-3 hover:border-blue-600 transition-colors text-right"
         >
-          <div class="text-gray-500 text-lg">Next</div>
+          <div class="text-blue-600 text-lg">Next</div>
           <div class="text-blue-600 font-medium">
             {next?.name}
             <span>»</span>
