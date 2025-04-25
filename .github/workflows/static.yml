@@ -41,7 +41,7 @@ jobs:
 
       - name: Fix Asset Paths for GitHub Pages
         run: |
-          find dist -name "*.html" -exec sed -i 's|href="/_astro/|href="_astro/|g' {} \;
+          find dist -name "*.html" -exec sed -i 's|href="/_astro/|href="\./_astro/|g' {} \;
 
       - name: Create .nojekyll file
         run: touch dist/.nojekyll
