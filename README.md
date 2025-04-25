@@ -69,5 +69,3 @@ This theme is based off of the lovely [Bear Blog](https://github.com/HermanMarti
 
 ## MDX
 https://mdxjs.com/docs/
-
-update
