@@ -1,0 +1,30 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content'
+import BaseHead from '../../components/BaseHead.astro'
+import BookSideBar from '../../components/BookSideBar.astro'
+import Header from '../../components/Header.astro'
+import { getBookCollection } from '../../computes/book.astro'
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts'
+
+const books = await getBookCollection()
+export async function getStaticPaths() {
+  return (await getCollection('book')).map((book) => ({
+    params: { slug: book.id },
+    props: book,
+  }))
+}
+type Props = CollectionEntry<'book'>
+
+const content = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <Header />
+    <BookSideBar books={books} content={content} />
+  </body>
+</html>

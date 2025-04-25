@@ -16,22 +16,19 @@ const createCollection = (basePath: string) => {
 }
 
 const blog = createCollection('./src/content/blog')
-const book = createCollection('./src/content/book')
+// const book = createCollection('./src/content/book')
+const book = defineCollection({
+  loader: glob({ base: './src/content/book', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    bookTitle: z.string().optional(),
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    coverImage: z.string().optional(),
+    draft: z.boolean().optional(),
+  }),
+})
 const tutorial = createCollection('./src/content/tutorial')
-
-// const blog = defineCollection({
-//   // Load Markdown and MDX files in the `src/content/blog/` directory.
-//   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-//   // Type-check frontmatter using a schema
-//   schema: z.object({
-//     title: z.string(),
-//     description: z.string(),
-//     // Transform string to Date object
-//     pubDate: z.coerce.date(),
-//     updatedDate: z.coerce.date().optional(),
-//     heroImage: z.string().optional(),
-//     draft: z.boolean().optional(),
-//   }),
-// })
 
 export const collections = { blog, book, tutorial }

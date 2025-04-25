@@ -1,0 +1,26 @@
+---
+interface Props {
+  image: string
+  fullPath: string
+}
+
+const { image, fullPath } = Astro.props
+---
+
+<a href={`/book/${fullPath}`}>
+  <div class="relative max-w-sm rounded overflow-hidden shadow-lg">
+    <!-- Image -->
+    <img
+      class="w-full h-64 object-cover"
+      src={image}
+      alt="Card image"
+      width={200}
+      height={300}
+    />
+
+    <!-- Text Overlay -->
+    <div class="absolute inset-0 flex flex-col justify-end p-6">
+      <!-- <div class="text-white text-md font-bold mb-2">Card Title</div> -->
+    </div>
+  </div>
+</a>
