@@ -6,7 +6,7 @@ import { defineConfig } from 'astro/config'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://joewalker.xzy',
+  site: 'https://www.joewalker.xzy',
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

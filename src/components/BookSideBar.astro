@@ -18,11 +18,6 @@ const { Content } = await render(content)
 
 const details = getChapters(books, getBookTitleFromId(content.id))
 const { next, previous } = findAdjacentItems(details, content.id)
-
-// console.log(content, details, content.id)
-
-// console.dir(details, { depth: null })
-// console.dir(content, { depth: null })
 ---
 
 <style>

@@ -63,8 +63,6 @@ export const getBookCollection = async (): Promise<BookCollection[]> => {
     .filter((p) => (import.meta.env.PROD ? p.data.draft !== true : true))
     .forEach((book) => {
       // Split the ID to get book name and filename
-      console.log(book.id)
-
       const [bookName, fileName] = book.id.split('/')
 
       // Initialize book entry if it doesn't exist
