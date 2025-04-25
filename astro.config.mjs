@@ -10,5 +10,14 @@ export default defineConfig({
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // This is the key part that enables CSS inlining
+      cssCodeSplit: false,
+      // Force inlining of CSS for all chunks
+      assetsInlineLimit: 100000000,
+    },
+  },
+  build: {
+    inlineStylesheets: 'always', 
   },
 })
