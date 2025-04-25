@@ -39,6 +39,10 @@ jobs:
           # For Astro's base path config if needed
           ASTRO_BASE_PATH: ${{ github.repository_owner == github.event.repository.owner.login && github.event.repository.name || '' }}
 
+      - name: Fix Asset Paths for GitHub Pages
+        run: |
+          find dist -name "*.html" -exec sed -i 's|href="/_astro/|href="_astro/|g' {} \;
+
       - name: Create .nojekyll file
         run: touch dist/.nojekyll
 
