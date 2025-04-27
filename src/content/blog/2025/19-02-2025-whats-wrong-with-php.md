@@ -4,45 +4,6 @@ description: 'ทำไมคนด่า PHP จังว่ะ??'
 pubDate: 'Feb 19 2025'
 heroImage: '/2025/b1be73de-35d1-4284-b79e-ad612cf52d73.png'
 ---
-| Tables   |      Are      | Cool  |
-|----------|:-------------:|-------|
-| col 1 is | left-aligned  | $1600 |
-| col 2 is |   centered    | $12   |
-| col 3 is | right-aligned | $1    |
-
-
-```mermaid
-graph TD
-    A[Start] --> B{Is it working?}
-    B -->|Yes| C[Great!]
-    B -->|No| D[Debug]
-    D --> B
-```
-
-* joe
-  * joe
-    * joewals
-* walker
-* bigjoe
-
-```js
-export const sortBooksByDate = (
-  books: BookCollection[],
-  order: 'asc' | 'desc' = 'desc'
-): BookCollection[] => {
-  return [...books].sort((a, b) => {
-    const dateA = a.pubDate instanceof Date ? a.pubDate : new Date(a.pubDate) // [!code --]
-    const dateA = a.pubDate instanceof Date ? a.pubDate : new Date(a.pubDate) // [!code --]
-    const dateB = b.pubDate instanceof Date ? b.pubDate : new Date(b.pubDate) // [!code ++]
-    const dateB = b.pubDate instanceof Date ? b.pubDate : new Date(b.pubDate) // [!code ++]
-
-    return order === 'asc'
-      ? dateA.getTime() - dateB.getTime()
-      : dateB.getTime() - dateA.getTime()
-  })
-}
-```
-
 ลองมาอ่านเรื่องราวที่น่าสนใจเกี่ยวกับ PHP หน่อยครับ ว่ามันกากเหมือนที่ได้ยิน ได้ฟัง ได้อ่านมาหรือป่าว
 
 ## เรื่องราวของบิลลี่และ PHP
