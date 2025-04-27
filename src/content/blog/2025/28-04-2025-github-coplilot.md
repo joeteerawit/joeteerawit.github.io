@@ -4,10 +4,6 @@ description: 'GitHub Copilot Serves 400 Million Users ได้ยัไง?'
 pubDate: 'Apr 28 2025'
 heroImage: '/2025/2ae98b50-db6d-435a-adb9-8dddac558651.png'
 ---
-แน่นอน นี่คือตอนเริ่มต้นของบทความที่แปลเป็นภาษาไทย โดยคงคำศัพท์โปรแกรมมิ่งภาษาอังกฤษไว้ตามที่คุณขอ เนื่องจากเนื้อหาเยอะมาก ผมจะแบ่งเป็นตอนๆ แล้วค่อยๆ ต่อไปเรื่อยๆ ให้ครบถ้วน
-
----
-
 # GitHub Copilot Proxy: พลังเบื้องหลังการทำ Code Completion ระดับพระกาฬ
 ### GitHub Copilot คืออะไร?
 
