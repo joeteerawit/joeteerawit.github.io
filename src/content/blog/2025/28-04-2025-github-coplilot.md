@@ -1,7 +1,7 @@
 ---
-title: 'GitHub Copilot Serves 400 Million Users ได้ยัไง?'
-description: 'GitHub Copilot Serves 400 Million Users ได้ยัไง?'
-pubDate: 'Apr 28 2025'
+title: 'GitHub Copilot Serves 400 Million Users ได้ยังไง?'
+description: 'GitHub Copilot Serves 400 Million Users ได้ยังไง?'
+pubDate: 'Apr 27 2025'
 heroImage: '/2025/2ae98b50-db6d-435a-adb9-8dddac558651.png'
 ---
 # GitHub Copilot Proxy: พลังเบื้องหลังการทำ Code Completion ระดับพระกาฬ
