@@ -101,6 +101,7 @@ ul li p {
 
 ol:has(+ blockquote),
 ul:has(+ blockquote),
+.prose ol:has(+ p),
 .prose ul:has(+ p) {
   margin-bottom: 1em;
 }
