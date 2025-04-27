@@ -4,6 +4,7 @@ import BaseHead from '../components/BaseHead.astro'
 import Footer from '../components/Footer.astro'
 import FormattedDate from '../components/FormattedDate.astro'
 import Header from '../components/Header.astro'
+import LayoutBaseScript from '../components/LayoutBaseScript.astro'
 
 type Props = CollectionEntry<'blog'>['data']
 
@@ -85,51 +86,5 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
       </article>
     </main>
     <Footer />
-  </body><script>
-    const mobileBreakpoint = 720
-    const isMobile = window.innerWidth <= mobileBreakpoint
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.prose p').forEach((p) => {
-        if (p.querySelector('img')) {
-          ;(p as HTMLElement).style.justifyItems = 'center'
-        }
-      })
-
-      document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((element) => {
-        const htmlElement = element as HTMLElement
-        if (isMobile) {
-          htmlElement.style.marginTop = '1rem'
-          htmlElement.style.marginBottom = '1rem'
-        } else {
-          htmlElement.style.marginTop = '2rem'
-          htmlElement.style.marginBottom = '2rem'
-        }
-      })
-      document.querySelectorAll('.diff.remove').forEach((element) => {
-        const indicatorSpan = document.createElement('span')
-        indicatorSpan.className = 'diff-indicator'
-        indicatorSpan.textContent = '-'
-        indicatorSpan.style.display = 'inline-block'
-        indicatorSpan.style.width = '15px'
-        indicatorSpan.style.color = '#d73a49'
-        indicatorSpan.style.fontWeight = 'bold'
-        indicatorSpan.style.userSelect = 'none'
-
-        element.insertBefore(indicatorSpan, element.firstChild)
-      })
-
-      document.querySelectorAll('.diff.add').forEach((element) => {
-        const indicatorSpan = document.createElement('span')
-        indicatorSpan.className = 'diff-indicator'
-        indicatorSpan.textContent = '+'
-        indicatorSpan.style.display = 'inline-block'
-        indicatorSpan.style.width = '15px'
-        indicatorSpan.style.color = '#22863a'
-        indicatorSpan.style.fontWeight = 'bold'
-        indicatorSpan.style.userSelect = 'none'
-
-        element.insertBefore(indicatorSpan, element.firstChild)
-      })
-    })
-  </script>
+  </body><LayoutBaseScript />
 </html>

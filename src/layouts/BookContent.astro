@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import BaseHead from '../components/BaseHead.astro'
+import LayoutBaseScript from '../components/LayoutBaseScript.astro'
 
 type Props = CollectionEntry<'blog'>['data']
 
@@ -72,4 +73,5 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
       </article>
     </main>
   </body>
+  <LayoutBaseScript />
 </html>
