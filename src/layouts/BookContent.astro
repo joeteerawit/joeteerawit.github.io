@@ -16,6 +16,18 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
         max-width: 100%;
         margin: 0;
       }
+      ul {
+        list-style-type: disc;
+        padding-left: 1.5em;
+      }
+
+      ul ul {
+        list-style-type: circle;
+      }
+
+      ul ul ul {
+        list-style-type: circle;
+      }
       .hero-image {
         width: 100%;
       }

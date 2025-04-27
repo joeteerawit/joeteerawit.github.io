@@ -18,8 +18,12 @@
     "@astrojs/mdx": "^4.2.4",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.3.0",
+    "@shikijs/transformers": "^3.3.0",
     "@tailwindcss/vite": "^4.1.4",
     "astro": "^5.7.4",
+    "playwright": "^1.52.0",
+    "rehype-mermaid": "^3.0.0",
+    "shiki": "^3.3.0",
     "tailwindcss": "^4.1.4"
   }
 }
