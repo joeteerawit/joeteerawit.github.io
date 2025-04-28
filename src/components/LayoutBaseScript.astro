@@ -5,6 +5,7 @@
 <script>
   const mobileBreakpoint = 720
   const isMobile = window.innerWidth <= mobileBreakpoint
+
   document.addEventListener('DOMContentLoaded', () => {
     const isInsideNav = (element: HTMLElement) => {
       let parent = element.parentElement
@@ -63,6 +64,12 @@
       indicatorSpan.style.userSelect = 'none'
 
       element.insertBefore(indicatorSpan, element.firstChild)
+    })
+
+    document.querySelectorAll('a[href^="http"]').forEach((externalLink) => {
+      if (isInsideNav(externalLink as HTMLElement)) return
+      externalLink.setAttribute('target', '_blank')
+      externalLink.setAttribute('rel', 'noopener noreferrer')
     })
   })
 </script>
