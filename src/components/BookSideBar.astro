@@ -18,6 +18,7 @@ const { Content } = await render(content)
 
 const details = getChapters(books, getBookTitleFromId(content.id))
 const { next, previous } = findAdjacentItems(details, content.id)
+console.log(Astro.originPathname, '>>>')
 ---
 
 <style>
@@ -41,7 +42,9 @@ const { next, previous } = findAdjacentItems(details, content.id)
           <li class="sidebar-item">
             <a
               id="chapter"
-              href={chapter.path}
+              href={
+                Astro.originPathname.includes(chapter.path) ? '/' : chapter.path
+              }
               class="w-full text-left flex items-center justify-between px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg font-medium"
             >
               {chapter.name}
