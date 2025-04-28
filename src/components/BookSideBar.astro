@@ -18,7 +18,7 @@ const { Content } = await render(content)
 
 const details = getChapters(books, getBookTitleFromId(content.id))
 const { next, previous } = findAdjacentItems(details, content.id)
-console.log(Astro.originPathname, '>>>')
+console.log('details>>', details)
 ---
 
 <style>
@@ -39,11 +39,13 @@ console.log(Astro.originPathname, '>>>')
     <ul class="space-y-1">
       {
         details?.chapters.map((chapter) => (
-          <li class="sidebar-item">
+          <div class="sidebar-item">
             <a
               id="chapter"
               href={
-                Astro.originPathname.includes(chapter.path) ? '/' : chapter.path
+                Astro.originPathname.includes(chapter.path)
+                  ? Astro.originPathname
+                  : chapter.path
               }
               class="w-full text-left flex items-center justify-between px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg font-medium"
             >
@@ -52,19 +54,17 @@ console.log(Astro.originPathname, '>>>')
             </a>
 
             {chapter.subchapters.map((subchapter) => (
-              <ul class="pl-6 mt-1 space-y-1 nested-menu">
-                <li>
-                  <a
-                    id="subchapter"
-                    href={subchapter.path}
-                    class="flex w-full items-center px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg"
-                  >
-                    {subchapter.name}
-                  </a>
-                </li>
-              </ul>
+              <div class="pl-6 mt-1 space-y-1 nested-menu">
+                <a
+                  id="subchapter"
+                  href={subchapter.path}
+                  class="flex w-full items-center px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg"
+                >
+                  {subchapter.name}
+                </a>
+              </div>
             ))}
-          </li>
+          </div>
         ))
       }
     </ul>

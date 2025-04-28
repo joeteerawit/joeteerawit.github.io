@@ -92,10 +92,7 @@ export const getBookCollection = async (): Promise<BookCollection[]> => {
       if (parts.length >= 3 && parts[1].match(/^\d+$/)) {
         // This is a subchapter (e.g., 1-1-bigjoe.md)
         const subchapterId: string = `${chapterNum}-${parts[1]}`
-        const subchapterName: string = parts
-          .slice(2)
-          .join('-')
-          .replace(/\.md$/, '')
+        const subchapterName: string =  book.data.title
 
         // Initialize chapter if it doesn't exist
         if (!bookMap[bookName].chapters[chapterNum]) {
@@ -119,10 +116,7 @@ export const getBookCollection = async (): Promise<BookCollection[]> => {
       // Handle main chapter file (pattern: 1-name)
       else if (parts.length >= 2) {
         // This is a main chapter (e.g., 1-intro.md)
-        const chapterName: string = parts
-          .slice(1)
-          .join('-')
-          .replace(/\.md$/, '')
+        const chapterName: string =  book.data.title
 
         // Initialize or update chapter
         if (!bookMap[bookName].chapters[chapterNum]) {
