@@ -234,7 +234,7 @@ export const findAdjacentItems = (
   const previous =
     currentIndex > 0
       ? {
-          path: allItems[currentIndex - 1].path,
+          path: `/book/${allItems[currentIndex - 1].fullPath}`,
           name: allItems[currentIndex - 1].name,
         }
       : undefined
@@ -242,7 +242,7 @@ export const findAdjacentItems = (
   const next =
     currentIndex < allItems.length - 1
       ? {
-          path: allItems[currentIndex + 1].path,
+          path: `/book/${allItems[currentIndex + 1].fullPath}`,
           name: allItems[currentIndex + 1].name,
         }
       : undefined

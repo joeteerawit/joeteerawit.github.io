@@ -28,12 +28,16 @@
     document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((element) => {
       const htmlElement = element as HTMLElement
       if (isInsideNav(element as HTMLElement)) return
+      const nextElement = element.nextElementSibling
+      const isFollowedByPre =
+        nextElement && nextElement.tagName.toLowerCase() === 'pre'
+
       if (isMobile) {
         htmlElement.style.marginTop = '1rem'
-        htmlElement.style.marginBottom = '1rem'
+        htmlElement.style.marginBottom = isFollowedByPre ? '0' : '1rem'
       } else {
         htmlElement.style.marginTop = '2rem'
-        htmlElement.style.marginBottom = '2rem'
+        htmlElement.style.marginBottom = isFollowedByPre ? '0' : '2rem'
       }
     })
     document.querySelectorAll('.diff.remove').forEach((element) => {

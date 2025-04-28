@@ -95,6 +95,7 @@ p {
   margin-bottom: 1em;
 }
 p:has(+ ul),
+p:has(+ pre),
 ul li p {
   margin-bottom: 0;
 }

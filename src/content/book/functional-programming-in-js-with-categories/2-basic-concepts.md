@@ -2,6 +2,6 @@
 title: '2. Basic Concepts'
 description: '2. Basic Concepts'
 pubDate: 'Apr 27 2025'
-heroImage: '/2025/3a913882-55a4-4629-9ef0-08a299843dc6.jpg'
+heroImage: '/books/functional-programming-in-js-with-categories/5f58c4b0-71d0-4983-87e0-8d30dbdf9e5e.jpg'
 ---
-# Basic Concepts
+## 2 Basic Concepts
