@@ -45,7 +45,7 @@ console.log('details>>', details)
               href={
                 Astro.originPathname.includes(chapter.path)
                   ? Astro.originPathname
-                  : chapter.path
+                  : `/book/${chapter.fullPath}`
               }
               class="w-full text-left flex items-center justify-between px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg font-medium"
             >
