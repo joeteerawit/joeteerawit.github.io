@@ -829,7 +829,7 @@
 <p><strong>Windows Pod networking</strong> มีเป้าหมายเพื่อให้สามารถใช้งานได้เทียบเท่ากับฝั่ง <strong>Linux</strong> และเพิ่มความหนาแน่นของ cluster ได้ดีขึ้น ด้วยการอนุญาตให้ <strong>containers</strong> ใช้ <strong>Node’s networking namespace</strong> ได้โดยตรง</p>
 <p>การ implement แบบเดิมเริ่มต้นในสถานะ <strong>alpha</strong> ตั้งแต่เวอร์ชัน v1.26 แต่เนื่องจากเจอพฤติกรรมที่ไม่คาดคิดของ <strong>containerd</strong> และมีทางเลือกอื่น ๆ ที่สามารถใช้งานได้ ทางโครงการ <strong>Kubernetes</strong> จึงตัดสินใจยกเลิก <strong>KEP</strong> ที่เกี่ยวข้อง และได้ถอดการรองรับนี้ออกอย่างสมบูรณ์ในเวอร์ชัน v1.33</p>
 <p>โปรดทราบว่า การถอนการรองรับนี้ <strong>ไม่ส่งผลกระทบ</strong> ต่อ <a href="https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/">HostProcess containers</a> ซึ่งยังคงสามารถใช้ <strong>host network</strong> และเข้าถึงระดับ <strong>host level access</strong> ได้ตามปกติ การถอน <strong>KEP</strong> ใน v1.33 นี้ เป็นการยกเลิกเฉพาะความพยายามที่จะให้ <strong>Pods</strong> ใช้ <strong>host network</strong> เท่านั้น ซึ่งไม่เคยมีเสถียรภาพเนื่องจากข้อจำกัดทางเทคนิคในตรรกะของ <strong>Windows networking</strong> เอง</p>
-<h2 id="นอกเรื่อง-release-theme-and-logo">นอกเรื่อง: Release theme and logo</h2>
+<h2 id="release-theme-and-logo">Release theme and logo</h2>
 <p><img src="/2025/d2a1c515-c2b5-43c0-97ac-029ecb2ee13b.png" alt="d2a1c515-c2b5-43c0-97ac-029ecb2ee13b"></p>
 <p>ธีมของ <strong>Kubernetes v1.33</strong> คือ <strong>Octarine: The Color of Magic</strong> ได้แรงบันดาลใจจากซีรีส์ <strong>Discworld</strong> ของ <strong>Terry Pratchett</strong><br>
 การออกเวอร์ชันนี้ต้องการเน้นย้ำถึง “เวทมนตร์ของ open source” ที่ <strong>Kubernetes</strong> ได้สร้างขึ้นทั่วทั้ง ecosystem</p>
