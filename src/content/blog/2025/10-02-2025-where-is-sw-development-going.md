@@ -2,7 +2,7 @@
 title: 'สรุป Talk เรื่อง 𝐖𝐡𝐞𝐫𝐞 𝐈𝐬 𝐒𝐖 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐦𝐞𝐧𝐭 𝐆𝐨𝐢𝐧𝐠?'
 description: 'สรุป Talk เรื่อง 𝐖𝐡𝐞𝐫𝐞 𝐈𝐬 𝐒𝐖 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐦𝐞𝐧𝐭 𝐆𝐨𝐢𝐧𝐠?'
 pubDate: 'Feb 10 2025'
-heroImage: '/2025/1307a63d-475c-4711-8ee5-d2cb75a3d260.png'
+heroImage: '/2025/02/1307a63d-475c-4711-8ee5-d2cb75a3d260.png'
 ---
 ## 𝟏. 𝐓𝐡𝐞 𝐒𝐭𝐚𝐭𝐞 𝐨𝐟 𝐭𝐡𝐞 𝐒𝐨𝐟𝐭𝐰𝐚𝐫𝐞 𝐈𝐧𝐝𝐮𝐬𝐭𝐫𝐲
 Software industry ได้พัฒนามาจนถึงจุดที่ Agile และ Continuous Delivery ไม่ใช่เรื่องใหม่อีกต่อไป แต่กลายเป็นมาตรฐานแทนการ Release Cycle แบบเดิม ๆ ไปซะแล้ว ส่วนใหญ่เป็นการปล่อยอัปเดตแบบ Quarterly หรือ On-Demand

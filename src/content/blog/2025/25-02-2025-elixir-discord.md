@@ -2,7 +2,7 @@
 title: 'Discord ใช้ Elixir ยังไงถึงรองรับคนใช้เป็นล้าน'
 description: 'Discord ใช้ Elixir ยังไงถึงรองรับคนใช้เป็นล้าน'
 pubDate: 'Feb 25 2025'
-heroImage: '/2025/1c3793f2-788f-40a5-b108-8c0d903e85ea.jpg'
+heroImage: '/2025/02/1c3793f2-788f-40a5-b108-8c0d903e85ea.jpg'
 ---
 
 Discord เปิดตัวมาตั้งแต่ปี 2015 โดยสองหนุ่ม Jason Citron กับ Stan Vishnevskiy เป็นคนก่อตั้ง แอพนี้เจ๋งตรงที่เราสามารถสลับไปมาระหว่างแชทข้อความ คุยเสียง หรือวิดีโอคอลได้แบบไม่มีสะดุด ทำให้รู้สึกเหมือนคุยกันแบบธรรมชาติมากๆ ตอนนี้มีคนใช้ทั่วโลกมากกว่า 100 ล้านคนต่อเดือนเลยนะ แต่ละวันมีคนคุยกันบน Discord รวมกันเป็นเวลา 4 พันล้านนาที ผ่าน server กว่า 6.7 ล้านแห่งเลย โคตรเยอะ!
@@ -67,5 +67,5 @@ Jake สรุปว่า Elixir และ Erlang VM สำคัญกับ D
 
 > "สิ่งที่เราทำใน Discord จะเป็นไปไม่ได้ถ้าไม่มี Elixir มันทำไม่ได้ด้วย Node หรือ Python แน่ๆ เราไม่มีทางสร้างระบบนี้ด้วยวิศวกรแค่ 5 คนถ้าใช้ C++ การเรียนรู้ Elixir เปลี่ยนวิธีคิดและการแก้ปัญหาซอฟต์แวร์ของฉันไปเลย มันให้มุมมองใหม่และวิธีแก้ปัญหาแบบใหม่ที่ฉันไม่เคยนึกถึงมาก่อน"
 
-references:
-- https://elixir-lang.org/blog/2020/10/08/real-time-communication-at-scale-with-elixir-at-discord
+#### References
+- [elixir-lang.org](https://elixir-lang.org/blog/2020/10/08/real-time-communication-at-scale-with-elixir-at-discord)

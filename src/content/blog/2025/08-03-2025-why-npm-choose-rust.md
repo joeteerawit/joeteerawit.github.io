@@ -2,7 +2,7 @@
 title: 'ทำไม npm ถึงเลือก Rust?'
 description: 'ทำไม npm ถึงเลือก Rust?'
 pubDate: 'Mar 08 2025'
-heroImage: '/2025/b9951bc5-d839-462d-83cb-1c2a989e4e4b.png'
+heroImage: '/2025/03/b9951bc5-d839-462d-83cb-1c2a989e4e4b.png'
 ---
 npm เป็นแพลตฟอร์มจัดการ JavaScript packages ที่ใหญ่ที่สุดในโลก มีมากกว่า 836,000 packages และให้บริการมากกว่า 30 หมื่นล้าน downloads ต่อเดือน ซึ่งทำให้ต้องเจอกับปัญหาด้าน performance และ scalability อยู่ตลอดเวลา
 

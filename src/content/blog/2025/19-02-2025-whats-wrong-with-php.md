@@ -2,7 +2,7 @@
 title: 'ทำไมคนด่า PHP จังว่ะ??'
 description: 'ทำไมคนด่า PHP จังว่ะ??'
 pubDate: 'Feb 19 2025'
-heroImage: '/2025/b1be73de-35d1-4284-b79e-ad612cf52d73.png'
+heroImage: '/2025/02/b1be73de-35d1-4284-b79e-ad612cf52d73.png'
 ---
 ลองมาอ่านเรื่องราวที่น่าสนใจเกี่ยวกับ PHP หน่อยครับ ว่ามันกากเหมือนที่ได้ยิน ได้ฟัง ได้อ่านมาหรือป่าว
 
@@ -65,5 +65,5 @@ heroImage: '/2025/b1be73de-35d1-4284-b79e-ad612cf52d73.png'
 
 บทสรุป: ???
 
-references:
-- [https://dev.to](https://dev.to/web_dev-usman/whats-wrong-with-php-why-developers-hate-it-48jn)
+#### References
+- [dev.to](https://dev.to/web_dev-usman/whats-wrong-with-php-why-developers-hate-it-48jn)

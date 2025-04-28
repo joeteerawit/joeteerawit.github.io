@@ -2,7 +2,7 @@
 title: 'อะไรที่ทำให้ Elixir เหมาะกับ Startup ?'
 description: 'อะไรที่ทำให้ Elixir เหมาะกับ Startup ?'
 pubDate: 'Apr 01 2025'
-heroImage: '/2025/ac9f1756-88d7-4f53-9c77-beab8b6e86be.png'
+heroImage: '/2025/04/ac9f1756-88d7-4f53-9c77-beab8b6e86be.png'
 ---
 ปัญหาหลักที่ startup ส่วนใหญ่เจอคือการหาว่า product/market fit อยู่ตรงไหน ซึ่งกุญแจสำคัญคือการ iterate อย่างรวดเร็ว – สร้าง, วัดผล, และปรับปรุงตาม feedback จากลูกค้าให้เร็วที่สุด
 
