@@ -6,7 +6,19 @@
   const mobileBreakpoint = 720
   const isMobile = window.innerWidth <= mobileBreakpoint
   document.addEventListener('DOMContentLoaded', () => {
+    const isInsideNav = (element: HTMLElement) => {
+      let parent = element.parentElement
+      while (parent) {
+        if (parent.tagName === 'NAV') {
+          return true
+        }
+        parent = parent.parentElement
+      }
+      return false
+    }
+
     document.querySelectorAll('.prose p').forEach((p) => {
+      if (isInsideNav(p as HTMLElement)) return
       if (p.querySelector('img')) {
         ;(p as HTMLElement).style.justifyItems = 'center'
       }
@@ -14,6 +26,7 @@
 
     document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((element) => {
       const htmlElement = element as HTMLElement
+      if (isInsideNav(element as HTMLElement)) return
       if (isMobile) {
         htmlElement.style.marginTop = '1rem'
         htmlElement.style.marginBottom = '1rem'
@@ -23,6 +36,8 @@
       }
     })
     document.querySelectorAll('.diff.remove').forEach((element) => {
+      if (isInsideNav(element as HTMLElement)) return
+
       const indicatorSpan = document.createElement('span')
       indicatorSpan.className = 'diff-indicator'
       indicatorSpan.textContent = '-'
@@ -36,6 +51,8 @@
     })
 
     document.querySelectorAll('.diff.add').forEach((element) => {
+      if (isInsideNav(element as HTMLElement)) return
+
       const indicatorSpan = document.createElement('span')
       indicatorSpan.className = 'diff-indicator'
       indicatorSpan.textContent = '+'
