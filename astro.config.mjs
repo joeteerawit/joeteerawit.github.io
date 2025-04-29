@@ -4,7 +4,6 @@ import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import rehypeMermaid from 'rehype-mermaid'
 
-import partytown from '@astrojs/partytown'
 import {
   transformerMetaHighlight,
   transformerNotationDiff,
@@ -16,16 +15,7 @@ import { defineConfig } from 'astro/config'
 // https://docs.astro.build/en/guides/styling/#markdown-styling
 export default defineConfig({
   site: 'https://www.joewalker.xzy',
-  integrations: [
-    mdx(),
-    sitemap(),
-    partytown({
-      config: {
-        swPath: '/partytown/partytown-sw.js',
-        forward: ['dataLayer.push'],
-      },
-    }),
-  ],
+  integrations: [mdx(), sitemap()],
   markdown: {
     syntaxHighlight: {
       type: 'shiki',

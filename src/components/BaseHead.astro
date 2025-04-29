@@ -44,12 +44,6 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
   crossorigin
 />
 
-<!-- Google Analytic -->
-<!-- <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css"
-/> -->
-
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
@@ -73,31 +67,12 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- Google Analytic -->
-<script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script>
-<script type="text/partytown">
+<script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script>
+<script is:inline>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-72RJB9H4WY');
 </script>
-<!-- <script
-  data-category="analytics"
-  is:inline
-  src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script>
-<script type="module" src="cookieconsent-config.js"></script>
-<script data-category="analytics" is:inline type="text/partytown">
-  window.dataLayer = window.dataLayer || []
-  function gtag() {
-    dataLayer.push(arguments)
-  }
-  gtag('js', new Date())
-  gtag('consent', 'default', {
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    analytics_storage: 'denied',
-  })
 
-  gtag('config', 'G-72RJB9H4WY')
-</script> -->
