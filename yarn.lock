@@ -71,6 +71,14 @@
     unist-util-visit "^5.0.0"
     vfile "^6.0.3"
 
+"@astrojs/partytown@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.npmjs.org/@astrojs/partytown/-/partytown-2.1.4.tgz"
+  integrity sha512-loUrAu0cGYFDC6dHVRiomdsBJ41VjDYXPA+B3Br51V5hENFgDSOLju86OIj1TvBACcsB22UQV7BlppODDG5gig==
+  dependencies:
+    "@qwik.dev/partytown" "^0.11.0"
+    mrmime "^2.0.1"
+
 "@astrojs/prism@3.2.0":
   version "3.2.0"
   resolved "https://registry.npmjs.org/@astrojs/prism/-/prism-3.2.0.tgz"
@@ -266,6 +274,13 @@
   version "1.1.0"
   resolved "https://registry.npmjs.org/@oslojs/encoding/-/encoding-1.1.0.tgz"
   integrity sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==
+
+"@qwik.dev/partytown@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.npmjs.org/@qwik.dev/partytown/-/partytown-0.11.0.tgz"
+  integrity sha512-MHime7cxj7KGrapGZ1VqLkXXq5BLNqvjNZndRJVvMkUWn92F2bsezlWW1lKDoFaKCKu2xv9LRUZL99RYOs+ccA==
+  dependencies:
+    dotenv "^16.4.7"
 
 "@rollup/pluginutils@^5.1.4":
   version "5.1.4"
@@ -1453,6 +1468,11 @@ dompurify@^3.2.4:
   integrity sha512-mLPd29uoRe9HpvwP2TxClGQBzGXeEC/we/q+bFlmPPmj2p2Ugl3r6ATu/UU1v77DXNcehiBg9zsr1dREyA/dJQ==
   optionalDependencies:
     "@types/trusted-types" "^2.0.7"
+
+dotenv@^16.4.7:
+  version "16.5.0"
+  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.5.0.tgz"
+  integrity sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==
 
 dset@^3.1.4:
   version "3.1.4"
