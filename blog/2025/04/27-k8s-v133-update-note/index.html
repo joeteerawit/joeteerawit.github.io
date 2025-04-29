@@ -1,0 +1,865 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="BigJoe" href="https://www.joewalker.xzy/rss.xml"><meta name="generator" content="Astro v5.7.4"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://www.joewalker.xzy/blog/2025/04/27-k8s-v133-update-note/"><!-- Primary Meta Tags --><title>Kubernetes v1.33: Octarine release updates</title><meta name="title" content="Kubernetes v1.33: Octarine release updates"><meta name="description" content="Kubernetes v1.33: Octarine release updates"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.joewalker.xzy/blog/2025/04/27-k8s-v133-update-note/"><meta property="og:title" content="Kubernetes v1.33: Octarine release updates"><meta property="og:description" content="Kubernetes v1.33: Octarine release updates"><meta property="og:image" content="https://www.joewalker.xzy/blog-placeholder-1.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.joewalker.xzy/blog/2025/04/27-k8s-v133-update-note/"><meta property="twitter:title" content="Kubernetes v1.33: Octarine release updates"><meta property="twitter:description" content="Kubernetes v1.33: Octarine release updates"><meta property="twitter:image" content="https://www.joewalker.xzy/blog-placeholder-1.jpg"><!-- Google Analytic --><script src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script><script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-72RJB9H4WY');
+</script><style>/*! tailwindcss v4.1.4 | MIT License | https://tailwindcss.com */@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-rotate-x:initial;--tw-rotate-y:initial;--tw-rotate-z:initial;--tw-skew-x:initial;--tw-skew-y:initial;--tw-space-y-reverse:0;--tw-border-style:solid;--tw-leading:initial;--tw-font-weight:initial;--tw-shadow:0 0 #0000;--tw-shadow-color:initial;--tw-shadow-alpha:100%;--tw-inset-shadow:0 0 #0000;--tw-inset-shadow-color:initial;--tw-inset-shadow-alpha:100%;--tw-ring-color:initial;--tw-ring-shadow:0 0 #0000;--tw-inset-ring-color:initial;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-inset:initial;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-offset-shadow:0 0 #0000;--tw-outline-style:solid}}}@layer theme{:root,:host{--font-sans:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";--font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--color-blue-600:oklch(54.6% .245 262.881);--color-gray-200:oklch(92.8% .006 264.531);--color-gray-600:oklch(44.6% .03 256.802);--color-gray-700:oklch(37.3% .034 259.733);--color-white:#fff;--spacing:.25rem;--container-xs:20rem;--container-sm:24rem;--text-lg:1.125rem;--text-lg--line-height:calc(1.75/1.125);--text-2xl:1.5rem;--text-2xl--line-height:calc(2/1.5);--font-weight-medium:500;--font-weight-bold:700;--leading-relaxed:1.625;--radius-md:.375rem;--default-transition-duration:.15s;--default-transition-timing-function:cubic-bezier(.4,0,.2,1);--default-font-family:var(--font-sans);--default-mono-font-family:var(--font-mono)}}@layer base{*,:after,:before,::backdrop{box-sizing:border-box;border:0 solid;margin:0;padding:0}::file-selector-button{box-sizing:border-box;border:0 solid;margin:0;padding:0}html,:host{-webkit-text-size-adjust:100%;tab-size:4;line-height:1.5;font-family:var(--default-font-family,ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji");font-feature-settings:var(--default-font-feature-settings,normal);font-variation-settings:var(--default-font-variation-settings,normal);-webkit-tap-highlight-color:transparent}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;-webkit-text-decoration:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,samp,pre{font-family:var(--default-mono-font-family,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace);font-feature-settings:var(--default-mono-font-feature-settings,normal);font-variation-settings:var(--default-mono-font-variation-settings,normal);font-size:1em}small{font-size:80%}sub,sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}:-moz-focusring{outline:auto}progress{vertical-align:baseline}summary{display:list-item}ol,ul,menu{list-style:none}img,svg,video,canvas,audio,iframe,embed,object{vertical-align:middle;display:block}img,video{max-width:100%;height:auto}button,input,select,optgroup,textarea{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}::file-selector-button{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}:where(select:is([multiple],[size])) optgroup{font-weight:bolder}:where(select:is([multiple],[size])) optgroup option{padding-inline-start:20px}::file-selector-button{margin-inline-end:4px}::placeholder{opacity:1}@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){::placeholder{color:currentColor}@supports (color:color-mix(in lab,red,red)){::placeholder{color:color-mix(in oklab,currentcolor 50%,transparent)}}}textarea{resize:vertical}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-date-and-time-value{min-height:1lh;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-datetime-edit{padding-block:0}::-webkit-datetime-edit-year-field{padding-block:0}::-webkit-datetime-edit-month-field{padding-block:0}::-webkit-datetime-edit-day-field{padding-block:0}::-webkit-datetime-edit-hour-field{padding-block:0}::-webkit-datetime-edit-minute-field{padding-block:0}::-webkit-datetime-edit-second-field{padding-block:0}::-webkit-datetime-edit-millisecond-field{padding-block:0}::-webkit-datetime-edit-meridiem-field{padding-block:0}:-moz-ui-invalid{box-shadow:none}button,input:where([type=button],[type=reset],[type=submit]){appearance:button}::file-selector-button{appearance:button}::-webkit-inner-spin-button{height:auto}::-webkit-outer-spin-button{height:auto}[hidden]:where(:not([hidden=until-found])){display:none!important}}@layer components;@layer utilities{.invisible{visibility:hidden}.absolute{position:absolute}.fixed{position:fixed}.relative{position:relative}.static{position:static}.inset-0{inset:calc(var(--spacing)*0)}.isolate{isolation:isolate}.container{width:100%}@media (min-width:40rem){.container{max-width:40rem}}@media (min-width:48rem){.container{max-width:48rem}}@media (min-width:64rem){.container{max-width:64rem}}@media (min-width:80rem){.container{max-width:80rem}}@media (min-width:96rem){.container{max-width:96rem}}.m-2{margin:calc(var(--spacing)*2)}.m-26{margin:calc(var(--spacing)*26)}.m-30{margin:calc(var(--spacing)*30)}.m-42{margin:calc(var(--spacing)*42)}.m-50{margin:calc(var(--spacing)*50)}.m-51{margin:calc(var(--spacing)*51)}.m-70{margin:calc(var(--spacing)*70)}.m-76{margin:calc(var(--spacing)*76)}.m-77{margin:calc(var(--spacing)*77)}.m-88{margin:calc(var(--spacing)*88)}.m-94{margin:calc(var(--spacing)*94)}.m-138{margin:calc(var(--spacing)*138)}.m-148{margin:calc(var(--spacing)*148)}.m-155{margin:calc(var(--spacing)*155)}.m-195{margin:calc(var(--spacing)*195)}.m-260{margin:calc(var(--spacing)*260)}.m-307{margin:calc(var(--spacing)*307)}.m-1886{margin:calc(var(--spacing)*1886)}.m-2029{margin:calc(var(--spacing)*2029)}.m-2530{margin:calc(var(--spacing)*2530)}.m-2869{margin:calc(var(--spacing)*2869)}.mt-1{margin-top:calc(var(--spacing)*1)}.mt-8{margin-top:calc(var(--spacing)*8)}.mb-2{margin-bottom:calc(var(--spacing)*2)}.contents{display:contents}.flex{display:flex}.grid{display:grid}.inline-block{display:inline-block}.table{display:table}.h-4{height:calc(var(--spacing)*4)}.h-64{height:calc(var(--spacing)*64)}.min-h-screen{min-height:100vh}.w-4{width:calc(var(--spacing)*4)}.w-full{width:100%}.max-w-sm{max-width:var(--container-sm)}.flex-1{flex:1}.flex-grow{flex-grow:1}.transform{transform:var(--tw-rotate-x,)var(--tw-rotate-y,)var(--tw-rotate-z,)var(--tw-skew-x,)var(--tw-skew-y,)}.resize{resize:both}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}.justify-items-center{justify-items:center}.gap-4{gap:calc(var(--spacing)*4)}.gap-8{gap:calc(var(--spacing)*8)}:where(.space-y-1>:not(:last-child)){--tw-space-y-reverse:0;margin-block-start:calc(calc(var(--spacing)*1)*var(--tw-space-y-reverse));margin-block-end:calc(calc(var(--spacing)*1)*calc(1 - var(--tw-space-y-reverse)))}.overflow-hidden{overflow:hidden}.rounded{border-radius:.25rem}.rounded-md{border-radius:var(--radius-md)}.border{border-style:var(--tw-border-style);border-width:1px}.border-t{border-top-style:var(--tw-border-style);border-top-width:1px}.border-b{border-bottom-style:var(--tw-border-style);border-bottom-width:1px}.border-gray-200{border-color:var(--color-gray-200)}.bg-gray-200{background-color:var(--color-gray-200)}.object-cover{object-fit:cover}.p-3{padding:calc(var(--spacing)*3)}.p-4{padding:calc(var(--spacing)*4)}.p-6{padding:calc(var(--spacing)*6)}.px-3{padding-inline:calc(var(--spacing)*3)}.py-1{padding-block:calc(var(--spacing)*1)}.py-4{padding-block:calc(var(--spacing)*4)}.py-6{padding-block:calc(var(--spacing)*6)}.pl-6{padding-left:calc(var(--spacing)*6)}.text-left{text-align:left}.text-right{text-align:right}.text-2xl{font-size:var(--text-2xl);line-height:var(--tw-leading,var(--text-2xl--line-height))}.text-lg{font-size:var(--text-lg);line-height:var(--tw-leading,var(--text-lg--line-height))}.leading-relaxed{--tw-leading:var(--leading-relaxed);line-height:var(--leading-relaxed)}.font-bold{--tw-font-weight:var(--font-weight-bold);font-weight:var(--font-weight-bold)}.font-medium{--tw-font-weight:var(--font-weight-medium);font-weight:var(--font-weight-medium)}.text-blue-600{color:var(--color-blue-600)}.text-gray-600{color:var(--color-gray-600)}.text-gray-700{color:var(--color-gray-700)}.text-white{color:var(--color-white)}.shadow-lg{--tw-shadow:0 10px 15px -3px var(--tw-shadow-color,#0000001a),0 4px 6px -4px var(--tw-shadow-color,#0000001a);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.outline{outline-style:var(--tw-outline-style);outline-width:1px}.transition{transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,opacity,box-shadow,transform,translate,scale,rotate,filter,-webkit-backdrop-filter,backdrop-filter;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.transition-colors{transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.transition-transform{transition-property:transform,translate,scale,rotate;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}@media (hover:hover){.hover\:border-blue-600:hover{border-color:var(--color-blue-600)}.hover\:bg-gray-200:hover{background-color:var(--color-gray-200)}}@media (min-width:48rem){.md\:w-xs{width:var(--container-xs)}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:flex-row{flex-direction:row}.md\:border-r-2{border-right-style:var(--tw-border-style);border-right-width:2px}.md\:border-b-0{border-bottom-style:var(--tw-border-style);border-bottom-width:0}}@media (min-width:64rem){.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}}}:root{--accent:#2337ff;--accent-dark:#000d8a;--black:15,18,25;--gray:96,115,159;--gray-light:229,233,240;--gray-dark:34,41,57;--gray-gradient:rgba(var(--gray-light),50%),#fff;--green-50:#f0fdf4;--green-100:#dcfce7;--green-200:#bbf7d0;--blue-50:#eff6ff;--blue-100:#dbeafe;--blue-200:#bfdbfe;--box-shadow:0 2px 6px rgba(var(--gray),25%),0 8px 24px rgba(var(--gray),33%),0 16px 32px rgba(var(--gray),33%)}@font-face{font-family:Atkinson;src:url(/fonts/atkinson-regular.woff)format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:Atkinson;src:url(/fonts/atkinson-bold.woff)format("woff");font-weight:700;font-style:normal;font-display:swap}body{text-align:left;background:linear-gradient(var(--gray-gradient))no-repeat;word-wrap:break-word;overflow-wrap:break-word;color:rgb(var(--gray-dark));background-size:100% 600px;margin:0;padding:0;font-family:Atkinson,sans-serif;font-size:20px;line-height:1.7}main{width:720px;max-width:calc(100% - 2em);margin:auto;padding:3em 1em}h1,h2,h3,h4,h5,h6{color:rgb(var(--black));margin:0 0 .5rem;line-height:1.2}h1{font-size:3.052em}h2{font-size:2.441em}h3{font-size:1.953em}h4{font-size:1.563em}h5{font-size:1.25em}strong,b{font-weight:700}a,a:hover{color:var(--accent)}p{margin-bottom:1em}p:has(+ul),p:has(+pre),ul li p{margin-bottom:0}ol:has(+blockquote),ul:has(+blockquote),.prose ol:has(+p),.prose ul:has(+p){margin-bottom:1em}.prose p:has(+ol,ul){margin-bottom:0}.prose ol,ul{padding-left:1.5em;list-style-type:disc}.prose ul ul{padding-left:1.5em;list-style-type:circle}textarea{width:100%;font-size:16px}input{font-size:16px}table{width:100%;margin-bottom:1em}table thead tr{background-color:rgba(var(--gray-light),50%)}table thead tr th{border-radius:3px;padding:.5rem}table tbody tr:not(:last-child){border-bottom:1px solid rgba(var(--gray-light),80%)}table tbody tr td{padding:.5rem}img{border-radius:8px;max-width:100%;height:auto;max-height:510px}code{background-color:var(--blue-50);border-radius:2px;padding:2px 5px}pre{border-radius:8px;padding:1.5em}pre>code{all:unset;font-size:16px}blockquote{border-left:4px solid var(--accent);margin:0;padding:0 0 0 20px;font-size:1.333em}hr{border:none;border-top:1px solid rgb(var(--gray-light))}svg[role="graphics-document document"]{justify-self:center;margin-bottom:1em}@media (max-width:720px){body{font-size:18px}main{padding:1em}.line.diff.remove,.line.diff.add{padding:4px 8px 8px!important}.prose{max-width:100%!important;margin:0!important}}.line.diff.remove{background-color:#f7cccc1a;padding:7px 8px 8px;line-height:0}.line.diff.add{background-color:#00ff001a;padding:7px 8px 8px;line-height:0}.sr-only{clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);clip-path:inset(50%);white-space:nowrap;border:0;width:1px;height:1px;margin:0;padding:0;overflow:hidden;position:absolute!important}@property --tw-rotate-x{syntax:"*";inherits:false}@property --tw-rotate-y{syntax:"*";inherits:false}@property --tw-rotate-z{syntax:"*";inherits:false}@property --tw-skew-x{syntax:"*";inherits:false}@property --tw-skew-y{syntax:"*";inherits:false}@property --tw-space-y-reverse{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-leading{syntax:"*";inherits:false}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-outline-style{syntax:"*";inherits:false;initial-value:solid}a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{margin:0;padding:0 1em;background:#fff;box-shadow:0 2px 8px rgba(var(--black),5%)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1em}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:1em .5em;color:var(--black);border-bottom:4px solid transparent;text-decoration:none}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none;border-bottom-color:var(--accent)}.social-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:flex;justify-content:center;align-items:center}@media (max-width: 720px){.social-links[data-astro-cid-3ef6ksr2]{display:none}}.navbar-logo[data-astro-cid-3ef6ksr2]{display:flex;justify-content:center;align-items:center}footer[data-astro-cid-sz7xmlte]{padding:2em 1em 6em;background:linear-gradient(var(--gray-gradient)) no-repeat;color:rgb(var(--gray));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;justify-content:center;gap:1em;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{text-decoration:none;color:rgb(var(--gray))}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:rgb(var(--gray-dark))}main[data-astro-cid-bvzihdzo]{width:calc(100% - 2em);max-width:100%;margin:0}.hero-image[data-astro-cid-bvzihdzo]{width:100%}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{display:block;margin:0 auto;border-radius:12px;box-shadow:var(--box-shadow)}.prose[data-astro-cid-bvzihdzo]{width:56rem;max-width:calc(100% - 2em);margin:auto;padding:1em;color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{margin-bottom:1em;padding:1em 0;text-align:center;line-height:1}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0 0 .5em}.date[data-astro-cid-bvzihdzo]{margin-bottom:.5em;color:rgb(var(--gray))}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:italic}main[data-astro-cid-5tznm7mj]{width:960px}ul[data-astro-cid-5tznm7mj]{display:flex;flex-wrap:wrap;gap:2rem;list-style-type:none;margin:0;padding:0}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]{width:calc(50% - 1rem)}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj] [data-astro-cid-5tznm7mj]{text-decoration:none;transition:.2s ease}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]:first-child{width:100%;margin-bottom:1rem;text-align:center}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]:first-child img[data-astro-cid-5tznm7mj]{width:100%}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]:first-child .title[data-astro-cid-5tznm7mj]{font-size:2.369rem}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj] img[data-astro-cid-5tznm7mj]{margin-bottom:1.5rem;border-radius:12px}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj] a[data-astro-cid-5tznm7mj]{display:block}.title[data-astro-cid-5tznm7mj]{margin:0;color:rgb(var(--black));line-height:1.3}.date[data-astro-cid-5tznm7mj]{margin:0;color:rgb(var(--gray))}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj] a[data-astro-cid-5tznm7mj]:hover h4[data-astro-cid-5tznm7mj],ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj] a[data-astro-cid-5tznm7mj]:hover .date[data-astro-cid-5tznm7mj]{color:rgb(var(--accent))}ul[data-astro-cid-5tznm7mj] a[data-astro-cid-5tznm7mj]:hover img[data-astro-cid-5tznm7mj]{box-shadow:var(--box-shadow)}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]:not(:first-child) img[data-astro-cid-5tznm7mj]{height:240px}@media (max-width: 720px){ul[data-astro-cid-5tznm7mj]{gap:.5em}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]{width:100%;text-align:center}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]:first-child{margin-bottom:0}ul[data-astro-cid-5tznm7mj] li[data-astro-cid-5tznm7mj]:first-child .title[data-astro-cid-5tznm7mj]{font-size:1.563em}}main[data-astro-cid-2iqln3bm]{width:calc(100% - 2em);max-width:100%;margin:0}ul[data-astro-cid-2iqln3bm]{list-style-type:disc;padding-left:1.5em}ul[data-astro-cid-2iqln3bm] ul[data-astro-cid-2iqln3bm],ul[data-astro-cid-2iqln3bm] ul[data-astro-cid-2iqln3bm] ul[data-astro-cid-2iqln3bm]{list-style-type:circle}.hero-image[data-astro-cid-2iqln3bm]{width:100%}.hero-image[data-astro-cid-2iqln3bm] img[data-astro-cid-2iqln3bm]{display:block;margin:0 auto;border-radius:12px;box-shadow:var(--box-shadow)}.prose[data-astro-cid-2iqln3bm]{width:56rem;max-width:calc(100% - 2em);margin:auto;padding:1em;color:rgb(var(--gray-dark))}.title[data-astro-cid-2iqln3bm]{margin-bottom:1em;padding:1em 0;text-align:center;line-height:1}.title[data-astro-cid-2iqln3bm] h1[data-astro-cid-2iqln3bm]{margin:0 0 .5em}.date[data-astro-cid-2iqln3bm]{margin-bottom:.5em;color:rgb(var(--gray))}.last-updated-on[data-astro-cid-2iqln3bm]{font-style:italic}a[data-astro-cid-jwgesljd],a[data-astro-cid-jwgesljd]:hover{color:#4a5565}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 class="navbar-logo" data-astro-cid-3ef6ksr2> <img width="40" height="40" src="/logo.png" alt="" data-astro-cid-3ef6ksr2> <a href="/" class="font-bold text-2xl" data-astro-cid-3ef6ksr2>BigJoe</a> </h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/" class="active" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Blog </a>  <a href="/book" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Book </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="https://www.facebook.com/profile.php?id=61572916280350" target="_blank" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path fill="currentColor" d="M13.458 21.696c4.693-.704 8.292-4.753 8.292-9.642c0-5.385-4.365-9.75-9.75-9.75s-9.75 4.365-9.75 9.75c0 4.89 3.599 8.938 8.292 9.642v-6.798h-2.05a.486.486 0 0 1-.486-.486v-1.843c0-.269.218-.486.486-.486h2.05l-.072-1.943c0-.942.175-2.471 1.342-3.307c.816-.583 1.423-.693 2.397-.693c.845 0 1.426.084 1.81.14l.188.025a.193.193 0 0 1 .168.192v2.04c0 .113-.095.2-.205.194h-.038c-.114.004-.71.029-1.216.029c-.89 0-1.458.406-1.458 1.755v1.568h2.192c.3 0 .529.27.48.566l-.28 1.843a.486.486 0 0 1-.479.406h-1.913z" data-astro-cid-3ef6ksr2></path> </svg> </a> <a href="https://x.com/joewalker_xyz" target="_blank" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <g fill="none" fill-rule="evenodd" data-astro-cid-3ef6ksr2> <path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" data-astro-cid-3ef6ksr2></path> <path fill="currentColor" d="M19.753 4.659a1 1 0 0 0-1.506-1.317l-5.11 5.84L8.8 3.4A1 1 0 0 0 8 3H4a1 1 0 0 0-.8 1.6l6.437 8.582l-5.39 6.16a1 1 0 0 0 1.506 1.317l5.11-5.841L15.2 20.6a1 1 0 0 0 .8.4h4a1 1 0 0 0 .8-1.6l-6.437-8.582l5.39-6.16ZM16.5 19L6 5h1.5L18 19z" data-astro-cid-3ef6ksr2></path> </g> </svg> </a> <a href="https://github.com/joeteerawit" target="_blank" data-astro-cid-3ef6ksr2> <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" data-astro-cid-3ef6ksr2><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-3ef6ksr2></path></svg> </a> </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/2025/04/190df2c5-e943-4d6f-85a5-6c681098680f.png" alt="" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2025-04-27T00:00:00.000Z"> Apr 27, 2025 </time>  </div> <h1 data-astro-cid-bvzihdzo>Kubernetes v1.33: Octarine release updates</h1> <hr data-astro-cid-bvzihdzo> </div>  <h2 id="มี-update-สำคัญอะไรบ้างใน-kubernetes-v133">มี update สำคัญอะไรบ้างใน Kubernetes v1.33</h2>
+<p><strong>Kubernetes v1.33</strong> มาพร้อมฟีเจอร์ใหม่และการปรับปรุงมากมาย มาดูกันว่าทีม Release Team เลือกเน้นอะไรบ้าง!</p>
+<h3 id="stable-sidecar-containers">Stable: Sidecar containers</h3>
+<p><strong>Sidecar pattern</strong> คือการ deploy container เสริมเข้าไปใน Pod เพื่อช่วยเสริมความสามารถ เช่น networking, logging หรือการเก็บ metrics</p>
+<p>ใน Kubernetes v1.33, <strong>Sidecar containers</strong> ได้เข้าสู่สถานะ <strong>Stable</strong></p>
+<p>ใน Kubernetes, sidecar ถูก implement เป็น <strong>init container</strong> ประเภทพิเศษที่มี <code>restartPolicy: Always</code> ทำให้ sidecar:</p>
+<ul>
+<li>เริ่มทำงานก่อน application containers</li>
+<li>รันอยู่ตลอดช่วงชีวิตของ Pod</li>
+<li>ปิดตัวเองอัตโนมัติหลังจาก main container ออกจากระบบ</li>
+</ul>
+<p>sidecar ยังสามารถใช้ <strong>probes</strong> (startup, readiness, liveness) เพื่อรายงานสถานะการทำงานได้ และมีการปรับค่า <strong>Out-Of-Memory (OOM) score</strong> ให้สอดคล้องกับ container หลักเพื่อป้องกันไม่ให้ sidecar ถูก kill ก่อนกำหนดภายใต้สถานการณ์หน่วยความจำตึงตัว</p>
+<h3 id="beta-in-place-resource-resize-for-vertical-scaling-of-pods">Beta: In-place resource resize for vertical scaling of Pods</h3>
+<p>Workloads สามารถกำหนดได้ผ่าน API อย่างเช่น <strong>Deployment</strong>, <strong>StatefulSet</strong> เป็นต้น โดย API เหล่านี้จะอธิบาย template สำหรับ <strong>Pods</strong> ที่ควรจะรัน รวมถึงกำหนด resource เช่น memory และ CPU และจำนวน replica ของ <strong>Pods</strong> ที่ควรรัน</p>
+<p>Workloads สามารถทำการ <strong>horizontal scaling</strong> ได้โดยการอัปเดตจำนวน <strong>Pod replicas</strong> หรือทำ <strong>vertical scaling</strong> โดยการอัปเดต resource ที่ต้องการใน container(s) ของ <strong>Pods</strong></p>
+<p>ก่อนที่จะมีการปรับปรุงครั้งนี้ resource ของ container ที่กำหนดไว้ใน spec ของ <strong>Pod</strong> จะเป็นแบบ <strong>immutable</strong> (ไม่สามารถเปลี่ยนแปลงได้) และการอัปเดตรายละเอียดใด ๆ ใน Pod template จะทำให้ต้องสร้าง <strong>Pod replacement</strong> ขึ้นใหม่เสมอ</p>
+<p>แต่ถ้าเราสามารถอัปเดต resource configuration ของ <strong>Pods</strong> ที่มีอยู่แล้วได้แบบ <strong>dynamic</strong> โดยไม่ต้อง restart ล่ะ?</p>
+<p>นี่คือเป้าหมายของ <strong><a href="https://github.com/kubernetes/enhancements/issues/1287">KEP-1287</a></strong> ที่ออกแบบมาเพื่ออนุญาตให้มีการ <strong>in-place Pod updates</strong><br>
+ฟีเจอร์นี้ถูกปล่อยเป็น <strong>alpha</strong> ในเวอร์ชัน v1.27 และได้ <strong>graduated เป็น beta</strong> ใน v1.33</p>
+<p>การเปลี่ยนแปลงนี้เปิดโอกาสให้:</p>
+<ul>
+<li>ทำ <strong>vertical scale-up</strong> ของกระบวนการแบบ stateful โดยไม่มี downtime</li>
+<li>ทำ <strong>seamless scale-down</strong> เมื่อ traffic ลดลง</li>
+<li>หรือแม้กระทั่งการจัดสรร resource ปริมาณมากในช่วง startup แล้วค่อยลดลงเมื่อ setup เสร็จสมบูรณ์</li>
+</ul>
+<h3 id="alpha-ไฟล์-kuberc-สำหรับกำหนด-user-preferences-ของ-kubectl">Alpha: ไฟล์ <code>.kuberc</code> สำหรับกำหนด user preferences ของ kubectl</h3>
+<p>ในเวอร์ชัน v1.33, <strong>kubectl</strong> ได้แนะนำฟีเจอร์ใหม่ในระดับ <strong>alpha</strong> ซึ่งเป็นการตั้งค่าแบบ opt-in ผ่านไฟล์ configuration ชื่อ <strong>.kuberc</strong> สำหรับกำหนด <strong>user preferences</strong></p>
+<p>ไฟล์นี้สามารถเก็บ:</p>
+<ul>
+<li><strong>kubectl aliases</strong> และ</li>
+<li><strong>overrides</strong> (เช่น ตั้งค่าให้ใช้ <strong>server-side apply</strong> เป็นค่า default)</li>
+</ul>
+<p>ในขณะที่ข้อมูลเกี่ยวกับ <strong>cluster credentials</strong> และ <strong>host information</strong> ยังคงอยู่ในไฟล์ <strong>kubeconfig</strong></p>
+<p>การแยกไฟล์ลักษณะนี้ ช่วยให้สามารถแชร์ <strong>user preferences</strong> เดียวกันสำหรับการใช้งาน <strong>kubectl</strong> ได้ ไม่ว่าจะเชื่อมต่อไปยัง cluster ไหน หรือใช้ <strong>kubeconfig</strong> อันไหนก็ตาม</p>
+<p>ในการเปิดใช้งานฟีเจอร์ alpha นี้:</p>
+<ul>
+<li>ผู้ใช้ต้องตั้งค่า <strong>environment variable</strong> เป็น <code>KUBECTL_KUBERC=true</code></li>
+<li>และสร้างไฟล์ configuration ชื่อ <strong>.kuberc</strong></li>
+</ul>
+<p>โดยค่าเริ่มต้น:</p>
+<ul>
+<li><strong>kubectl</strong> จะมองหาไฟล์ <strong>.kuberc</strong> ที่ตำแหน่ง <code>~/.kube/kuberc</code></li>
+</ul>
+<p>หรือหากต้องการระบุ path อื่น:</p>
+<ul>
+<li>สามารถใช้ <strong>—kuberc flag</strong> ได้ เช่น:</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">kubectl</span><span style="color:#005CC5"> --kuberc</span><span style="color:#032F62"> /var/kube/rc</span></span></code></pre>
+<h2 id="ฟีเจอร์ที่เข้าสู่สถานะ-stable-ใน-kubernetes-v133">ฟีเจอร์ที่เข้าสู่สถานะ Stable ใน Kubernetes v1.33</h2>
+<h3 id="backoff-limits-per-index-สำหรับ-indexed-jobs">Backoff limits per index สำหรับ Indexed Jobs</h3>
+<p>ใน release นี้ ได้เลื่อนสถานะฟีเจอร์ที่อนุญาตให้สามารถตั้งค่า <strong>backoff limits</strong> แยกตามแต่ละ <strong>index</strong> สำหรับ <strong>Indexed Jobs</strong> ได้</p>
+<p>ตามปกติแล้ว <strong>backoffLimit parameter</strong> ใน <strong>Kubernetes Jobs</strong> จะกำหนดจำนวนครั้งที่สามารถ retry ได้ก่อนที่จะพิจารณาว่า <strong>Job</strong> ทั้งงานล้มเหลว</p>
+<p>การปรับปรุงครั้งนี้ทำให้แต่ละ <strong>index</strong> ภายใน <strong>Indexed Job</strong> สามารถมี <strong>backoff limit</strong> ของตัวเองได้<br>
+ช่วยให้สามารถควบคุมพฤติกรรมการ retry ของแต่ละ task ได้อย่างละเอียดมากขึ้น</p>
+<p>สิ่งนี้ทำให้การล้มเหลวของบาง <strong>indices</strong> จะไม่ทำให้ <strong>Job</strong> ทั้งหมดถูกยุติเร็วกว่าที่ควร<br>
+โดยที่ <strong>indices</strong> อื่น ๆ ยังสามารถประมวลผลงานของตัวเองต่อไปได้อย่างอิสระ</p>
+<h3 id="job-success-policy">Job success policy</h3>
+<p>โดยการใช้ <code>.spec.successPolicy</code> ผู้ใช้สามารถกำหนดได้ว่า:</p>
+<ul>
+<li><strong>pod indexes</strong> ใดบ้างที่จำเป็นต้องสำเร็จ (ผ่านการระบุใน <code>succeededIndexes</code>)</li>
+<li>หรือกำหนดจำนวน <strong>pods</strong> ที่ต้องสำเร็จกี่ตัว (ผ่าน <code>succeededCount</code>)</li>
+<li>หรือจะใช้ทั้งสองอย่างร่วมกันก็ได้</li>
+</ul>
+<p>ฟีเจอร์นี้เป็นประโยชน์กับหลายประเภทของ workload เช่น:</p>
+<ul>
+<li>งานประเภท simulation ที่ไม่จำเป็นต้องให้ทุก pod สำเร็จครบถ้วน</li>
+<li>รูปแบบ leader-worker ที่สำคัญแค่เพียง leader สำเร็จก็เพียงพอที่จะตัดสินผลลัพธ์สุดท้ายของ <strong>Job</strong></li>
+</ul>
+<h3 id="ปรับปรุงความปลอดภัยของ-bound-serviceaccount-token">ปรับปรุงความปลอดภัยของ Bound ServiceAccount token</h3>
+<p>การปรับปรุงครั้งนี้ได้เพิ่มฟีเจอร์ต่าง ๆ เช่น:</p>
+<ul>
+<li>การใส่ <strong>unique token identifier</strong> (เช่น <strong>JWT ID Claim</strong> หรือที่รู้จักกันในชื่อ <strong>JTI</strong>)</li>
+<li>และข้อมูลของ <strong>node</strong> ไว้ภายใน <strong>tokens</strong></li>
+</ul>
+<p>ซึ่งช่วยให้สามารถทำ <strong>validation</strong> และ <strong>auditing</strong> ได้อย่างแม่นยำยิ่งขึ้น</p>
+<p>นอกจากนี้ยังรองรับ:</p>
+<ul>
+<li>การกำหนดข้อจำกัดเฉพาะตาม <strong>node</strong></li>
+<li>เพื่อให้แน่ใจว่า <strong>tokens</strong> สามารถใช้งานได้เฉพาะบน node ที่กำหนดไว้เท่านั้น</li>
+</ul>
+<p>ด้วยเหตุนี้จึง:</p>
+<ul>
+<li>ช่วยลดความเสี่ยงของการนำ <strong>token</strong> ไปใช้งานผิดวัตถุประสงค์</li>
+<li>และลดโอกาสเกิด <strong>security breaches</strong> ได้</li>
+</ul>
+<p>การปรับปรุงทั้งหมดนี้ ขณะนี้ได้เข้าสู่สถานะ <strong>Generally Available (GA)</strong> แล้ว<br>
+โดยมีเป้าหมายเพื่อ:</p>
+<ul>
+<li>เพิ่มความแข็งแกร่งโดยรวมของความปลอดภัยสำหรับ <strong>service account tokens</strong> ภายใน <strong>Kubernetes clusters</strong></li>
+</ul>
+<h3 id="subresource-support-ใน-kubectl">Subresource support ใน kubectl</h3>
+<p>argument <code>--subresource</code> ขณะนี้ได้เข้าสู่สถานะ <strong>Generally Available (GA)</strong> แล้ว สำหรับ <strong>kubectl subcommands</strong> เช่น:</p>
+<ul>
+<li><code>get</code></li>
+<li><code>patch</code></li>
+<li><code>edit</code></li>
+<li><code>apply</code></li>
+<li>และ <code>replace</code></li>
+</ul>
+<p>โดย argument นี้ช่วยให้ผู้ใช้สามารถ:</p>
+<ul>
+<li>ดึงข้อมูล (<strong>fetch</strong>) และ</li>
+<li>อัปเดต (<strong>update</strong>) <strong>subresources</strong> ของ resource ทุกประเภทที่รองรับการใช้งาน subresources ได้</li>
+</ul>
+<p>หากต้องการเรียนรู้เพิ่มเติมเกี่ยวกับ <strong>subresources</strong> ที่รองรับ<br>
+สามารถเข้าไปดูได้ที่ <strong><a href="https://kubernetes.io/docs/reference/kubectl/conventions/#subresources">kubectl reference</a></strong></p>
+<h3 id="multiple-service-cidrs">Multiple Service CIDRs</h3>
+<p>การปรับปรุงครั้งนี้ได้แนะนำการ implement รูปแบบใหม่ของ <strong>allocation logic</strong> สำหรับ <strong>Service IPs</strong></p>
+<p>ภายใน cluster ทั้งหมด:</p>
+<ul>
+<li>ทุก <strong>Service</strong> ที่มีประเภท <code>ClusterIP</code> จะต้องมี <strong>IP address</strong> ที่ไม่ซ้ำกันถูกกำหนดให้</li>
+</ul>
+<p>หากพยายามสร้าง <strong>Service</strong> โดยระบุ <strong>cluster IP</strong> ที่มีการใช้งานไปแล้ว:</p>
+<ul>
+<li>ระบบจะคืนค่าผิดพลาด (<strong>return an error</strong>)</li>
+</ul>
+<p><strong>IP address allocator logic</strong> ที่ปรับปรุงใหม่นี้:</p>
+<ul>
+<li>ใช้ <strong>API objects</strong> ใหม่สองตัวที่เข้าสู่สถานะ Stable คือ <strong>ServiceCIDR</strong> และ <strong>IPAddress</strong></li>
+</ul>
+<p>ตอนนี้ APIs เหล่านี้ได้เข้าสู่สถานะ <strong>Generally Available (GA)</strong> แล้ว<br>
+และช่วยให้ผู้ดูแลระบบ cluster สามารถ:</p>
+<ul>
+<li>เพิ่มจำนวน <strong>IP addresses</strong> สำหรับ <strong>ClusterIP Services</strong> ได้แบบ dynamic (โดยการสร้าง <strong>ServiceCIDR objects</strong> ใหม่)</li>
+</ul>
+<h3 id="nftables-backend-สำหรับ-kube-proxy">nftables backend สำหรับ kube-proxy</h3>
+<p><strong>nftables backend</strong> สำหรับ <strong>kube-proxy</strong> ตอนนี้ได้เข้าสู่สถานะ <strong>Stable</strong> แล้ว<br>
+โดยเพิ่มการ implement รูปแบบใหม่ที่:</p>
+<ul>
+<li>ปรับปรุงประสิทธิภาพ (<strong>performance</strong>) และ</li>
+<li>เพิ่มความสามารถในการขยายระบบ (<strong>scalability</strong>)</li>
+</ul>
+<p>สำหรับการ implement <strong>Services</strong> ภายใน <strong>Kubernetes clusters</strong></p>
+<p>ด้วยเหตุผลด้านความเข้ากันได้ (<strong>compatibility reasons</strong>):</p>
+<ul>
+<li><strong>iptables</strong> ยังคงถูกตั้งให้เป็นค่า default บน <strong>Linux nodes</strong></li>
+</ul>
+<p>หากต้องการลองใช้งาน <strong>nftables backend</strong><br>
+สามารถตรวจสอบได้จาก <strong>migration guide</strong></p>
+<h3 id="topology-aware-routing-และ-trafficdistribution-preferclose">Topology aware routing และ trafficDistribution: PreferClose</h3>
+<p>ใน release นี้ ได้เลื่อนสถานะ <strong>topology-aware routing</strong> และ <strong>traffic distribution</strong> ไปสู่สถานะ <strong>GA (Generally Available)</strong><br>
+ซึ่งช่วยให้สามารถ:</p>
+<ul>
+<li>ปรับแต่งการไหลของ <strong>service traffic</strong> ใน <strong>multi-zone clusters</strong> ได้อย่างมีประสิทธิภาพมากขึ้น</li>
+</ul>
+<p><strong>topology-aware hints</strong> ที่อยู่ใน <strong>EndpointSlices</strong> จะช่วยให้ component อย่างเช่น <strong>kube-proxy</strong>:</p>
+<ul>
+<li>สามารถจัดลำดับความสำคัญในการ route traffic ไปยัง endpoints ที่อยู่ใน <strong>zone</strong> เดียวกัน</li>
+<li>ซึ่งช่วยลด <strong>latency</strong> และลดค่าใช้จ่ายจากการส่งข้อมูลข้าม zone (<strong>cross-zone data transfer costs</strong>)</li>
+</ul>
+<p>นอกจากนี้:</p>
+<ul>
+<li>
+<p>ได้มีการเพิ่ม <strong>trafficDistribution field</strong> เข้าไปใน <strong>Service specification</strong></p>
+</li>
+<li>
+<p>พร้อมตัวเลือก <strong>PreferClose option</strong> ที่ช่วย:</p>
+<ul>
+<li>ชี้นำ traffic ให้ไปยัง endpoints ที่ใกล้ที่สุดตาม network topology โดยอัตโนมัติ</li>
+</ul>
+</li>
+</ul>
+<p>การตั้งค่านี้ช่วยเพิ่ม:</p>
+<ul>
+<li>ประสิทธิภาพการทำงาน (<strong>performance</strong>) และ</li>
+<li>ประหยัดค่าใช้จ่าย (<strong>cost-efficiency</strong>)<br>
+โดยการลดการสื่อสารข้าม zone (<strong>inter-zone communication</strong>) ให้เหลือน้อยที่สุด</li>
+</ul>
+<p>Issues:</p>
+<ul>
+<li><a href="https://github.com/kubernetes/enhancements/issues/4444">KEP-4444: Traffic Distribution for Services</a></li>
+<li><a href="https://github.com/kubernetes/enhancements/issues/2433">KEP-2433: Topology Aware Routing</a></li>
+</ul>
+<h3 id="ตัวเลือกใหม่ใน-cpu-manager-สำหรับ-reject-workload-ที่ไม่-align-กับ-smt">ตัวเลือกใหม่ใน CPU Manager สำหรับ reject workload ที่ไม่ align กับ SMT</h3>
+<p>ฟีเจอร์นี้ได้เพิ่มตัวเลือก <strong>policy options</strong> ให้กับ <strong>CPU Manager</strong><br>
+ทำให้สามารถ:</p>
+<ul>
+<li>ปฏิเสธ (<strong>reject</strong>) workloads ที่ไม่สอดคล้องกับการตั้งค่า <strong>Simultaneous Multithreading (SMT)</strong> ได้</li>
+</ul>
+<p>การปรับปรุงครั้งนี้ ซึ่งขณะนี้ได้เข้าสู่สถานะ <strong>Generally Available (GA)</strong> แล้ว<br>
+ช่วยให้:</p>
+<ul>
+<li>เมื่อ <strong>pod</strong> ร้องขอการใช้งาน <strong>CPU cores</strong> แบบ exclusive</li>
+<li><strong>CPU Manager</strong> สามารถบังคับการจัดสรรทั้งคู่ของ core (<strong>core pairs</strong>) ได้
+<ul>
+<li>ซึ่ง core pair ประกอบด้วย <strong>primary</strong> และ <strong>sibling threads</strong></li>
+</ul>
+</li>
+<li>บนระบบที่เปิดใช้งาน <strong>SMT-enabled systems</strong></li>
+</ul>
+<p>ส่งผลให้สามารถ:</p>
+<ul>
+<li>ป้องกันสถานการณ์ที่ workloads ต้องไปแชร์ <strong>CPU resources</strong> กันโดยไม่ตั้งใจ</li>
+</ul>
+<h3 id="กำหนด-pod-affinity-และ-anti-affinity-ด้วย-matchlabelkeys-และ-mismatchlabelkeys">กำหนด Pod affinity และ anti-affinity ด้วย matchLabelKeys และ mismatchLabelKeys</h3>
+<p>ฟิลด์ <code>matchLabelKeys</code> และ <code>mismatchLabelKeys</code> พร้อมใช้งานแล้วในเงื่อนไขของ <strong>Pod affinity</strong><br>
+โดยช่วยให้ผู้ใช้สามารถ:</p>
+<ul>
+<li>ควบคุมขอบเขต (<strong>scope</strong>) ได้อย่างละเอียดว่า <strong>Pods</strong> ควรจะอยู่ร่วมกัน (<strong>Affinity</strong>) หรือไม่ควรอยู่ร่วมกัน (<strong>AntiAffinity</strong>)</li>
+</ul>
+<p>ตัวเลือกใหม่ที่เข้าสู่สถานะ <strong>Stable</strong> เหล่านี้:</p>
+<ul>
+<li>ถูกออกแบบมาเพื่อเสริมกลไกที่มีอยู่แล้วอย่าง <strong>labelSelector</strong></li>
+</ul>
+<p>ฟิลด์ affinity เหล่านี้ช่วยสนับสนุนการ:</p>
+<ul>
+<li>ปรับปรุงการ schedule อย่างมีประสิทธิภาพสำหรับ <strong>versatile rolling updates</strong></li>
+<li>รวมถึงการแยก (isolate) การให้บริการของ services ที่ถูกจัดการโดย tools หรือ controllers ตาม <strong>global configurations</strong></li>
+</ul>
+<h3 id="พิจารณา-taints-และ-tolerations-เมื่อคำนวณ-podtopologyspread">พิจารณา taints และ tolerations เมื่อคำนวณ PodTopologySpread</h3>
+<p>ฟีเจอร์นี้ได้ปรับปรุง <strong>PodTopologySpread</strong> โดยการเพิ่มสองฟิลด์ใหม่คือ:</p>
+<ul>
+<li><code>nodeAffinityPolicy</code> และ</li>
+<li><code>nodeTaintsPolicy</code></li>
+</ul>
+<p>ฟิลด์เหล่านี้ช่วยให้ผู้ใช้สามารถ:</p>
+<ul>
+<li>ระบุได้ว่าควรพิจารณา <strong>node affinity rules</strong> และ <strong>node taints</strong> หรือไม่<br>
+เมื่อทำการคำนวณการกระจายตัวของ <strong>pods</strong> ข้าม nodes</li>
+</ul>
+<p>ตามค่าเริ่มต้น:</p>
+<ul>
+<li>
+<p><code>nodeAffinityPolicy</code> จะถูกตั้งค่าเป็น <code>Honor</code><br>
+หมายความว่า:</p>
+</li>
+<li>
+<p>จะคำนวณเฉพาะ nodes ที่ตรงกับ <strong>pod’s node affinity</strong> หรือ <strong>selector</strong> เท่านั้น</p>
+</li>
+</ul>
+<p>ส่วน:</p>
+<ul>
+<li>
+<p><code>nodeTaintsPolicy</code> ตั้งค่าเริ่มต้นเป็น <code>Ignore</code><br>
+ซึ่งหมายความว่า:</p>
+</li>
+<li>
+<p>จะไม่พิจารณา <strong>node taints</strong> เว้นแต่ผู้ใช้จะระบุให้พิจารณา</p>
+</li>
+</ul>
+<p>การปรับปรุงนี้:</p>
+<ul>
+<li>ช่วยให้สามารถควบคุมตำแหน่งการวาง <strong>pods</strong> ได้ละเอียดขึ้น</li>
+<li>เพื่อให้แน่ใจว่า <strong>pods</strong> ถูก schedule ไปยัง nodes ที่ตรงตามทั้งเงื่อนไข affinity และ taint toleration</li>
+<li>และช่วยป้องกันสถานการณ์ที่ <strong>pods</strong> ต้องค้างอยู่ในสถานะ pending เพราะไม่สามารถหาตำแหน่งที่ตรงตามข้อกำหนดได้</li>
+</ul>
+<h3 id="volume-populators">Volume populators</h3>
+<p>หลังจากที่ถูกปล่อยในสถานะ <strong>beta</strong> ตั้งแต่เวอร์ชัน v1.24, <strong>volume populators</strong> ได้ <strong>graduated</strong> เป็นสถานะ <strong>GA (Generally Available)</strong> ในเวอร์ชัน v1.33</p>
+<p>ฟีเจอร์ที่เพิ่งเข้าสู่สถานะ stable นี้:</p>
+<ul>
+<li>มอบวิธีการให้ผู้ใช้สามารถทำการ <strong>pre-populate volumes</strong> ด้วยข้อมูลจากแหล่งต่าง ๆ ได้</li>
+<li>ไม่ได้จำกัดแค่ clone จาก <strong>PersistentVolumeClaim (PVC)</strong> หรือจาก <strong>volume snapshots</strong> เท่านั้น</li>
+</ul>
+<p>กลไกนี้อาศัย:</p>
+<ul>
+<li>ฟิลด์ชื่อ <strong>dataSourceRef</strong> ภายใน <strong>PersistentVolumeClaim</strong></li>
+</ul>
+<p>โดยฟิลด์นี้:</p>
+<ul>
+<li>มีความยืดหยุ่นมากกว่าฟิลด์ <strong>dataSource</strong> แบบที่มีอยู่ก่อนแล้ว</li>
+<li>และเปิดโอกาสให้สามารถใช้ <strong>custom resources</strong> เป็นแหล่งข้อมูล (<strong>data sources</strong>) ได้</li>
+</ul>
+<p>มี <strong>controller</strong> พิเศษที่ชื่อว่า:</p>
+<ul>
+<li><strong>volume-data-source-validator</strong></li>
+</ul>
+<p>ซึ่งทำหน้าที่:</p>
+<ul>
+<li>ตรวจสอบความถูกต้องของการอ้างอิง <strong>data source references</strong></li>
+</ul>
+<p>นอกจากนี้ยังมี:</p>
+<ul>
+<li><strong>CustomResourceDefinition (CRD)</strong> ตัวใหม่ในสถานะ stable สำหรับ <strong>API kind</strong> ที่ชื่อว่า <strong>VolumePopulator</strong></li>
+</ul>
+<p>โดย <strong>VolumePopulator API</strong> จะอนุญาตให้:</p>
+<ul>
+<li><strong>volume populator controllers</strong> ลงทะเบียนประเภทของ <strong>data sources</strong> ที่พวกเขารองรับได้</li>
+</ul>
+<p>ในการใช้งาน <strong>volume populators</strong>:</p>
+<ul>
+<li>คุณต้องตั้งค่า cluster ของคุณให้มี <strong>CRD</strong> ที่เหมาะสมก่อน</li>
+</ul>
+<h3 id="always-honor-persistentvolume-reclaim-policy">Always honor PersistentVolume reclaim policy</h3>
+<p>การปรับปรุงครั้งนี้ได้แก้ไขปัญหาที่:</p>
+<ul>
+<li>นโยบายการ reclaim ของ <strong>Persistent Volume (PV)</strong> ไม่ถูกทำตามอย่างสม่ำเสมอ<br>
+ส่งผลให้เกิดความเสี่ยงต่อการรั่วไหลของ <strong>storage resource</strong></li>
+</ul>
+<p>โดยเฉพาะในกรณีที่:</p>
+<ul>
+<li><strong>PV</strong> ถูกลบก่อนที่ <strong>Persistent Volume Claim (PVC)</strong> ที่เกี่ยวข้องจะถูกลบ</li>
+</ul>
+<p>ในสถานการณ์เช่นนี้:</p>
+<ul>
+<li>นโยบาย reclaim แบบ “Delete” อาจไม่ถูกดำเนินการ</li>
+<li>ทำให้ <strong>storage assets</strong> ที่อยู่เบื้องหลังยังคงเหลืออยู่โดยไม่ตั้งใจ</li>
+</ul>
+<p>เพื่อแก้ไขปัญหานี้:</p>
+<ul>
+<li>Kubernetes ตอนนี้ได้เพิ่ม <strong>finalizers</strong> ให้กับ <strong>PVs</strong> ที่เกี่ยวข้อง</li>
+</ul>
+<p>เพื่อให้แน่ใจว่า:</p>
+<ul>
+<li>นโยบาย <strong>reclaim policy</strong> จะถูกบังคับใช้ไม่ว่าจะลบ <strong>PV</strong> หรือ <strong>PVC</strong> ก่อนก็ตาม</li>
+</ul>
+<p>การปรับปรุงนี้:</p>
+<ul>
+<li>ป้องกันการเก็บ <strong>storage resources</strong> ไว้โดยไม่ตั้งใจ</li>
+<li>และรักษาความสอดคล้องในการบริหารจัดการ <strong>PV lifecycle</strong></li>
+</ul>
+<h2 id="ฟีเจอร์ใหม่ใน-beta">ฟีเจอร์ใหม่ใน Beta</h2>
+<h3 id="รองรับ-direct-service-return-dsr-ใน-windows-kube-proxy">รองรับ Direct Service Return (DSR) ใน Windows kube-proxy</h3>
+<p><strong>DSR</strong> มอบการเพิ่มประสิทธิภาพด้าน <strong>performance</strong> โดย:</p>
+<ul>
+<li>อนุญาตให้ traffic ขากลับที่ถูก route ผ่าน <strong>load balancers</strong> สามารถ <strong>bypass</strong> (ข้าม) <strong>load balancer</strong> แล้วตอบกลับไปยัง client ได้โดยตรง</li>
+<li>ซึ่งช่วยลดภาระงานบน <strong>load balancer</strong> และ</li>
+<li>ลด <strong>overall latency</strong> ลงด้วย</li>
+</ul>
+<p>สำหรับข้อมูลเพิ่มเติมเกี่ยวกับ <strong>DSR</strong> บน <strong>Windows</strong>, สามารถอ่านได้ที่หัวข้อ <strong>Direct Server Return (DSR) in a nutshell</strong></p>
+<p><strong>DSR</strong> ถูกแนะนำครั้งแรกในเวอร์ชัน v1.14<br>
+และได้ถูก <strong>promoted</strong> เป็นสถานะ <strong>beta</strong> โดยทีม <strong>SIG Windows</strong><br>
+ซึ่งเป็นส่วนหนึ่งของ:</p>
+<ul>
+<li><a href="https://github.com/kubernetes/enhancements/issues/5100">KEP-5100: Support for Direct Service Return (DSR) and overlay networking in Windows kube-proxy</a></li>
+</ul>
+<h3 id="structured-parameter-support-สำหรับ-dynamic-resource-allocation-dra">Structured parameter support สำหรับ Dynamic Resource Allocation (DRA)</h3>
+<p>แม้ว่า <strong>structured parameter support</strong> จะยังคงเป็นฟีเจอร์ในสถานะ <strong>beta</strong> อยู่ใน <strong>Kubernetes v1.33</strong><br>
+แต่ส่วนสำคัญนี้ของ <strong>Dynamic Resource Allocation (DRA)</strong> ก็ได้รับการปรับปรุงอย่างมีนัยสำคัญ</p>
+<p>มีการออกเวอร์ชันใหม่ <strong>v1beta2</strong> ที่:</p>
+<ul>
+<li>ทำให้ <strong>resource.k8s.io API</strong> มีความเรียบง่ายขึ้น</li>
+</ul>
+<p>และผู้ใช้ทั่วไปที่มี role <code>namespaced cluster edit</code>:</p>
+<ul>
+<li>ตอนนี้สามารถใช้งาน <strong>DRA</strong> ได้แล้ว</li>
+</ul>
+<p><strong>kubelet</strong> ในเวอร์ชันนี้ได้เพิ่มการรองรับ:</p>
+<ul>
+<li><strong>seamless upgrade</strong><br>
+ทำให้ driver ที่ deploy เป็น <strong>DaemonSets</strong> สามารถใช้กลไก <strong>rolling update mechanism</strong> ได้</li>
+</ul>
+<p>สำหรับการ implement <strong>DRA</strong>:</p>
+<ul>
+<li>การปรับปรุงนี้ช่วยป้องกันไม่ให้มีการลบและสร้าง <strong>ResourceSlices</strong> ใหม่</li>
+<li>ทำให้ <strong>ResourceSlices</strong> คงอยู่ได้แม้ระหว่างการ upgrade</li>
+</ul>
+<p>นอกจากนี้:</p>
+<ul>
+<li>มีการเพิ่ม <strong>grace period</strong> 30 วินาที<br>
+ก่อนที่ <strong>kubelet</strong> จะทำการ cleanup หลังจาก unregister driver</li>
+<li>ซึ่งช่วยให้รองรับ driver ที่ไม่ได้ใช้ <strong>rolling updates</strong> ได้ดีขึ้น</li>
+</ul>
+<h3 id="dynamic-resource-allocation-dra-สำหรับ-network-interfaces">Dynamic Resource Allocation (DRA) สำหรับ network interfaces</h3>
+<p>การรายงานข้อมูล <strong>network interface</strong> แบบ <strong>standardized</strong> ผ่าน <strong>DRA</strong><br>
+ซึ่งถูกแนะนำครั้งแรกในเวอร์ชัน v1.32<br>
+ตอนนี้ได้ <strong>graduated</strong> เป็นสถานะ <strong>beta</strong> ในเวอร์ชัน v1.33</p>
+<p>การเปลี่ยนแปลงนี้ช่วยให้:</p>
+<ul>
+<li>การเชื่อมต่อกับระบบ network ภายใน <strong>Kubernetes</strong> สามารถทำได้แบบ native มากขึ้น</li>
+<li>และทำให้การพัฒนาและการบริหารจัดการอุปกรณ์ network (<strong>networking devices</strong>) มีความง่ายขึ้น</li>
+</ul>
+<p>เรื่องนี้ได้ถูกพูดถึงไปแล้วใน: <a href="https://kubernetes.io/blog/2024/12/11/kubernetes-v1-32-release/#dra-standardized-network-interface-data-for-resource-claim-status">v1.32 release announcement blog</a></p>
+<h3 id="ปรับปรุงการจัดการ-queue-ใน-scheduler-handle-unscheduled-pods-early">ปรับปรุงการจัดการ queue ใน Scheduler (Handle unscheduled pods early)</h3>
+<p>ฟีเจอร์นี้ช่วยปรับปรุง <strong>queue scheduling behavior</strong></p>
+<p>เบื้องหลังการทำงาน:</p>
+<ul>
+<li><strong>scheduler</strong> จะทำการดึง (<strong>popping</strong>) <strong>pods</strong> ออกจาก <strong>backoffQ</strong><br>
+(ซึ่งเป็น pods ที่ไม่ได้ถูก back off เนื่องจาก error)</li>
+<li>ในกรณีที่ <strong>activeQ</strong> ว่างเปล่า</li>
+</ul>
+<p>ก่อนหน้านี้:</p>
+<ul>
+<li><strong>scheduler</strong> จะเข้าสู่สถานะ idle (ว่าง) แม้ว่า <strong>activeQ</strong> จะว่างอยู่ก็ตาม</li>
+</ul>
+<p>การปรับปรุงครั้งนี้:</p>
+<ul>
+<li>ช่วยเพิ่มประสิทธิภาพในการ schedule โดยการป้องกันไม่ให้ scheduler ว่างงานโดยไม่จำเป็น</li>
+</ul>
+<h3 id="asynchronous-preemption-ใน-kubernetes-scheduler">Asynchronous preemption ใน Kubernetes Scheduler</h3>
+<p><strong>Preemption</strong> มีหน้าที่เพื่อ:</p>
+<ul>
+<li>ให้ <strong>pods</strong> ที่มี priority สูงกว่าได้รับ resource ที่ต้องการ</li>
+<li>โดยการขับไล่ (<strong>evicting</strong>) <strong>pods</strong> ที่มี priority ต่ำกว่าออกไป</li>
+</ul>
+<p><strong>Asynchronous Preemption</strong> ซึ่งเปิดตัวในเวอร์ชัน v1.32 ในสถานะ <strong>alpha</strong><br>
+ตอนนี้ได้ <strong>graduated</strong> เป็นสถานะ <strong>beta</strong> ในเวอร์ชัน v1.33</p>
+<p>ด้วยการปรับปรุงนี้:</p>
+<ul>
+<li>งานหนัก ๆ เช่น <strong>API calls</strong> เพื่อทำการลบ <strong>pods</strong></li>
+<li>จะถูกประมวลผลแบบ <strong>parallel</strong> (ขนาน)</li>
+</ul>
+<p>ซึ่งทำให้:</p>
+<ul>
+<li><strong>scheduler</strong> สามารถดำเนินการ schedule <strong>pods</strong> อื่น ๆ ต่อไปได้โดยไม่เกิดความล่าช้า</li>
+</ul>
+<p>การปรับปรุงนี้:</p>
+<ul>
+<li>มีประโยชน์อย่างยิ่งใน <strong>clusters</strong> ที่มี <strong>Pod churn</strong> สูง (มีการสร้างและลบ pods บ่อยครั้ง)</li>
+<li>หรือเกิด scheduling failures บ่อยครั้ง</li>
+</ul>
+<p>เพื่อให้มั่นใจว่า:</p>
+<ul>
+<li>กระบวนการ schedule จะมีประสิทธิภาพและมีความทนทานมากขึ้น (<strong>efficient and resilient scheduling process</strong>)\</li>
+</ul>
+<h3 id="clustertrustbundles">ClusterTrustBundles</h3>
+<p><strong>ClusterTrustBundle</strong> ซึ่งเป็น <strong>cluster-scoped resource</strong><br>
+ถูกออกแบบมาเพื่อใช้เก็บ <strong>X.509 trust anchors</strong> (เช่น <strong>root certificates</strong>)</p>
+<p>ฟีเจอร์นี้ได้ <strong>graduated</strong> เป็นสถานะ <strong>beta</strong> ในเวอร์ชัน v1.33</p>
+<p><strong>API</strong> ตัวนี้ช่วยให้:</p>
+<ul>
+<li><strong>certificate signers</strong> ที่ทำงานภายใน cluster (<strong>in-cluster</strong>)</li>
+<li>สามารถเผยแพร่ (<strong>publish</strong>) และสื่อสาร (<strong>communicate</strong>) <strong>X.509 trust anchors</strong> ไปยัง <strong>cluster workloads</strong> ได้ง่ายขึ้น</li>
+</ul>
+<h3 id="fine-grained-supplementalgroups-control">Fine-grained SupplementalGroups control</h3>
+<p>ฟีเจอร์นี้ถูกนำมาใช้ครั้งแรกในเวอร์ชัน v1.31<br>
+และได้ <strong>graduated</strong> เป็นสถานะ <strong>beta</strong> ในเวอร์ชัน v1.33<br>
+พร้อมทั้งถูกเปิดใช้งานเป็นค่าเริ่มต้นแล้ว (<strong>enabled by default</strong>)</p>
+<p>โดยมีเงื่อนไขว่า:</p>
+<ul>
+<li>cluster ของคุณต้องเปิดใช้งาน <strong>SupplementalGroupsPolicy feature gate</strong></li>
+</ul>
+<p>ในกรณีนั้น:</p>
+<ul>
+<li>ฟิลด์ <code>supplementalGroupsPolicy</code> ภายใน <code>securityContext</code> ของ <strong>Pod</strong></li>
+<li>จะรองรับสองนโยบายคือ:</li>
+</ul>
+<ol>
+<li>
+<p><strong>Merge policy</strong> (ค่าเริ่มต้น):</p>
+<ul>
+<li>รักษาความเข้ากันได้ย้อนหลัง (<strong>backward compatibility</strong>)</li>
+<li>โดยการรวมกลุ่มที่ระบุไว้กับกลุ่มที่มาจากไฟล์ <strong>/etc/group</strong> ของ container image</li>
+</ul>
+</li>
+<li>
+<p><strong>Strict policy</strong>:</p>
+<ul>
+<li>ใช้เฉพาะกลุ่มที่ระบุไว้อย่างชัดเจนเท่านั้น</li>
+</ul>
+</li>
+</ol>
+<p>การปรับปรุงนี้ช่วย:</p>
+<ul>
+<li>แก้ไขข้อกังวลด้านความปลอดภัย</li>
+<li>โดยเฉพาะกรณีที่การมี membership ของกลุ่มจาก container images โดยปริยาย</li>
+<li>อาจนำไปสู่การเข้าถึงไฟล์โดยไม่ได้ตั้งใจ (<strong>unintended file access permissions</strong>) และการหลีกเลี่ยงการควบคุม policy</li>
+</ul>
+<h3 id="รองรับการ-mount-oci-images-เป็น-volumes">รองรับการ mount OCI images เป็น volumes</h3>
+<p>การรองรับการใช้งาน <strong>Open Container Initiative (OCI) images</strong> เป็น <strong>volumes</strong> ใน <strong>Pods</strong><br>
+ซึ่งถูกแนะนำครั้งแรกในเวอร์ชัน v1.31<br>
+ตอนนี้ได้ <strong>graduated</strong> เป็นสถานะ <strong>beta</strong> แล้ว</p>
+<p>ฟีเจอร์นี้ช่วยให้ผู้ใช้สามารถ:</p>
+<ul>
+<li>ระบุ <strong>image reference</strong> เพื่อใช้เป็น <strong>volume</strong> ใน <strong>Pod</strong></li>
+<li>พร้อมทั้ง reuse volume นั้นเป็น <strong>volume mount</strong> ภายใน <strong>containers</strong> ต่าง ๆ ได้</li>
+</ul>
+<p>การรองรับนี้:</p>
+<ul>
+<li>เปิดโอกาสให้สามารถแพ็กข้อมูลใน volume แยกออกจากกัน</li>
+<li>และสามารถแชร์ข้อมูลเหล่านั้นระหว่าง <strong>containers</strong> ภายใน <strong>Pod</strong> ได้</li>
+<li>โดยไม่ต้องรวมข้อมูลเหล่านั้นเข้าไปใน <strong>main image</strong></li>
+</ul>
+<p>ซึ่งจะช่วย:</p>
+<ul>
+<li>ลดความเสี่ยงด้านช่องโหว่ (<strong>reducing vulnerabilities</strong>)</li>
+<li>และทำให้การสร้าง <strong>image</strong> ง่ายขึ้น (<strong>simplifying image creation</strong>)</li>
+</ul>
+<h3 id="รองรับ-user-namespaces-ภายใน-linux-pods">รองรับ User namespaces ภายใน Linux Pods</h3>
+<p>หนึ่งใน <strong>KEP</strong> ที่เก่าแก่ที่สุด ณ เวลาที่เขียนนี้คือ <strong>KEP-127</strong><br>
+ซึ่งว่าด้วยเรื่อง <strong>Pod security improvement</strong> โดยการใช้ <strong>Linux User namespaces</strong> สำหรับ <strong>Pods</strong></p>
+<p><strong>KEP</strong> นี้:</p>
+<ul>
+<li>ถูกเปิดครั้งแรกตั้งแต่ช่วงปลายปี 2016</li>
+<li>และหลังจากมีการปรับปรุงหลายรอบ</li>
+<li>ได้มีการปล่อยในสถานะ <strong>alpha release</strong> ในเวอร์ชัน v1.25</li>
+<li>ตามมาด้วย <strong>initial beta</strong> ในเวอร์ชัน v1.30 (ซึ่งในตอนนั้นถูกตั้งค่าให้ <strong>disabled by default</strong>)</li>
+<li>และใน v1.33 ได้ถูกย้ายมาเป็น <strong>on-by-default beta</strong> แล้ว</li>
+</ul>
+<p>การรองรับนี้:</p>
+<ul>
+<li>จะ <strong>ไม่ส่งผลกระทบ</strong> ต่อ <strong>Pods</strong> ที่มีอยู่เดิม</li>
+<li>เว้นแต่คุณจะระบุ <code>pod.spec.hostUsers</code> ด้วยตัวเองเพื่อ opt-in</li>
+</ul>
+<p>ตามที่ได้กล่าวไว้ใน:</p>
+<ul>
+<li>
+<p><a href="https://kubernetes.io/blog/2024/03/12/kubernetes-1-30-upcoming-changes/">v1.30 sneak peek blog</a>
+การเปลี่ยนแปลงนี้ถือเป็น:</p>
+</li>
+<li>
+<p>หมุดหมายที่สำคัญ (<strong>important milestone</strong>) สำหรับการลดความเสี่ยงจาก <strong>vulnerabilities</strong></p>
+</li>
+</ul>
+<h3 id="ตัวเลือก-pod-procmount">ตัวเลือก Pod procMount</h3>
+<p><strong>procMount option</strong> ซึ่งถูกแนะนำครั้งแรกในสถานะ <strong>alpha</strong> ในเวอร์ชัน v1.12<br>
+และเป็น <strong>off-by-default beta</strong> ในเวอร์ชัน v1.31<br>
+ตอนนี้ได้ย้ายมาเป็น <strong>on-by-default beta</strong> ในเวอร์ชัน v1.33 แล้ว</p>
+<p>การปรับปรุงนี้ช่วย:</p>
+<ul>
+<li>เพิ่มประสิทธิภาพของ <strong>Pod isolation</strong></li>
+<li>โดยการเปิดโอกาสให้ผู้ใช้สามารถปรับแต่งการเข้าถึง <strong>/proc filesystem</strong> ได้ละเอียดขึ้น</li>
+</ul>
+<p>โดยเฉพาะ:</p>
+<ul>
+<li>มีการเพิ่มฟิลด์เข้าไปใน <code>Pod securityContext</code></li>
+<li>เพื่อให้ผู้ใช้สามารถ override พฤติกรรมปกติที่ทำการ masking และ marking บางเส้นทางของ <strong>/proc</strong> ให้เป็นแบบ read-only ได้</li>
+</ul>
+<p>ซึ่งมีประโยชน์มากในกรณีที่:</p>
+<ul>
+<li>ผู้ใช้ต้องการรัน <strong>unprivileged containers</strong> ภายใน <strong>Kubernetes Pod</strong> ที่ใช้ <strong>user namespaces</strong></li>
+</ul>
+<p>ตามปกติ:</p>
+<ul>
+<li><strong>container runtime</strong> (ผ่าน <strong>CRI implementation</strong>) จะทำการ start outer container ด้วยการตั้งค่า mount สำหรับ <strong>/proc</strong> ที่เข้มงวดมาก</li>
+</ul>
+<p>แต่หากต้องการ:</p>
+<ul>
+<li>
+<p>รัน <strong>nested containers</strong> ภายใน <strong>unprivileged Pod</strong> ได้สำเร็จ<br>
+ผู้ใช้จำเป็นต้องมีกลไกเพื่อ:</p>
+</li>
+<li>
+<p>ผ่อนคลายค่า default เหล่านั้น</p>
+</li>
+</ul>
+<p>และฟีเจอร์นี้:</p>
+<ul>
+<li>ก็มอบความสามารถดังกล่าวให้</li>
+</ul>
+<h3 id="นโยบายใหม่ใน-cpumanager-เพื่อกระจาย-cpus-ข้าม-numa-nodes">นโยบายใหม่ใน CPUManager เพื่อกระจาย CPUs ข้าม NUMA nodes</h3>
+<p>ฟีเจอร์นี้:</p>
+<ul>
+<li>เพิ่มตัวเลือก <strong>policy option</strong> ใหม่ให้กับ <strong>CPU Manager</strong><br>
+เพื่อให้สามารถกระจาย (<strong>distribute</strong>) การใช้งาน <strong>CPUs</strong> ข้าม <strong>Non-Uniform Memory Access (NUMA) nodes</strong><br>
+แทนที่จะรวมการใช้งานไว้บน node เดียว</li>
+</ul>
+<p>การเปลี่ยนแปลงนี้:</p>
+<ul>
+<li>ช่วยปรับปรุงการจัดสรร <strong>CPU resource allocation</strong><br>
+โดยการกระจาย workloads ให้สมดุลข้ามหลาย ๆ <strong>NUMA nodes</strong></li>
+</ul>
+<p>ซึ่งจะส่งผลให้:</p>
+<ul>
+<li>เพิ่มประสิทธิภาพ (<strong>performance</strong>) และ</li>
+<li>เพิ่มการใช้ทรัพยากรอย่างมีประสิทธิภาพ (<strong>resource utilization</strong>)<br>
+ในระบบที่ใช้ <strong>multi-NUMA systems</strong></li>
+</ul>
+<h3 id="zero-second-sleeps-สำหรับ-container-prestop-hooks">Zero-second sleeps สำหรับ container PreStop hooks</h3>
+<p><strong>Kubernetes 1.29</strong> ได้แนะนำ <strong>Sleep action</strong> สำหรับ <strong>preStop lifecycle hook</strong> ใน <strong>Pods</strong><br>
+ซึ่งช่วยให้:</p>
+<ul>
+<li><strong>containers</strong> สามารถหยุดพัก (pause) ไว้ตามระยะเวลาที่กำหนดก่อนที่จะทำการ termination</li>
+</ul>
+<p>กลไกนี้:</p>
+<ul>
+<li>
+<p>เป็นวิธีที่ตรงไปตรงมา (<strong>straightforward method</strong>) เพื่อทำการหน่วงเวลาการ shutdown ของ <strong>container</strong></p>
+</li>
+<li>
+<p>อำนวยความสะดวกให้กับ tasks ต่าง ๆ เช่น:</p>
+<ul>
+<li>การ <strong>connection draining</strong> หรือ</li>
+<li>การทำ <strong>cleanup operations</strong></li>
+</ul>
+</li>
+</ul>
+<p>ตอนนี้:</p>
+<ul>
+<li><strong>Sleep action</strong> ภายใน <strong>preStop hook</strong><br>
+สามารถกำหนด <strong>zero-second duration</strong> ได้ในฐานะฟีเจอร์ <strong>beta</strong></li>
+</ul>
+<p>ซึ่งเปิดโอกาสให้สามารถ:</p>
+<ul>
+<li>กำหนด <strong>no-op preStop hook</strong> ได้<br>
+(คือ preStop hook ที่มีการกำหนดไว้ แต่ไม่ต้องการ delay จริง ๆ)</li>
+</ul>
+<p>สิ่งนี้มีประโยชน์เมื่อ:</p>
+<ul>
+<li>ต้องการมี <strong>preStop hook</strong> ด้วยเหตุผลทางเทคนิค แต่ไม่ต้องการให้เกิดการหน่วงเวลา</li>
+</ul>
+<h3 id="internal-tooling-validation-gen">Internal tooling: validation-gen</h3>
+<p>เบื้องหลังการทำงาน:</p>
+<ul>
+<li>ระบบภายในของ <strong>Kubernetes</strong> เริ่มต้นใช้กลไกใหม่ในการตรวจสอบความถูกต้อง (<strong>validating</strong>) ของ objects และการเปลี่ยนแปลงของ objects</li>
+</ul>
+<p>ในเวอร์ชัน <strong>Kubernetes v1.33</strong><br>
+ได้แนะนำเครื่องมือภายในตัวใหม่ชื่อว่า:</p>
+<ul>
+<li><strong>validation-gen</strong></li>
+</ul>
+<p>ซึ่งเป็นเครื่องมือที่:</p>
+<ul>
+<li>ผู้พัฒนา (<strong>Kubernetes contributors</strong>) ใช้ในการสร้าง <strong>declarative validation rules</strong></li>
+</ul>
+<p>เป้าหมายหลักของการเปลี่ยนแปลงนี้คือ:</p>
+<ul>
+<li>เพื่อเพิ่มความแข็งแกร่ง (<strong>robustness</strong>) และ</li>
+<li>เพิ่มความง่ายในการดูแลรักษา (<strong>maintainability</strong>) ของ <strong>API validations</strong></li>
+</ul>
+<p>โดยการ:</p>
+<ul>
+<li>ทำให้ <strong>developers</strong> สามารถระบุข้อกำหนดการตรวจสอบ (<strong>validation constraints</strong>) ได้ในลักษณะ <strong>declarative</strong></li>
+<li>ลดความผิดพลาดจากการเขียนโค้ดด้วยมือ (<strong>manual coding errors</strong>) และ</li>
+<li>ทำให้เกิดความสอดคล้องกัน (<strong>consistency</strong>) ทั่วทั้ง <strong>codebase</strong></li>
+</ul>
+<h2 id="ฟีเจอร์ใหม่ใน-alpha">ฟีเจอร์ใหม่ใน Alpha</h2>
+<h3 id="กำหนด-tolerance-ได้เองใน-horizontalpodautoscalers-hpa">กำหนด tolerance ได้เองใน HorizontalPodAutoscalers (HPA)</h3>
+<p>ตอนนี้ HPA สามารถ:</p>
+<ul>
+<li>กำหนด <strong>tolerance</strong> ได้</li>
+<li>ใช้เพื่อลดการ scaling ที่เกิดจาก metric เปลี่ยนเล็กน้อย</li>
+<li>ช่วยให้ scaling มีเสถียรภาพขึ้น ไม่สวิงบ่อยโดยไม่จำเป็น</li>
+</ul>
+<h3 id="กำหนด-delay-สำหรับ-container-restart-ได้">กำหนด delay สำหรับ container restart ได้</h3>
+<p>ฟีเจอร์ <strong>configurable container restart delay</strong>:</p>
+<ul>
+<li>เปิดตัว alpha1 ใน v1.32</li>
+<li>เพิ่ม kubelet-level configuration สำหรับควบคุม <strong>CrashLoopBackOff</strong> behavior</li>
+<li>ทำให้สามารถปรับแต่ง delay ก่อน restart container ได้ละเอียดขึ้น</li>
+</ul>
+<h3 id="กำหนด-custom-container-stop-signals-ได้">กำหนด custom container stop signals ได้</h3>
+<p>ก่อนเวอร์ชัน <strong>Kubernetes v1.33</strong>:</p>
+<ul>
+<li>การตั้งค่า <strong>stop signals</strong> สามารถทำได้เฉพาะใน <strong>container image definitions</strong> เท่านั้น<br>
+(เช่น ผ่าน <strong>StopSignal configuration field</strong> ใน <strong>image metadata</strong>)</li>
+</ul>
+<p>หากคุณต้องการ:</p>
+<ul>
+<li>
+<p>เปลี่ยนแปลงพฤติกรรมการ termination<br>
+คุณจำเป็นต้อง:</p>
+</li>
+<li>
+<p>สร้าง <strong>custom container image</strong> ใหม่</p>
+</li>
+</ul>
+<p>โดยการเปิดใช้งาน <strong>(alpha) ContainerStopSignals feature gate</strong> ใน <strong>Kubernetes v1.33</strong><br>
+ตอนนี้คุณสามารถ:</p>
+<ul>
+<li>กำหนด <strong>custom stop signals</strong> ได้โดยตรงภายใน <strong>Pod specifications</strong></li>
+</ul>
+<p>การกำหนดนี้:</p>
+<ul>
+<li>จะอยู่ในฟิลด์ <code>container's lifecycle.stopSignal</code></li>
+<li>และต้องมีฟิลด์ <code>Pod's spec.os.name</code> ระบุไว้ด้วย</li>
+</ul>
+<p>หากไม่ได้ระบุ:</p>
+<ul>
+<li><strong>containers</strong> จะ fallback กลับไปใช้ <strong>stop signal</strong> ที่กำหนดไว้ใน image (ถ้ามี)</li>
+<li>หรือใช้ค่าเริ่มต้นของ <strong>container runtime</strong> (โดยปกติคือ <strong>SIGTERM</strong> สำหรับ Linux)</li>
+</ul>
+<h3 id="dra-enhancements-ปรับปรุงใหญ่มากสำหรับ-dynamic-resource-allocation">DRA Enhancements (ปรับปรุงใหญ่มากสำหรับ Dynamic Resource Allocation)</h3>
+<p><strong>Kubernetes v1.33</strong> ยังคงพัฒนา <strong>Dynamic Resource Allocation (DRA)</strong><br>
+พร้อมฟีเจอร์ใหม่ ๆ ที่ออกแบบมาเพื่อตอบโจทย์โครงสร้างพื้นฐานที่มีความซับซ้อนในปัจจุบัน</p>
+<p><strong>DRA</strong> คือ:</p>
+<ul>
+<li><strong>API</strong> สำหรับร้องขอและแบ่งปัน <strong>resources</strong> ระหว่าง <strong>pods</strong> และ <strong>containers</strong> ภายใน <strong>pod</strong></li>
+</ul>
+<p>โดยปกติ <strong>resources</strong> เหล่านี้คือ:</p>
+<ul>
+<li>อุปกรณ์ต่าง ๆ เช่น <strong>GPUs</strong>, <strong>FPGAs</strong>, และ <strong>network adapters</strong></li>
+</ul>
+<p>ต่อไปนี้คือ <strong>alpha DRA feature gates</strong> ทั้งหมดที่ถูกแนะนำใน v1.33:</p>
+<ul>
+<li>
+<p>คล้ายกับ <strong>Node taints</strong>, โดยการเปิดใช้งาน <strong>DRADeviceTaints feature gate</strong>:</p>
+<ul>
+<li>อุปกรณ์ (<strong>devices</strong>) จะรองรับการใช้ taints และ tolerations</li>
+<li>ผู้ดูแลระบบ (<strong>admin</strong>) หรือ component ของ control plane สามารถ taint อุปกรณ์เพื่อจำกัดการใช้งานได้</li>
+<li>การ schedule <strong>pods</strong> ที่พึ่งพาอุปกรณ์เหล่านี้สามารถถูก pause ไว้ขณะที่ taint ยังคงอยู่</li>
+<li>หรือสามารถ evict <strong>pods</strong> ที่ใช้อุปกรณ์ที่ถูก taint ได้</li>
+</ul>
+</li>
+<li>
+<p>โดยการเปิดใช้งาน <strong>DRAPrioritizedList feature gate</strong>:</p>
+<ul>
+<li><strong>DeviceRequests</strong> จะได้ฟิลด์ใหม่ชื่อว่า <code>firstAvailable</code></li>
+<li>ฟิลด์นี้เป็น list แบบมีลำดับ (ordered list)</li>
+<li>อนุญาตให้ผู้ใช้กำหนดได้ว่าการร้องขอ resource สามารถตอบสนองได้หลายรูปแบบ รวมถึงการไม่ต้องจัดสรรเลย หาก hardware บางตัวไม่พร้อมใช้งาน</li>
+</ul>
+</li>
+<li>
+<p>ด้วยการเปิด <strong>DRAAdminAccess feature gate</strong>:</p>
+<ul>
+<li>เฉพาะผู้ใช้ที่ได้รับสิทธิ์ในการสร้าง <strong>ResourceClaim</strong> หรือ <strong>ResourceClaimTemplate</strong><br>
+ใน namespace ที่มี label <code>resource.k8s.io/admin-access: "true"</code> เท่านั้นที่สามารถใช้ฟิลด์ <code>adminAccess</code> ได้</li>
+<li>เพื่อป้องกันไม่ให้ non-admin users ใช้ฟีเจอร์ <code>adminAccess</code> อย่างไม่เหมาะสม</li>
+</ul>
+</li>
+<li>
+<p>แม้ว่าจะสามารถ consume <strong>device partitions</strong> ได้ตั้งแต่ v1.31:</p>
+<ul>
+<li>แต่ vendors จำเป็นต้อง pre-partition อุปกรณ์ไว้ล่วงหน้า</li>
+</ul>
+</li>
+<li>
+<p>ด้วยการเปิด <strong>DRAPartitionableDevices feature gate</strong> ใน v1.33:</p>
+<ul>
+<li>vendors สามารถประกาศหลาย partition ได้ รวมถึง partition ที่มีการ overlap กัน</li>
+<li><strong>Kubernetes scheduler</strong> จะเลือก partition ตาม workload requests</li>
+<li>และป้องกันไม่ให้มีการจัดสรร partitions ที่ขัดแย้งกันในเวลาเดียวกัน</li>
+</ul>
+</li>
+</ul>
+<p>ฟีเจอร์นี้:</p>
+<ul>
+<li>ให้อิสระกับ vendors ในการสร้าง partitions แบบ dynamic ในช่วงเวลาที่ทำการ allocate จริง</li>
+<li>ทั้งการ allocate และการแบ่ง partition จะทำงานแบบอัตโนมัติและโปร่งใสต่อผู้ใช้งาน (<strong>automatic and transparent</strong>)</li>
+</ul>
+<p>หมายเหตุ:</p>
+<ul>
+<li>feature gates เหล่านี้จะไม่มีผลใด ๆ</li>
+<li>เว้นแต่คุณจะเปิดใช้งาน <strong>DynamicResourceAllocation feature gate</strong> ด้วย</li>
+</ul>
+<h3 id="robust-image-pull-policy-สำหรับ-authenticate-images-แม้เป็น-ifnotpresent-หรือ-never">Robust image pull policy สำหรับ authenticate images แม้เป็น IfNotPresent หรือ Never</h3>
+<p>ฟีเจอร์นี้ช่วยให้ผู้ใช้สามารถ:</p>
+<ul>
+<li>มั่นใจได้ว่า <strong>kubelet</strong> จะทำการตรวจสอบการยืนยันตัวตนสำหรับการดึง image (<strong>image pull authentication check</strong>)</li>
+<li>สำหรับ <strong>credentials</strong> ชุดใหม่ทุกครั้ง</li>
+<li>โดยไม่คำนึงว่า image นั้นมีอยู่บน <strong>node</strong> แล้วหรือไม่ก็ตาม</li>
+</ul>
+<h3 id="downward-api-รองรับ-node-topology-labels">Downward API รองรับ node topology labels</h3>
+<p>ฟีเจอร์ใหม่นี้:</p>
+<ul>
+<li>เปิดให้ <strong>Node topology labels</strong> สามารถเข้าถึงได้โดยตรงผ่าน <strong>downward API</strong></li>
+</ul>
+<p>ก่อนที่จะมี <strong>Kubernetes v1.33</strong>:</p>
+<ul>
+<li>หาก workloads ต้องการข้อมูล topology ของ node</li>
+<li>จะต้องใช้วิธีแก้ไขชั่วคราว โดยให้ <strong>init container</strong> ทำการ query ข้อมูลจาก <strong>Kubernetes API</strong> ด้วยตัวเอง</li>
+</ul>
+<p>การมาของฟีเจอร์ (alpha) ใหม่นี้:</p>
+<ul>
+<li>ช่วยลดความซับซ้อนในการเข้าถึงข้อมูล <strong>Node topology</strong></li>
+<li>ทำให้ <strong>workloads</strong> สามารถดึงข้อมูลได้โดยตรง ง่ายขึ้น สะดวกขึ้น ไม่ต้องมีการ workaround เพิ่มอีกต่อไป</li>
+</ul>
+<h3 id="ปรับปรุง-pod-status-ด้วย-generation-และ-observedgeneration">ปรับปรุง pod status ด้วย generation และ observedGeneration</h3>
+<p>ก่อนการเปลี่ยนแปลงนี้:</p>
+<ul>
+<li>ฟิลด์ <code>metadata.generation</code> ยังไม่ได้ถูกใช้งานใน <strong>pods</strong></li>
+</ul>
+<p>พร้อมกับการขยายการรองรับ <code>metadata.generation</code>:</p>
+<ul>
+<li>ฟีเจอร์นี้จะมีการเพิ่มฟิลด์ใหม่ชื่อว่า <code>status.observedGeneration</code></li>
+<li>เพื่อช่วยให้สามารถแสดงสถานะของ <strong>pod</strong> (<strong>pod status</strong>) ได้ชัดเจนยิ่งขึ้น</li>
+</ul>
+<h3 id="รองรับ-split-level-3-cache-architecture-ใน-cpu-manager">รองรับ split level 3 cache architecture ใน CPU Manager</h3>
+<p>ก่อนหน้านี้:</p>
+<ul>
+<li><strong>CPU Manager</strong> ของ <strong>kubelet</strong> ยังไม่รองรับโครงสร้าง <strong>split L3 cache architecture</strong><br>
+(หรือที่รู้จักกันว่า <strong>Last Level Cache (LLC)</strong>)</li>
+</ul>
+<p>ปัญหาที่เกิดขึ้นคือ:</p>
+<ul>
+<li>การกระจาย <strong>CPU assignments</strong> อาจไม่ได้พิจารณาการแบ่งของ <strong>L3 cache</strong></li>
+<li>ซึ่งอาจนำไปสู่ปัญหา <strong>noisy neighbor</strong> (คือ workloads รบกวนกันบน CPU เดียวกัน)</li>
+</ul>
+<p>การปรับปรุงครั้งนี้:</p>
+<ul>
+<li>เป็นฟีเจอร์ระดับ <strong>alpha</strong></li>
+<li>ที่ช่วยให้ <strong>CPU Manager</strong> สามารถจัดสรร <strong>CPU cores</strong> ได้ดีขึ้น</li>
+<li>เพื่อเพิ่มประสิทธิภาพโดยรวม (<strong>better performance</strong>)</li>
+</ul>
+<h3 id="รองรับ-pressure-stall-information-psi-metrics-สำหรับ-scheduling-improvements">รองรับ Pressure Stall Information (PSI) metrics สำหรับ scheduling improvements</h3>
+<p>PSI metrics:</p>
+<ul>
+<li>ตรวจวัด resource pressure (เช่น CPU, memory stalls) บน Linux</li>
+<li>ใช้ <strong>cgroupv2</strong></li>
+<li>ช่วยให้ Kubernetes มีข้อมูลที่ละเอียดขึ้นในการตัดสินใจ schedule Pod</li>
+</ul>
+<h3 id="secret-less-image-pulls-ด้วย-kubelet">Secret-less image pulls ด้วย kubelet</h3>
+<p><strong>on-disk credential provider</strong> ของ <strong>kubelet</strong><br>
+ตอนนี้รองรับ:</p>
+<ul>
+<li>การดึง <strong>Kubernetes ServiceAccount (SA) token</strong> แบบเลือกได้ (<strong>optional</strong>)</li>
+</ul>
+<p>การเปลี่ยนแปลงนี้:</p>
+<ul>
+<li>ช่วยทำให้การ <strong>authentication</strong> กับ <strong>image registries</strong> ง่ายขึ้น</li>
+<li>โดยเปิดทางให้ <strong>cloud providers</strong> สามารถเชื่อมต่อกับ <strong>OIDC compatible identity solutions</strong> ได้สะดวกยิ่งขึ้น</li>
+</ul>
+<h2 id="ฟีเจอร์ที่เลื่อนสถานะ-graduations-ฟีเจอร์ที่ยกเลิก-deprecations-และฟีเจอร์ที่ถูกถอดออก-removals-ใน-kubernetes-v133">ฟีเจอร์ที่เลื่อนสถานะ (Graduations), ฟีเจอร์ที่ยกเลิก (Deprecations) และฟีเจอร์ที่ถูกถอดออก (Removals) ใน Kubernetes v1.33</h2>
+<h3 id="ฟีเจอร์ที่เลื่อนสถานะเป็น-stable">ฟีเจอร์ที่เลื่อนสถานะเป็น Stable</h3>
+<p>นี่คือรายการฟีเจอร์ทั้งหมดที่เลื่อนสถานะเป็น <strong>Stable</strong> (หรือเรียกว่า <strong>General Availability (GA)</strong>) ใน Kubernetes v1.33</p>
+<p>หากต้องการดูรายการเต็มรวมถึงฟีเจอร์ใหม่ และฟีเจอร์ที่เลื่อนจาก alpha → beta → stable สามารถดูได้ใน <strong>release notes</strong></p>
+<p>ใน release นี้ มีฟีเจอร์ที่ถูกโปรโมทเป็น Stable ทั้งหมด <strong>18 รายการ</strong></p>
+<ul>
+<li>Take taints/tolerations into consideration when calculating PodTopologySpread skew</li>
+<li>Introduce MatchLabelKeys to Pod Affinity and Pod Anti Affinity</li>
+<li>Bound service account token improvements</li>
+<li>Generic data populators</li>
+<li>Multiple Service CIDRs</li>
+<li>Topology Aware Routing</li>
+<li>Portworx file in-tree to CSI driver migration</li>
+<li>Always Honor PersistentVolume Reclaim Policy</li>
+<li>nftables kube-proxy backend</li>
+<li>Deprecate status.nodeInfo.kubeProxyVersion field</li>
+<li>Add subresource support to kubectl</li>
+<li>Backoff Limit Per Index For Indexed Jobs</li>
+<li>Job success/completion policy</li>
+<li>Sidecar Containers</li>
+<li>CRD Validation Ratcheting</li>
+<li>node: cpumanager: add options to reject non SMT-aligned workload</li>
+<li>Traffic Distribution for Services</li>
+<li>Recursive Read-only (RRO) mounts</li>
+</ul>
+<h2 id="ฟีเจอร์ที่ยกเลิก-deprecations-และฟีเจอร์ที่ถูกถอดออก-removals">ฟีเจอร์ที่ยกเลิก (Deprecations) และฟีเจอร์ที่ถูกถอดออก (Removals)</h2>
+<p>ในขณะที่ Kubernetes พัฒนาและเติบโต ฟีเจอร์บางตัวอาจถูกยกเลิก (deprecated), ถอดออก (removed) หรือถูกแทนที่ด้วยฟีเจอร์ที่ดีกว่า เพื่อให้โปรเจกต์มีสุขภาพที่ดีในระยะยาว</p>
+<p>สามารถอ่านรายละเอียดเพิ่มเติมได้จาก <a href="https://kubernetes.io/docs/reference/using-api/deprecation-policy/">Kubernetes deprecation and removal policy</a>
+ประกาศการยกเลิกฟีเจอร์หลายรายการก่อนหน้านี้มีในบทความ <a href="https://kubernetes.io/blog/2025/03/26/kubernetes-v1-33-upcoming-changes/">Deprecations and Removals blog post</a></p>
+<h3 id="การยกเลิก-endpoints-api-เวอร์ชัน-stable">การยกเลิก Endpoints API (เวอร์ชัน Stable)</h3>
+<p><strong>EndpointSlices API</strong> อยู่ในสถานะ <strong>stable</strong> ตั้งแต่เวอร์ชัน v1.21 และได้เข้ามาแทนที่ <strong>Endpoints API</strong> แบบเดิมอย่างมีประสิทธิภาพ แม้ว่า <strong>Endpoints API</strong> เดิมจะมีความเรียบง่ายและตรงไปตรงมา แต่เมื่อระบบต้องขยาย (<strong>scale</strong>) ไปยังการจัดการ <strong>network endpoints</strong> จำนวนมาก ก็เริ่มเกิดปัญหาในการรองรับ</p>
+<p><strong>EndpointSlices API</strong> ได้เพิ่มความสามารถใหม่ ๆ เช่น การรองรับ <strong>dual-stack networking</strong> ซึ่งทำให้ <strong>Endpoints API</strong> แบบเก่าพร้อมสำหรับการเข้าสู่กระบวนการ <strong>deprecation</strong> แล้ว</p>
+<p>การ deprecation นี้มีผลกระทบเฉพาะผู้ที่ใช้งาน <strong>Endpoints API</strong> โดยตรงผ่าน <strong>workloads</strong> หรือ <strong>scripts</strong> เท่านั้น ผู้ใช้กลุ่มนี้ควรเริ่มวางแผนย้ายไปใช้ <strong>EndpointSlices</strong> แทน เพื่อให้สอดคล้องกับแนวทางใหม่ของ Kubernetes และหลีกเลี่ยงปัญหาในอนาคต</p>
+<p>เร็ว ๆ นี้จะมีบล็อกโพสต์เฉพาะกิจเพื่ออธิบายรายละเอียดเพิ่มเติมเกี่ยวกับผลกระทบจากการ deprecation และแนวทางการย้ายระบบ (migration plan) อย่างชัดเจน</p>
+<p>คุณสามารถอ่านข้อมูลเพิ่มเติมเกี่ยวกับการเปลี่ยนแปลงครั้งนี้ได้ใน <a href="https://github.com/kubernetes/enhancements/issues/4974">KEP-4974: Deprecate v1.Endpoints</a></p>
+<h3 id="การถอดข้อมูลเวอร์ชัน-kube-proxy-ออกจาก-node-status">การถอดข้อมูลเวอร์ชัน kube-proxy ออกจาก node status</h3>
+<p>หลังจากถูกประกาศ <strong>deprecation</strong> ตั้งแต่ในเวอร์ชัน v1.31 ตามที่ได้มีการเน้นย้ำไว้ใน <a href="https://kubernetes.io/blog/2024/07/19/kubernetes-1-31-upcoming-changes/#deprecation-of-status-nodeinfo-kubeproxyversion-field-for-nodes-kep-4004-https-github-com-kubernetes-enhancements-issues-4004">v1.31 release announcement</a>
+ฟิลด์ <code>.status.nodeInfo.kubeProxyVersion</code> สำหรับ <strong>Nodes</strong> ก็ถูกลบออกในเวอร์ชัน v1.33</p>
+<p>ฟิลด์นี้เคยถูกตั้งค่าโดย <strong>kubelet</strong> แต่ค่าที่ได้ไม่ได้มีความแม่นยำอย่างสม่ำเสมอ และเนื่องจากฟิลด์นี้ได้ถูกปิดการใช้งานเป็นค่าเริ่มต้นตั้งแต่เวอร์ชัน v1.31 แล้ว ในเวอร์ชัน v1.33 จึงมีการลบฟิลด์นี้ออกอย่างถาวร</p>
+<h3 id="การถอด-in-tree-gitrepo-volume-driver">การถอด in-tree gitRepo volume driver</h3>
+<p><strong>gitRepo volume type</strong> ถูกประกาศ <strong>deprecated</strong> มาตั้งแต่เวอร์ชัน v1.11 หรือเกือบ 7 ปีที่แล้ว นับตั้งแต่การ deprecation นั้น ก็มีความกังวลด้านความปลอดภัยตามมา รวมถึงประเด็นที่ว่า <strong>gitRepo volume types</strong> สามารถถูกโจมตีเพื่อให้ผู้ไม่หวังดีสามารถทำ <strong>remote code execution</strong> ในระดับ root บน node ได้</p>
+<p>ในเวอร์ชัน v1.33 โค้ดของ <strong>in-tree driver</strong> สำหรับ <strong>gitRepo</strong> ได้ถูกลบออกอย่างเป็นทางการ</p>
+<p>อย่างไรก็ตาม ยังมีทางเลือกอื่น ๆ เช่น <strong>git-sync</strong> และ <strong>initContainers</strong> โดยใน <strong>Kubernetes API</strong> นั้น <code>gitVolumes</code> ยังไม่ได้ถูกลบออก ดังนั้น <strong>pods</strong> ที่ใช้ <strong>gitRepo volumes</strong> ยังคงสามารถถูกรับเข้ามาได้โดย <strong>kube-apiserver</strong> แต่ถ้า <strong>kubelet</strong> มีการตั้งค่า <strong>feature-gate GitRepoVolumeDriver</strong> เป็น <code>false</code> จะไม่ทำการรัน pods เหล่านี้ และจะแจ้ง error ที่เหมาะสมกลับไปยังผู้ใช้</p>
+<p>แนวทางนี้เปิดโอกาสให้ผู้ใช้เลือก opt-in เพื่อกลับมาใช้ driver ได้อีกประมาณ 3 รุ่น เพื่อให้มีเวลาเพียงพอในการแก้ไข workloads ของตนเอง</p>
+<p>โดยมีแผนจะลบ <strong>feature gate</strong> ของ <strong>kubelet</strong> และโค้ด <strong>in-tree plugin</strong> ออกอย่างถาวรในเวอร์ชัน v1.39</p>
+<h3 id="การถอดการรองรับ-host-network-สำหรับ-windows-pods">การถอดการรองรับ host network สำหรับ Windows pods</h3>
+<p><strong>Windows Pod networking</strong> มีเป้าหมายเพื่อให้สามารถใช้งานได้เทียบเท่ากับฝั่ง <strong>Linux</strong> และเพิ่มความหนาแน่นของ cluster ได้ดีขึ้น ด้วยการอนุญาตให้ <strong>containers</strong> ใช้ <strong>Node’s networking namespace</strong> ได้โดยตรง</p>
+<p>การ implement แบบเดิมเริ่มต้นในสถานะ <strong>alpha</strong> ตั้งแต่เวอร์ชัน v1.26 แต่เนื่องจากเจอพฤติกรรมที่ไม่คาดคิดของ <strong>containerd</strong> และมีทางเลือกอื่น ๆ ที่สามารถใช้งานได้ ทางโครงการ <strong>Kubernetes</strong> จึงตัดสินใจยกเลิก <strong>KEP</strong> ที่เกี่ยวข้อง และได้ถอดการรองรับนี้ออกอย่างสมบูรณ์ในเวอร์ชัน v1.33</p>
+<p>โปรดทราบว่า การถอนการรองรับนี้ <strong>ไม่ส่งผลกระทบ</strong> ต่อ <a href="https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/">HostProcess containers</a> ซึ่งยังคงสามารถใช้ <strong>host network</strong> และเข้าถึงระดับ <strong>host level access</strong> ได้ตามปกติ การถอน <strong>KEP</strong> ใน v1.33 นี้ เป็นการยกเลิกเฉพาะความพยายามที่จะให้ <strong>Pods</strong> ใช้ <strong>host network</strong> เท่านั้น ซึ่งไม่เคยมีเสถียรภาพเนื่องจากข้อจำกัดทางเทคนิคในตรรกะของ <strong>Windows networking</strong> เอง</p>
+<h2 id="release-theme-and-logo">Release theme and logo</h2>
+<p><img src="/2025/04/d2a1c515-c2b5-43c0-97ac-029ecb2ee13b.png" alt="d2a1c515-c2b5-43c0-97ac-029ecb2ee13b"></p>
+<p>ธีมของ <strong>Kubernetes v1.33</strong> คือ <strong>Octarine: The Color of Magic</strong> ได้แรงบันดาลใจจากซีรีส์ <strong>Discworld</strong> ของ <strong>Terry Pratchett</strong><br>
+การออกเวอร์ชันนี้ต้องการเน้นย้ำถึง “เวทมนตร์ของ open source” ที่ <strong>Kubernetes</strong> ได้สร้างขึ้นทั่วทั้ง ecosystem</p>
+<p>ถ้าคุณคุ้นเคยกับโลกของ <strong>Discworld</strong> คุณอาจจำได้ว่า มีมังกรหนองน้ำตัวเล็ก ๆ เกาะอยู่บนยอดหอคอยของ <strong>Unseen University</strong> กำลังมองขึ้นไปยังดวงจันทร์ <strong>Kubernetes</strong> เหนือเมือง <strong>Ankh-Morpork</strong> โดยมีฉากหลังเป็นดวงดาว 64 ดวง</p>
+<p>ในขณะที่ <strong>Kubernetes</strong> กำลังก้าวเข้าสู่ทศวรรษที่สอง พวกเราขอเฉลิมฉลองทั้งเวทมนตร์แห่งความเชี่ยวชาญของผู้ดูแลโครงการ ความอยากรู้อยากเห็นของผู้ร่วมพัฒนารุ่นใหม่ ๆ และจิตวิญญาณแห่งการร่วมมือที่ขับเคลื่อนโครงการนี้ให้ก้าวไปข้างหน้า<br>
+การออก <strong>v1.33</strong> เป็นการเตือนใจว่า ดังที่ <strong>Pratchett</strong> เขียนไว้ว่า</p>
+<blockquote>
+<p>มันยังคงเป็นเวทมนตร์อยู่ แม้ว่าคุณจะรู้ว่ามันทำงานอย่างไร</p>
+</blockquote>
+<p>แม้ว่าคุณจะรู้จักโค้ดเบสของ <strong>Kubernetes</strong> อย่างทะลุปรุโปร่ง แต่เมื่อหันกลับมามองในตอนท้ายของรอบ release cycle คุณจะเห็นได้ว่ามันยังคงเปี่ยมไปด้วยความมหัศจรรย์</p>
+<p><strong>Kubernetes v1.33</strong> เป็นข้อพิสูจน์ถึงพลังแห่งนวัตกรรมแบบ open source ที่ไม่มีวันจางหาย<br>
+ซึ่งผู้ร่วมพัฒนาหลายร้อยคนจากทั่วโลกได้ทำงานร่วมกันเพื่อสร้างสิ่งที่พิเศษอย่างแท้จริง<br>
+เบื้องหลังฟีเจอร์ใหม่ ๆ ทุกตัว คือความพยายามของ community ที่คอยดูแลและปรับปรุงโครงการนี้อย่างต่อเนื่อง เพื่อให้มั่นใจว่า <strong>Kubernetes</strong> จะยังคงปลอดภัย น่าเชื่อถือ และออก release ได้ตรงตามกำหนด<br>
+แต่ละเวอร์ชันที่ออกมาได้ต่อยอดจากเวอร์ชันก่อนหน้า สร้างบางสิ่งที่ยิ่งใหญ่กว่าที่เราทำได้เพียงลำพัง</p>
+<p>หมายเหตุ:</p>
+<ul>
+<li><strong>Octarine</strong> คือสีที่ 8 ในตำนาน มองเห็นได้เฉพาะผู้ที่มีความไวต่อเวทมนตร์ เช่น พ่อมด แม่มด และแมว (รวมถึงบางคนที่จ้อง <strong>IPtable rules</strong> นานเกินไปด้วย)</li>
+<li><code>Any sufficiently advanced technology is indistinguishable from magic</code> ใช่หรือไม่?</li>
+<li>มีดวงดาว 64 ดวงในภาพ ไม่ใช่เรื่องบังเอิญ เพราะมี 64 <strong>KEPs (Kubernetes Enhancement Proposals)</strong> รวมอยู่ใน v1.33 ด้วย</li>
+<li>ดูเพิ่มเติมได้ในหัวข้อ <strong>Project Velocity</strong> สำหรับ v1.33 🚀</li>
+</ul>
+<h4 id="references">References</h4>
+<ul>
+<li><a href="https://kubernetes.io/blog/2025/04/23/kubernetes-v1-33-release/">kubernetes.io</a></li>
+</ul>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2025 BigJoe. All rights reserved.
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="https://www.facebook.com/profile.php?id=61572916280350" target="_blank" data-astro-cid-sz7xmlte> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" data-astro-cid-sz7xmlte> <path fill="currentColor" d="M13.458 21.696c4.693-.704 8.292-4.753 8.292-9.642c0-5.385-4.365-9.75-9.75-9.75s-9.75 4.365-9.75 9.75c0 4.89 3.599 8.938 8.292 9.642v-6.798h-2.05a.486.486 0 0 1-.486-.486v-1.843c0-.269.218-.486.486-.486h2.05l-.072-1.943c0-.942.175-2.471 1.342-3.307c.816-.583 1.423-.693 2.397-.693c.845 0 1.426.084 1.81.14l.188.025a.193.193 0 0 1 .168.192v2.04c0 .113-.095.2-.205.194h-.038c-.114.004-.71.029-1.216.029c-.89 0-1.458.406-1.458 1.755v1.568h2.192c.3 0 .529.27.48.566l-.28 1.843a.486.486 0 0 1-.479.406h-1.913z" data-astro-cid-sz7xmlte></path> </svg> </a> <a href="https://x.com/joewalker_xyz" target="_blank" data-astro-cid-sz7xmlte> <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" data-astro-cid-sz7xmlte> <g fill="none" fill-rule="evenodd" data-astro-cid-sz7xmlte> <path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" data-astro-cid-sz7xmlte></path> <path fill="currentColor" d="M19.753 4.659a1 1 0 0 0-1.506-1.317l-5.11 5.84L8.8 3.4A1 1 0 0 0 8 3H4a1 1 0 0 0-.8 1.6l6.437 8.582l-5.39 6.16a1 1 0 0 0 1.506 1.317l5.11-5.841L15.2 20.6a1 1 0 0 0 .8.4h4a1 1 0 0 0 .8-1.6l-6.437-8.582l5.39-6.16ZM16.5 19L6 5h1.5L18 19z" data-astro-cid-sz7xmlte></path> </g> </svg> </a> <a href="https://github.com/joeteerawit" target="_blank" data-astro-cid-sz7xmlte> <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" data-astro-cid-sz7xmlte><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-sz7xmlte></path></svg> </a> </div> </footer>  <script type="module">const l=window.innerWidth<=720;document.addEventListener("DOMContentLoaded",()=>{const r=t=>{let e=t.parentElement;for(;e;){if(e.tagName==="NAV")return!0;e=e.parentElement}return!1};document.querySelectorAll(".prose p").forEach(t=>{r(t)||t.querySelector("img")&&(t.style.justifyItems="center")}),document.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(t=>{const e=t;if(r(t))return;const o=t.nextElementSibling,n=o&&o.tagName.toLowerCase()==="pre";l?(e.style.marginTop="1rem",e.style.marginBottom=n?"0":"1rem"):(e.style.marginTop="2rem",e.style.marginBottom=n?"0":"2rem")}),document.querySelectorAll(".diff.remove").forEach(t=>{if(r(t))return;const e=document.createElement("span");e.className="diff-indicator",e.textContent="-",e.style.display="inline-block",e.style.width="15px",e.style.color="#d73a49",e.style.fontWeight="bold",e.style.userSelect="none",t.insertBefore(e,t.firstChild)}),document.querySelectorAll(".diff.add").forEach(t=>{if(r(t))return;const e=document.createElement("span");e.className="diff-indicator",e.textContent="+",e.style.display="inline-block",e.style.width="15px",e.style.color="#22863a",e.style.fontWeight="bold",e.style.userSelect="none",t.insertBefore(e,t.firstChild)}),document.querySelectorAll('a[href^="http"]').forEach(t=>{r(t)||(t.setAttribute("target","_blank"),t.setAttribute("rel","noopener noreferrer"))})});</script> </body></html>
