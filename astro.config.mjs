@@ -14,6 +14,7 @@ import { defineConfig } from 'astro/config'
 // https://astro.build/config
 // https://docs.astro.build/en/guides/styling/#markdown-styling
 export default defineConfig({
+  trailingSlash: 'ignore',
   site: 'https://www.joewalker.xzy',
   integrations: [mdx(), sitemap()],
   markdown: {
