@@ -1,9 +1,8 @@
 ---
 title: 'Slack: รัน 10 billion Cron Jobs ยังไงไม่ให้พัง!'
 description: 'Slack: รัน 10 billion Cron Jobs ยังไงไม่ให้พัง!'
-pubDate: 'Apr 28 2025'
+pubDate: 'Apr 29 2025'
 heroImage: '/2025/04/e69c48f3-1277-46a9-92f5-99f396f0b011.png'
-draft: true
 ---
 
 ## Cron คืออะไร และ Slack ใช้ Cron อย่างไร?
