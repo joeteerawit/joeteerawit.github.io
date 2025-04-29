@@ -21,6 +21,7 @@ export default defineConfig({
     sitemap(),
     partytown({
       config: {
+        swPath: '/partytown/partytown-sw.js',
         forward: ['dataLayer.push'],
       },
     }),
