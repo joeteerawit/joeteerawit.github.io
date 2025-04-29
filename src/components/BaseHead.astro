@@ -45,10 +45,10 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
 />
 
 <!-- Google Analytic -->
-<link
+<!-- <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css"
-/>
+/> -->
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -73,16 +73,21 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- Google Analytic -->
-<script
+ <!-- Google tag (gtag.js) -->
+<script is:inline type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script>
+<script is:inline type="text/partytown">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-72RJB9H4WY');
+</script>
+<!-- <script
   data-category="analytics"
   is:inline
-  src="https://www.googletagmanager.com/gtag/js?id=G-E9J5WSCV7Q"></script>
+  src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script>
 <script type="module" src="cookieconsent-config.js"></script>
-<script
-  data-category="analytics"
-  is:inline
-  type="text/partytown"
->
+<script data-category="analytics" is:inline type="text/partytown">
   window.dataLayer = window.dataLayer || []
   function gtag() {
     dataLayer.push(arguments)
@@ -95,5 +100,5 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
     analytics_storage: 'denied',
   })
 
-  gtag('config', 'G-E9J5WSCV7Q')
-</script>
+  gtag('config', 'G-72RJB9H4WY')
+</script> -->

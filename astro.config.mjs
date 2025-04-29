@@ -19,7 +19,11 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap(),
-    partytown({ config: { forward: ['dataLayer.push'] } }),
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+      },
+    }),
   ],
   markdown: {
     syntaxHighlight: {
