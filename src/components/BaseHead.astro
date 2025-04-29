@@ -73,9 +73,8 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- Google Analytic -->
- <!-- Google tag (gtag.js) -->
-<script is:inline type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script>
-<script is:inline type="text/partytown">
+<script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-72RJB9H4WY"></script>
+<script type="text/partytown">
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
