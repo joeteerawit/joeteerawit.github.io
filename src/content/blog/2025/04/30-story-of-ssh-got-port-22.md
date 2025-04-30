@@ -1,9 +1,8 @@
 ---
 title: 'Story ของการได้มาซึ่ง port 22 ของ SSH'
 description: 'Story ของการได้มาซึ่ง port 22 ของ SSH'
-pubDate: 'Apr 28 2025'
+pubDate: 'Apr 30 2025'
 heroImage: '/2025/04/6e23f9e8-ef07-4d0b-a330-319274931123.png'
-draft: true
 ---
 [Tatu Ylonen](https://fi.wikipedia.org/wiki/Tatu_Yl%C3%B6nen) ได้เขียนเวอร์ชันแรกของ SSH (Secure Shell) ในฤดูใบไม้ผลิปี 1995 ซึ่งเป็นช่วงเวลาที่ telnet และ FTP ยังถูกใช้งานอย่างกว้างขวาง
 
