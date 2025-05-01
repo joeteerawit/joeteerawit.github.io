@@ -1,20 +1,19 @@
 ---
 title: 'ทำไมการลด Cost ของ Kubernetes ทำไม่ได้จริง!'
 description: 'ทำไมการลด Cost ของ Kubernetes ทำไม่ได้จริง!'
-pubDate: 'May 09 2025'
+pubDate: 'May 01 2025'
 heroImage: '/2025/05/cf76b876-5686-45e1-89e2-dbd255b91e99.png'
-draft: true
 ---
 
 ## ความท้าทายของการบริหารจัดการ Kubernetes Resource และแนวทางการแก้ไข
 
-ในยุคปัจจุบันที่ระบบ cloud-native ได้กลายเป็นมาตรฐานหลักสำหรับการพัฒนาและขยายระบบ application ขนาดใหญ่ Kubernetes กลายเป็นเครื่องมือสำคัญที่ช่วยให้การ deploy และ scaling application เป็นไปได้อย่างมีประสิทธิภาพ อย่างไรก็ตามหนึ่งในปัญหาที่องค์กรหลายแห่งยังคงเผชิญ คือการ **ควบคุมต้นทุนของ Kubernetes cluster** ให้มีประสิทธิภาพและเหมาะสมกับความต้องการใช้งานจริง
+ในยุคปัจจุบันที่ระบบ cloud-native ได้กลายเป็นมาตรฐานหลักสำหรับการพัฒนาและขยายระบบ application ขนาดใหญ่ Kubernetes กลายเป็นเครื่องมือสำคัญที่ช่วยให้การ deploy และ scaling application เป็นไปได้อย่างมีประสิทธิภาพ อย่างไรก็ตามหนึ่งในปัญหาที่องค์กรหลายแห่งยังคงเผชิญ คือการ **ควบคุมต้นทุนของ Kubernetes cluster** ให้มีประสิทธิภาพและเหมาะสมกับการใช้งานจริง
 
-ปัจจัยสำคัญที่ทำให้การ optimize ต้นทุนของ Kubernetes เป็นเรื่องยาก คือธรรมชาติที่เปลี่ยนแปลงตลอดเวลาของ workload บน cloud-native environment application ในปัจจุบันมีความ dynamic สูงมาก ทั้งในด้านปริมาณ load และ resource consumption ที่แปรผันอยู่ตลอดเวลา นอกจากนี้แต่ละ application ยังมีบริบททางธุรกิจที่แตกต่างกัน มีความต้องการที่ไม่เหมือนกัน
+ปัจจัยสำคัญที่ทำให้การ optimize ต้นทุนของ Kubernetes เป็นเรื่องยาก คือธรรมชาติที่เปลี่ยนแปลงตลอดเวลาของ workload บน cloud-native environment application ในปัจจุบันมีความ dynamic สูงมาก ทั้งในด้านปริมาณ load และ resource consumption ที่แปรผันอยู่ตลอดเวลา นอกจากนี้แต่ละ application ยังมีบริบททาง Business ที่แตกต่างกัน มี requirment ที่ไม่เหมือนกัน
 
-ในความเป็นจริง ผู้ที่รับผิดชอบดูแล application มักต้องกำหนดค่า resource allocation ให้กับ application ของตนเองในลักษณะ **static** ต้องคาดเดาไว้ล่วงหน้า ทั้ง CPU และ memory เพื่อให้รองรับ traffic spike ได้ แต่ในขณะเดียวกันก็ไม่อยาก overprovision มากเกินไปเพราะจะทำให้สิ้นเปลืองค่าใช้จ่าย
+ในความเป็นจริง Admin ที่รับผิดชอบดูแล application มักต้องกำหนดค่า resource allocation ให้กับ application ของตนเองในลักษณะ **static** ต้องคาดเดาไว้ล่วงหน้า ทั้ง CPU และ memory เพื่อให้รองรับ traffic spike ได้ แต่ในขณะเดียวกันก็ไม่อยาก overprovision มากเกินไปเพราะจะทำให้สิ้นเปลืองค่าใช้จ่าย
 
-เมื่อขยายมาสู่ระดับ production cluster ที่มี application หลายพันตัว ความยุ่งยากจะทวีคูณ มีเจ้าของ application จำนวนมากที่ต้องดูแลการปรับขนาด resource ของตัวเอง ในสภาพแวดล้อมเช่นนี้ การบริหารจัดการแบบ manual แทบจะเป็นไปไม่ได้ นำไปสู่ปัญหาที่พบได้ทั่วไปคือ resource waste ที่สูงถึง 70–80% และ performance issue จากการที่บาง application ได้รับ resource ไม่พอ
+เมื่อขยายมาสู่ระดับ production cluster ที่มี application หลายพันตัว ความยุ่งยากจะทวีคูณ มีเจ้าของ application จำนวนมากที่ต้องดูแลการปรับขนาด resource ของตัวเอง ใน Environment เช่นนี้ การบริหารจัดการแบบ manual แทบจะเป็นไปไม่ได้ นำไปสู่ปัญหาที่พบได้ทั่วไปคือ resource waste ที่สูงถึง 70–80% และ performance issue จากการที่บาง application ได้รับ resource ไม่พอ
 
 นอกจากนี้ การเติบโตของ AI workloads เช่น machine learning model training, inference jobs ยิ่งทำให้สถานการณ์ยากขึ้นอีก เนื่องจาก workload เหล่านี้มีการใช้ resource ที่สูงและไม่สม่ำเสมอ ต้องการ GPU, CPU, memory ในปริมาณมาก และยังคงต้องอาศัยการกำหนด resource แบบ static เช่นเดิม
 
@@ -36,7 +35,7 @@ draft: true
 
 องค์กรส่วนใหญ่ในปัจจุบันมักเน้นไปที่การเพิ่ม visibility และรับรู้ปัญหาเรื่อง resource waste แต่ยังขาดแนวทางที่ช่วยแก้ไขปัญหาเหล่านั้นอย่างแท้จริง
 
-วิธีที่มีประสิทธิภาพมากกว่าคือ การสร้างระบบที่สามารถ **จัดสรรทรัพยากรให้เหมาะสมกับ application ทุกตัวแบบอัตโนมัติใน real-time** ช่วยให้ application owner มั่นใจได้ว่า performance ของ application จะไม่ลดลง ขณะเดียวกัน DevOps และ platform team ก็สามารถลดค่าใช้จ่าย cloud ลงได้
+วิธีที่มีประสิทธิภาพมากกว่าคือ การสร้างระบบที่สามารถ **จัดสรรทรัพยากรให้เหมาะสมกับ application ทุกตัวแบบ real-time automation** ช่วยให้ application owner มั่นใจได้ว่า performance ของ application จะไม่ลดลง ขณะเดียวกัน DevOps และ platform team ก็สามารถลดค่าใช้จ่าย cloud ลงได้
 
 การ optimize แบบ full automation สำหรับทุก container ใน cluster จึงเป็นหนทางที่จะขจัดภาระ manual tuning และลดความขัดแย้งระหว่างทีมต่างๆ ภายในองค์กรได้อย่างแท้จริง
 
