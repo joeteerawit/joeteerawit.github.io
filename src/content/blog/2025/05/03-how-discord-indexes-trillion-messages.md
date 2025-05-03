@@ -1,9 +1,8 @@
 --- 
 title: 'Discord: Search หา message จากข้อมูลหลัก Trillion ยังไง?'
 description: 'Discord: Search หา message จากข้อมูลหลัก Trillion ยังไง?'
-pubDate: 'May 02 2025'
+pubDate: 'May 03 2025'
 heroImage: '/2025/05/5dc29a33-7e5c-47f5-9066-f8eecea792fc.png'
-draft: true
 ---
 
 ย้อนกลับไปในปี 2017 Discord เริ่มเปิดตัว feature message search เป็นครั้งแรก เป็น feature ที่ user เรียกร้องกันมากในตอนนั้น ทีมของ Discord จึงเริ่มออกแบบระบบที่สามารถรองรับ search บน message ระดับ "trillions message" ได้ในช่วงเริ่มต้น
