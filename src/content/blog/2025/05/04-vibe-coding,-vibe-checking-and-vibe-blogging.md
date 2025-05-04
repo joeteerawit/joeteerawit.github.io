@@ -1,9 +1,8 @@
 ---
 title: 'Vibe Coding และการร่วมมือกับ AI'
 description: 'Vibe Coding และการร่วมมือกับ AI'
-pubDate: 'May 05 2025'
+pubDate: 'May 04 2025'
 heroImage: '/2025/05/a1c9dc7b-f299-4628-9bb0-8b5e7842594a.png'
-draft: true
 ---
 
 ## เมื่อเทคโนโลยีสร้างแรงบันดาลใจใหม่ให้การสร้างสรรค์

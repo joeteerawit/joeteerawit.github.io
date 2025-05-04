@@ -1,7 +1,7 @@
 --- 
 title: 'ผลการทดลองว่า AI สามารถเปลี่ยนใจคนได้หรือป่าว? '
 description: 'ผลการทดลองว่า AI สามารถเปลี่ยนใจคนได้หรือป่าว? '
-pubDate: 'May 13 2025'
+pubDate: 'May 04 2025'
 heroImage: '/2025/05/7b90539a-b39d-4855-87c6-b1ac8ded613f.png'
 draft: true
 ---
