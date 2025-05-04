@@ -182,7 +182,8 @@ svg[role='graphics-document document'] {
     font-size: 18px;
   }
   main {
-    padding: 1em;
+    padding: 1em 0 1em 0;
+
   }
   p {
     text-align: justify;
