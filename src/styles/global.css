@@ -156,6 +156,7 @@ code {
 pre {
   padding: 1.5em;
   border-radius: 8px;
+  white-space: pre !important;
 }
 pre > code {
   all: unset;
@@ -182,6 +183,9 @@ svg[role='graphics-document document'] {
   }
   main {
     padding: 1em;
+  }
+  p {
+    text-align: justify;
   }
   .line.diff.remove {
     padding: 4px 8px 8px 8px !important;
