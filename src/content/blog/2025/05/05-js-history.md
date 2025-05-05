@@ -93,3 +93,4 @@ Node.js ไม่เพียงแต่ทำให้ JavaScript รันบ
 - [dl.acm.org](https://dl.acm.org/doi/pdf/10.1145/3386327)
 - [auth0.com](https://auth0.com/blog/a-brief-history-of-javascript/)
 - [piyush-dubey.medium.com](https://piyush-dubey.medium.com/the-journey-of-javascript-from-mocha-to-a-web-powerhouse-63e4ee533b53)
+- [youtube.com](https://www.youtube.com/watch?v=9gNCWUEvLAI)
