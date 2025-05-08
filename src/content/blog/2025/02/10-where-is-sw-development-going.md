@@ -1,6 +1,6 @@
 ---
-title: 'สรุป Talk เรื่อง 𝐖𝐡𝐞𝐫𝐞 𝐈𝐬 𝐒𝐖 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐦𝐞𝐧𝐭 𝐆𝐨𝐢𝐧𝐠?'
-description: 'สรุป Talk เรื่อง 𝐖𝐡𝐞𝐫𝐞 𝐈𝐬 𝐒𝐖 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐦𝐞𝐧𝐭 𝐆𝐨𝐢𝐧𝐠?'
+title: 'สรุป talk เรื่อง where is sw development going?'
+description: 'สรุป talk เรื่อง where is sw development going?'
 pubDate: 'Feb 10 2025'
 heroImage: '/2025/02/1307a63d-475c-4711-8ee5-d2cb75a3d260.png'
 ---
