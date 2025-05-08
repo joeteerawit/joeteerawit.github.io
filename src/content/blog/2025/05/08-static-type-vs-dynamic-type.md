@@ -1,6 +1,6 @@
 ---
-title: 'Static Type vs Dynamic Type'
-description: 'Static Type vs Dynamic Type'
+title: 'Static Type vs Dynamic Type: ไม่มีใครผิด แต่ก็ไม่มีใครถูก'
+description: 'Static Type vs Dynamic Type: ไม่มีใครผิด แต่ก็ไม่มีใครถูก'
 pubDate: 'May 08 2025'
 heroImage: '/2025/05/22aacb03-51ba-46ea-9763-f522a2d37619.png'
 ---
