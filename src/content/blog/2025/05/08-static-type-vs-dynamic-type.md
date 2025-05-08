@@ -5,8 +5,6 @@ pubDate: 'May 08 2025'
 heroImage: '/2025/05/22aacb03-51ba-46ea-9763-f522a2d37619.png'
 ---
 
-## **Static Type vs Dynamic Type: ไม่มีใครผิด แต่ก็ไม่มีใครถูก**
-
 เมื่อพูดถึง *type system* ในภาษา program  เรามักจะพบว่ามีสองกลุ่มใหญ่ ๆ คือกลุ่มที่เชื่อใน **static typing** และอีกกลุ่มที่เชื่อใน **dynamic typing** — และต่างฝ่ายต่างก็มีเหตุผลของตัวเอง
 
 ## Static Typers
