@@ -1,9 +1,8 @@
 ---
 title: 'SSH history: Part 1'
 description: 'SSH history: Part 1'
-pubDate: 'May 05 2025'
+pubDate: 'May 09 2025'
 heroImage: '/2025/05/443480e9-baa4-4b0f-b5fe-09fd3b83636f.png'
-draft: true
 ---
 
 ## จากภัยคุกคามสู่ Innovation: กำเนิด SSH ที่เปลี่ยนโลก
