@@ -21,7 +21,7 @@ Resource จะกำหนดว่า controller ต้องทำงาน�
 ส่วนตัว controller เองมันจะคอยดู metric ต่าง ๆ เช่น **average CPU utilization**, **average memory usage** หรือแม้แต่ **custom metric** ที่เราตั้งเอง แล้วค่อย ๆ ปรับ scale ให้เหมาะกับสถานการณ์
 
 ## HorizontalPodAutoscaler ทำงานยังไง?
-```mermaid
+<!-- ```mermaid
 flowchart TB
     HPA[Horizontal Pod Autoscaler] --> RC["ReplicaController / Deployment"]
     RC --> Scale
@@ -38,7 +38,7 @@ flowchart TB
     class RC controller
     class Scale scale
     class HPA autoscaler
-```
+``` -->
 Figure 1: HorizontalPodAutoscaler คุม scale ของ Deployment และ ReplicaSet
 
 Kubernetes ใช้กลไกของ **horizontal pod autoscaling** เป็น **control loop** ที่รันแบบเป็นช่วง ๆ (ไม่ได้รันตลอดเวลา)
