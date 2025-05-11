@@ -15,159 +15,104 @@
 Resource จะกำหนดว่า controller ต้องทำงานยังไง
 ส่วนตัว controller เองมันจะคอยดู metric ต่าง ๆ เช่น <strong>average CPU utilization</strong>, <strong>average memory usage</strong> หรือแม้แต่ <strong>custom metric</strong> ที่เราตั้งเอง แล้วค่อย ๆ ปรับ scale ให้เหมาะกับสถานการณ์</p>
 <h2 id="horizontalpodautoscaler-ทำงานยังไง">HorizontalPodAutoscaler ทำงานยังไง?</h2>
-<!-- ```mermaid
-flowchart TB
-    HPA[Horizontal Pod Autoscaler] --> RC["ReplicaController / Deployment"]
-<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>RC --> Scale</span></span>
-<span class="line"><span>Scale --> Pod1[Pod 1]</span></span>
-<span class="line"><span>Scale --> Pod2[Pod 2] </span></span>
-<span class="line"><span>Scale --> PodN[Pod N]</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>classDef pods fill:#A9CCE3,stroke:#5D6D7E,stroke-width:1px</span></span>
-<span class="line"><span>classDef controller fill:#F5CBA7,stroke:#5D6D7E,stroke-width:1px</span></span>
-<span class="line"><span>classDef scale fill:#A9DFBF,stroke:#5D6D7E,stroke-width:1px</span></span>
-<span class="line"><span>classDef autoscaler fill:#D7BDE2,stroke:#5D6D7E,stroke-width:1px</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>class Pod1,Pod2,PodN pods</span></span>
-<span class="line"><span>class RC controller</span></span>
-<span class="line"><span>class Scale scale</span></span>
-<span class="line"><span>class HPA autoscaler</span></span></code></pre>
-<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Figure 1: HorizontalPodAutoscaler คุม scale ของ Deployment และ ReplicaSet</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>Kubernetes ใช้กลไกของ **horizontal pod autoscaling** เป็น **control loop** ที่รันแบบเป็นช่วง ๆ (ไม่ได้รันตลอดเวลา)</span></span>
-<span class="line"><span>ช่วงเวลาที่มันจะ sync แต่ละครั้ง ถูกตั้งค่าไว้ด้วย `--horizontal-pod-autoscaler-sync-period` ใน `kube-controller-manager`</span></span>
-<span class="line"><span>(โดย default จะ sync ทุก ๆ 15 วินาที)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ในแต่ละรอบที่รัน controller manager จะไปเช็คการใช้งาน resource (resource utilization) โดยอิงจาก metric ที่ระบุไว้ใน HPA แต่ละตัว</span></span>
-<span class="line"><span>มันจะไปหาว่า HPA นั้นกำลัง target resource อะไร (ผ่าน `scaleTargetRef`) แล้วดูว่า Pod ไหนบ้างที่เกี่ยวข้อง จาก `.spec.selector` ของ resource นั้น</span></span>
-<span class="line"><span>จากนั้นก็ไปดึง metric มาจาก **resource metrics API** (ถ้าเป็น per-pod metric อย่าง CPU) หรือ **custom metrics API** (ถ้าเป็น metric แบบอื่น)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้าเป็น **per-pod resource metric** (เช่น CPU) controller จะไปดึง metric จาก resource metrics API ของแต่ละ Pod ที่อยู่ใน scope ของ HPA</span></span>
-<span class="line"><span>ถ้ามีตั้ง **target utilization** ไว้ มันก็จะคำนวณออกมาเป็น percentage ของ resource request ที่ container ใน Pod นั้นใช้</span></span>
-<span class="line"><span>แต่ถ้าตั้งเป็น **target raw value** ไว้ มันก็จะใช้ค่าจริง ๆ (raw metric) ตรง ๆ เลย</span></span>
-<span class="line"><span>จากนั้น controller จะเอาค่าเฉลี่ยของ utilization หรือ raw value (แล้วแต่กรณี) มาหา **ratio** เพื่อใช้ในการคำนวณว่าจะต้อง scale เป็นกี่ replica</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>**ข้อควรระวัง:** ถ้า container บางตัวใน Pod **ไม่ได้กำหนด resource request ไว้เลย** เช่น CPU utilization ก็จะไม่สามารถคำนวณได้ และ autoscaler ก็จะไม่ทำอะไรกับ metric นั้น</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้าเป็น **per-pod custom metric** controller ก็จะทำงานคล้ายกันกับ per-pod resource metric เลย แต่จะใช้ **raw value ตรง ๆ** แทนการแปลงเป็น percentage </span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ส่วน **object metrics** หรือ **external metrics** จะมี metric แค่ตัวเดียวที่อธิบาย object นั้น ๆ แล้วจะเอาไปเทียบกับ target value เพื่อคำนวณ ratio เหมือนกัน</span></span>
-<span class="line"><span>(ถ้าใช้ autoscaling API version v2 ก็สามารถตั้งให้หารด้วยจำนวน Pod ก่อนจะเทียบได้ด้วย)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>การใช้งานทั่วไปของ HPA คือการตั้งให้ไปดึง metric จากพวก **aggregated APIs** อย่าง</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>* `metrics.k8s.io`</span></span>
-<span class="line"><span>* `custom.metrics.k8s.io`</span></span>
-<span class="line"><span>* `external.metrics.k8s.io`</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>โดย `metrics.k8s.io` จะมาจาก **Metrics Server** ซึ่งต้องติดตั้งแยกต่างหาก (ไม่มาพร้อมกับ Kubernetes)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>API เหล่านี้ก็จะมี **ระดับความเสถียร (stability)** และ **สถานะการซัพพอร์ต (support status)** ที่ต่างกันไป ซึ่ง API documentation ก็จะอธิบายไว้ชัด</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ตัว HPA controller เองจะเข้าถึง resource ที่สามารถ scale ได้ เช่น **Deployment** หรือ **StatefulSet**</span></span>
-<span class="line"><span>resource เหล่านี้จะมี **subresource** ที่ชื่อว่า `scale` ซึ่งเป็น interface สำหรับกำหนดจำนวน replica แบบ dynamic ได้</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### รายละเอียดของ Algorithm ที่ใช้ใน HorizontalPodAutoscaler</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>โดยพื้นฐานเลยนะ ตัว controller ของ HPA จะใช้สูตรคำนวณจาก **อัตราส่วน (ratio)** ระหว่างค่า metric ที่ต้องการ กับค่าที่เป็นอยู่ตอนนี้:</span></span>
-<span class="line"><span></span></span></code></pre>
-<p>desiredReplicas = ceil(currentReplicas × currentMetricValue / desiredMetricValue)</p>
-<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span></span></span>
-<span class="line"><span>**เช่น:**</span></span>
-<span class="line"><span>ถ้าตอนนี้ metric เป็น `200m` แล้ว target คือ `100m` → จะได้ 200 ÷ 100 = **2.0** → ก็จะ scale เพิ่มขึ้นเป็น **2 เท่า**</span></span>
-<span class="line"><span>แต่ถ้า metric เป็น `50m` แทน → ก็จะได้ 50 ÷ 100 = **0.5** → scale ลดลงครึ่งนึง</span></span>
-<span class="line"><span>**แต่ถ้า ratio ใกล้ 1.0 มาก (โดย default คือ ±0.1)** HPA จะ **ไม่ scale อะไรเลย** (เพื่อหลีกเลี่ยงการแกว่งของจำนวน Pod ที่ไม่จำเป็น)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### การคำนวณ metric</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้าตั้งพวก `targetAverageValue` หรือ `targetAverageUtilization` ไว้</span></span>
-<span class="line"><span>ระบบจะไปเอา metric จากทุก Pod ใน scope ของ HPA มาหาค่าเฉลี่ย → นั่นแหละคือ `currentMetricValue`</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ก่อนจะตัดสินใจ scale หรือไม่ scale ระบบจะเช็คด้วยว่า</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>* metric ของ Pod ไหนขาดหายมั้ย</span></span>
-<span class="line"><span>* Pod ไหน **Ready** บ้าง</span></span>
-<span class="line"><span>* Pod ไหนกำลังจะถูกลบ (`deletionTimestamp` ตั้งไว้แล้ว) หรือ fail → พวกนี้จะไม่เอามาคิด</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้า Pod ไหนยังไม่มี metric หรือยังไม่ Ready → จะถูก “พักไว้ก่อน” (set aside) แล้วค่อยมาคิดตอนท้าย</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### กรณี CPU ยังไม่ Ready</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>เวลา scale จาก CPU metric ถ้า Pod ไหนยังไม่ Ready (กำลัง start อยู่ หรือ unhealthy)</span></span>
-<span class="line"><span>หรือ metric ล่าสุดมาหลังจากที่ Pod ยังไม่พร้อม → จะไม่เอาค่านั้นมาใช้ทันที</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>Kubernetes เองก็มีข้อจำกัด มันไม่รู้เป๊ะ ๆ ว่า Pod ไหน Ready ครั้งแรกเมื่อไหร่</span></span>
-<span class="line"><span>เลยต้องใช้วิธีประมาณเอา:</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>* ถ้า Pod ยังไม่ Ready และเพิ่ง Ready ไม่นาน (ภายใน `--horizontal-pod-autoscaler-initial-readiness-delay`, default: 30 วินาที) → ถือว่า “ยังไม่ Ready”</span></span>
-<span class="line"><span>* หลังจาก Ready ไปแล้ว ถ้ามีการ Ready ใหม่ภายในช่วง `--horizontal-pod-autoscaler-cpu-initialization-period` (default: 5 นาที) → ก็ถือว่าเป็น Ready แรก</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### พอรู้ว่า Pod ไหนใช้ได้บ้างแล้ว...</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>เราก็จะใช้พวก Pod ที่ผ่านการคัดกรองข้างบนมาคิด ratio จริง ๆ</span></span>
-<span class="line"><span>ถ้ามี metric หาย ระบบจะ **คิดแบบระมัดระวัง**:</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>* ถ้าจะ scale down → สมมติว่า Pod ที่ไม่มี metric ใช้ 100% ของ target</span></span>
-<span class="line"><span>* ถ้าจะ scale up → สมมติว่าใช้ 0% ของ target</span></span>
-<span class="line"><span>  แบบนี้จะช่วย **ลดความรุนแรงของการ scale ผิด ๆ**</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้ามี Pod ที่ยังไม่ Ready และเรากำลังจะ scale up → ก็สมมติว่า Pod พวกนี้ใช้ 0% เช่นกัน</span></span>
-<span class="line"><span>→ ลดความเสี่ยงการ scale เยอะเกินไป</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>พอรวมทุกอย่างแล้ว ค่อย **คำนวณ usage ratio ใหม่**</span></span>
-<span class="line"><span>ถ้า ratio ใหม่มันสั่งให้ scale กลับไปทางเดิม หรือใกล้ 1.0 เกินไป → ไม่ scale</span></span>
-<span class="line"><span>แต่ถ้าไม่ใช่ → ค่อย scale ตาม ratio ใหม่</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>> **หมายเหตุ:** ค่า average utilization ที่โชว์ใน HPA status จะไม่เอา not-yet-ready กับ missing metric มารวม (คือยังโชว์ตามค่า raw เดิม)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### ถ้ามีหลาย metric</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้าตั้ง HPA ให้ดู metric หลายอัน มันจะคำนวณแบบนี้ทีละอัน แล้วเลือกจำนวน Pod ที่ต้องการมากที่สุดมาใช้</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>แต่ถ้า metric บางตัว error หรือดึงมาไม่ได้ → แล้ว metric ที่ได้แนะนำให้ scale down → **จะไม่ scale เลย**</span></span>
-<span class="line"><span>(เพราะไม่มั่นใจ)</span></span>
-<span class="line"><span>แต่ถ้ามี metric ตัวใดตัวหนึ่งที่แนะนำให้ scale up → ก็ scale ได้ตามนั้น</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### สุดท้ายก่อนจะ scale จริง ๆ</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ก่อนจะ scale จริง HPA จะบันทึกว่า `“แนะนำให้ scale เท่าไหร่”`</span></span>
-<span class="line"><span>แล้วจะดู recommendation ทั้งหมดในช่วงเวลาหนึ่ง (window ที่ตั้งไว้) แล้วเลือก **ค่าที่สูงที่สุดในช่วงนั้น**</span></span>
-<span class="line"><span>ค่า window นี้ตั้งได้ด้วย `--horizontal-pod-autoscaler-downscale-stabilization` (default คือ 5 นาที)</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>→ ช่วยให้ **scale down ค่อย ๆ เป็นค่อย ๆ ไป** ไม่ให้กระตุกขึ้นลงแรง ๆ เวลาค่า metric แกว่ง</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### ความเสถียรของการ scale workload</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>เวลาเราจัดการจำนวน replica ด้วย **HorizontalPodAutoscaler** บางครั้งจำนวน Pod อาจจะ **ขึ้น ๆ ลง ๆ ตลอดเวลา** เพราะ metric ที่ใช้มันเปลี่ยนแปลงอยู่เรื่อย ๆ</span></span>
-<span class="line"><span>อาการแบบนี้เรียกว่า **thrashing** หรือ **flapping** ก็ได้ คล้าย ๆ กับแนวคิดที่เรียกว่า **hysteresis** ในโลก cybernetics เลย</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### การ autoscale ระหว่าง rolling update</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ใน Kubernetes เราสามารถทำ **rolling update** กับ Deployment ได้</span></span>
-<span class="line"><span>ซึ่งตัว Deployment จะเป็นคนคุม **ReplicaSets** ที่อยู่ข้างใต้ให้เอง</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้าเรา config autoscaling ไว้กับ Deployment → เราจะผูก **HorizontalPodAutoscaler** เข้ากับ Deployment ตัวเดียว</span></span>
-<span class="line"><span>จากนั้น HPA จะจัดการกับ field `replicas` ของ Deployment โดยตรง</span></span>
-<span class="line"><span>พอมี rolling update เกิดขึ้น ตัว deployment controller จะจัดการให้ ReplicaSet รวมกันได้จำนวนที่เหมาะสมระหว่าง rollout และหลัง rollout จบ</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>แต่ถ้าเป็น **StatefulSet** ที่มี autoscaling → StatefulSet จะ **คุม Pod โดยตรง** ไม่มี ReplicaSet อยู่ตรงกลางแบบ Deployment</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>### รองรับ resource metric</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>HPA สามารถ scale ได้ตาม **resource usage ของ Pod** ที่อยู่ใน scope ได้เลย</span></span>
-<span class="line"><span>เวลาเรา define pod spec ต้องระบุ `resource requests` อย่าง **CPU** กับ **memory** ไว้ด้วยนะ</span></span>
-<span class="line"><span>เพราะข้อมูลนี้ใช้ในการคำนวณ **resource utilization** และใช้เป็นตัวตัดสินใจให้ HPA scale ขึ้นหรือลง</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>ถ้าจะใช้การ scale แบบอิง utilization ของ resource ก็ต้องตั้ง metric แบบนี้:</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>```yaml</span></span>
-<span class="line"><span>type: Resource</span></span>
-<span class="line"><span>resource:</span></span>
-<span class="line"><span>  name: cpu</span></span>
-<span class="line"><span>  target:</span></span>
-<span class="line"><span>    type: Utilization</span></span>
-<span class="line"><span>    averageUtilization: 60</span></span></code></pre>
+<p>Figure 1: HorizontalPodAutoscaler คุม scale ของ Deployment และ ReplicaSet</p>
+<p>Kubernetes ใช้กลไกของ <strong>horizontal pod autoscaling</strong> เป็น <strong>control loop</strong> ที่รันแบบเป็นช่วง ๆ (ไม่ได้รันตลอดเวลา)
+ช่วงเวลาที่มันจะ sync แต่ละครั้ง ถูกตั้งค่าไว้ด้วย <code>--horizontal-pod-autoscaler-sync-period</code> ใน <code>kube-controller-manager</code>
+(โดย default จะ sync ทุก ๆ 15 วินาที)</p>
+<p>ในแต่ละรอบที่รัน controller manager จะไปเช็คการใช้งาน resource (resource utilization) โดยอิงจาก metric ที่ระบุไว้ใน HPA แต่ละตัว
+มันจะไปหาว่า HPA นั้นกำลัง target resource อะไร (ผ่าน <code>scaleTargetRef</code>) แล้วดูว่า Pod ไหนบ้างที่เกี่ยวข้อง จาก <code>.spec.selector</code> ของ resource นั้น
+จากนั้นก็ไปดึง metric มาจาก <strong>resource metrics API</strong> (ถ้าเป็น per-pod metric อย่าง CPU) หรือ <strong>custom metrics API</strong> (ถ้าเป็น metric แบบอื่น)</p>
+<p>ถ้าเป็น <strong>per-pod resource metric</strong> (เช่น CPU) controller จะไปดึง metric จาก resource metrics API ของแต่ละ Pod ที่อยู่ใน scope ของ HPA
+ถ้ามีตั้ง <strong>target utilization</strong> ไว้ มันก็จะคำนวณออกมาเป็น percentage ของ resource request ที่ container ใน Pod นั้นใช้
+แต่ถ้าตั้งเป็น <strong>target raw value</strong> ไว้ มันก็จะใช้ค่าจริง ๆ (raw metric) ตรง ๆ เลย
+จากนั้น controller จะเอาค่าเฉลี่ยของ utilization หรือ raw value (แล้วแต่กรณี) มาหา <strong>ratio</strong> เพื่อใช้ในการคำนวณว่าจะต้อง scale เป็นกี่ replica</p>
+<p><strong>ข้อควรระวัง:</strong> ถ้า container บางตัวใน Pod <strong>ไม่ได้กำหนด resource request ไว้เลย</strong> เช่น CPU utilization ก็จะไม่สามารถคำนวณได้ และ autoscaler ก็จะไม่ทำอะไรกับ metric นั้น</p>
+<p>ถ้าเป็น <strong>per-pod custom metric</strong> controller ก็จะทำงานคล้ายกันกับ per-pod resource metric เลย แต่จะใช้ <strong>raw value ตรง ๆ</strong> แทนการแปลงเป็น percentage</p>
+<p>ส่วน <strong>object metrics</strong> หรือ <strong>external metrics</strong> จะมี metric แค่ตัวเดียวที่อธิบาย object นั้น ๆ แล้วจะเอาไปเทียบกับ target value เพื่อคำนวณ ratio เหมือนกัน
+(ถ้าใช้ autoscaling API version v2 ก็สามารถตั้งให้หารด้วยจำนวน Pod ก่อนจะเทียบได้ด้วย)</p>
+<p>การใช้งานทั่วไปของ HPA คือการตั้งให้ไปดึง metric จากพวก <strong>aggregated APIs</strong> อย่าง</p>
+<ul>
+<li><code>metrics.k8s.io</code></li>
+<li><code>custom.metrics.k8s.io</code></li>
+<li><code>external.metrics.k8s.io</code></li>
+</ul>
+<p>โดย <code>metrics.k8s.io</code> จะมาจาก <strong>Metrics Server</strong> ซึ่งต้องติดตั้งแยกต่างหาก (ไม่มาพร้อมกับ Kubernetes)</p>
+<p>API เหล่านี้ก็จะมี <strong>ระดับความเสถียร (stability)</strong> และ <strong>สถานะการซัพพอร์ต (support status)</strong> ที่ต่างกันไป ซึ่ง API documentation ก็จะอธิบายไว้ชัด</p>
+<p>ตัว HPA controller เองจะเข้าถึง resource ที่สามารถ scale ได้ เช่น <strong>Deployment</strong> หรือ <strong>StatefulSet</strong>
+resource เหล่านี้จะมี <strong>subresource</strong> ที่ชื่อว่า <code>scale</code> ซึ่งเป็น interface สำหรับกำหนดจำนวน replica แบบ dynamic ได้</p>
+<h3 id="รายละเอียดของ-algorithm-ที่ใช้ใน-horizontalpodautoscaler">รายละเอียดของ Algorithm ที่ใช้ใน HorizontalPodAutoscaler</h3>
+<p>โดยพื้นฐานเลยนะ ตัว controller ของ HPA จะใช้สูตรคำนวณจาก <strong>อัตราส่วน (ratio)</strong> ระหว่างค่า metric ที่ต้องการ กับค่าที่เป็นอยู่ตอนนี้:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>desiredReplicas = ceil(currentReplicas × currentMetricValue / desiredMetricValue)</span></span></code></pre>
+<p><strong>เช่น:</strong>
+ถ้าตอนนี้ metric เป็น <code>200m</code> แล้ว target คือ <code>100m</code> → จะได้ 200 ÷ 100 = <strong>2.0</strong> → ก็จะ scale เพิ่มขึ้นเป็น <strong>2 เท่า</strong>
+แต่ถ้า metric เป็น <code>50m</code> แทน → ก็จะได้ 50 ÷ 100 = <strong>0.5</strong> → scale ลดลงครึ่งนึง
+<strong>แต่ถ้า ratio ใกล้ 1.0 มาก (โดย default คือ ±0.1)</strong> HPA จะ <strong>ไม่ scale อะไรเลย</strong> (เพื่อหลีกเลี่ยงการแกว่งของจำนวน Pod ที่ไม่จำเป็น)</p>
+<h3 id="การคำนวณ-metric">การคำนวณ metric</h3>
+<p>ถ้าตั้งพวก <code>targetAverageValue</code> หรือ <code>targetAverageUtilization</code> ไว้
+ระบบจะไปเอา metric จากทุก Pod ใน scope ของ HPA มาหาค่าเฉลี่ย → นั่นแหละคือ <code>currentMetricValue</code></p>
+<p>ก่อนจะตัดสินใจ scale หรือไม่ scale ระบบจะเช็คด้วยว่า</p>
+<ul>
+<li>metric ของ Pod ไหนขาดหายมั้ย</li>
+<li>Pod ไหน <strong>Ready</strong> บ้าง</li>
+<li>Pod ไหนกำลังจะถูกลบ (<code>deletionTimestamp</code> ตั้งไว้แล้ว) หรือ fail → พวกนี้จะไม่เอามาคิด</li>
+</ul>
+<p>ถ้า Pod ไหนยังไม่มี metric หรือยังไม่ Ready → จะถูก “พักไว้ก่อน” (set aside) แล้วค่อยมาคิดตอนท้าย</p>
+<h3 id="กรณี-cpu-ยังไม่-ready">กรณี CPU ยังไม่ Ready</h3>
+<p>เวลา scale จาก CPU metric ถ้า Pod ไหนยังไม่ Ready (กำลัง start อยู่ หรือ unhealthy)
+หรือ metric ล่าสุดมาหลังจากที่ Pod ยังไม่พร้อม → จะไม่เอาค่านั้นมาใช้ทันที</p>
+<p>Kubernetes เองก็มีข้อจำกัด มันไม่รู้เป๊ะ ๆ ว่า Pod ไหน Ready ครั้งแรกเมื่อไหร่
+เลยต้องใช้วิธีประมาณเอา:</p>
+<ul>
+<li>ถ้า Pod ยังไม่ Ready และเพิ่ง Ready ไม่นาน (ภายใน <code>--horizontal-pod-autoscaler-initial-readiness-delay</code>, default: 30 วินาที) → ถือว่า “ยังไม่ Ready”</li>
+<li>หลังจาก Ready ไปแล้ว ถ้ามีการ Ready ใหม่ภายในช่วง <code>--horizontal-pod-autoscaler-cpu-initialization-period</code> (default: 5 นาที) → ก็ถือว่าเป็น Ready แรก</li>
+</ul>
+<h3 id="พอรู้ว่า-pod-ไหนใช้ได้บ้างแล้ว">พอรู้ว่า Pod ไหนใช้ได้บ้างแล้ว…</h3>
+<p>เราก็จะใช้พวก Pod ที่ผ่านการคัดกรองข้างบนมาคิด ratio จริง ๆ
+ถ้ามี metric หาย ระบบจะ <strong>คิดแบบระมัดระวัง</strong>:</p>
+<ul>
+<li>ถ้าจะ scale down → สมมติว่า Pod ที่ไม่มี metric ใช้ 100% ของ target</li>
+<li>ถ้าจะ scale up → สมมติว่าใช้ 0% ของ target
+แบบนี้จะช่วย <strong>ลดความรุนแรงของการ scale ผิด ๆ</strong></li>
+</ul>
+<p>ถ้ามี Pod ที่ยังไม่ Ready และเรากำลังจะ scale up → ก็สมมติว่า Pod พวกนี้ใช้ 0% เช่นกัน
+→ ลดความเสี่ยงการ scale เยอะเกินไป</p>
+<p>พอรวมทุกอย่างแล้ว ค่อย <strong>คำนวณ usage ratio ใหม่</strong>
+ถ้า ratio ใหม่มันสั่งให้ scale กลับไปทางเดิม หรือใกล้ 1.0 เกินไป → ไม่ scale
+แต่ถ้าไม่ใช่ → ค่อย scale ตาม ratio ใหม่</p>
+<blockquote>
+<p><strong>หมายเหตุ:</strong> ค่า average utilization ที่โชว์ใน HPA status จะไม่เอา not-yet-ready กับ missing metric มารวม (คือยังโชว์ตามค่า raw เดิม)</p>
+</blockquote>
+<h3 id="ถ้ามีหลาย-metric">ถ้ามีหลาย metric</h3>
+<p>ถ้าตั้ง HPA ให้ดู metric หลายอัน มันจะคำนวณแบบนี้ทีละอัน แล้วเลือกจำนวน Pod ที่ต้องการมากที่สุดมาใช้</p>
+<p>แต่ถ้า metric บางตัว error หรือดึงมาไม่ได้ → แล้ว metric ที่ได้แนะนำให้ scale down → <strong>จะไม่ scale เลย</strong>
+(เพราะไม่มั่นใจ)
+แต่ถ้ามี metric ตัวใดตัวหนึ่งที่แนะนำให้ scale up → ก็ scale ได้ตามนั้น</p>
+<h3 id="สุดท้ายก่อนจะ-scale-จริง-ๆ">สุดท้ายก่อนจะ scale จริง ๆ</h3>
+<p>ก่อนจะ scale จริง HPA จะบันทึกว่า <code>“แนะนำให้ scale เท่าไหร่”</code>
+แล้วจะดู recommendation ทั้งหมดในช่วงเวลาหนึ่ง (window ที่ตั้งไว้) แล้วเลือก <strong>ค่าที่สูงที่สุดในช่วงนั้น</strong>
+ค่า window นี้ตั้งได้ด้วย <code>--horizontal-pod-autoscaler-downscale-stabilization</code> (default คือ 5 นาที)</p>
+<p>→ ช่วยให้ <strong>scale down ค่อย ๆ เป็นค่อย ๆ ไป</strong> ไม่ให้กระตุกขึ้นลงแรง ๆ เวลาค่า metric แกว่ง</p>
+<h3 id="ความเสถียรของการ-scale-workload">ความเสถียรของการ scale workload</h3>
+<p>เวลาเราจัดการจำนวน replica ด้วย <strong>HorizontalPodAutoscaler</strong> บางครั้งจำนวน Pod อาจจะ <strong>ขึ้น ๆ ลง ๆ ตลอดเวลา</strong> เพราะ metric ที่ใช้มันเปลี่ยนแปลงอยู่เรื่อย ๆ
+อาการแบบนี้เรียกว่า <strong>thrashing</strong> หรือ <strong>flapping</strong> ก็ได้ คล้าย ๆ กับแนวคิดที่เรียกว่า <strong>hysteresis</strong> ในโลก cybernetics เลย</p>
+<h3 id="การ-autoscale-ระหว่าง-rolling-update">การ autoscale ระหว่าง rolling update</h3>
+<p>ใน Kubernetes เราสามารถทำ <strong>rolling update</strong> กับ Deployment ได้
+ซึ่งตัว Deployment จะเป็นคนคุม <strong>ReplicaSets</strong> ที่อยู่ข้างใต้ให้เอง</p>
+<p>ถ้าเรา config autoscaling ไว้กับ Deployment → เราจะผูก <strong>HorizontalPodAutoscaler</strong> เข้ากับ Deployment ตัวเดียว
+จากนั้น HPA จะจัดการกับ field <code>replicas</code> ของ Deployment โดยตรง
+พอมี rolling update เกิดขึ้น ตัว deployment controller จะจัดการให้ ReplicaSet รวมกันได้จำนวนที่เหมาะสมระหว่าง rollout และหลัง rollout จบ</p>
+<p>แต่ถ้าเป็น <strong>StatefulSet</strong> ที่มี autoscaling → StatefulSet จะ <strong>คุม Pod โดยตรง</strong> ไม่มี ReplicaSet อยู่ตรงกลางแบบ Deployment</p>
+<h3 id="รองรับ-resource-metric">รองรับ resource metric</h3>
+<p>HPA สามารถ scale ได้ตาม <strong>resource usage ของ Pod</strong> ที่อยู่ใน scope ได้เลย
+เวลาเรา define pod spec ต้องระบุ <code>resource requests</code> อย่าง <strong>CPU</strong> กับ <strong>memory</strong> ไว้ด้วยนะ
+เพราะข้อมูลนี้ใช้ในการคำนวณ <strong>resource utilization</strong> และใช้เป็นตัวตัดสินใจให้ HPA scale ขึ้นหรือลง</p>
+<p>ถ้าจะใช้การ scale แบบอิง utilization ของ resource ก็ต้องตั้ง metric แบบนี้:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#22863A">type</span><span style="color:#24292E">: </span><span style="color:#032F62">Resource</span></span>
+<span class="line"><span style="color:#22863A">resource</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">  name</span><span style="color:#24292E">: </span><span style="color:#032F62">cpu</span></span>
+<span class="line"><span style="color:#22863A">  target</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">    type</span><span style="color:#24292E">: </span><span style="color:#032F62">Utilization</span></span>
+<span class="line"><span style="color:#22863A">    averageUtilization</span><span style="color:#24292E">: </span><span style="color:#005CC5">60</span></span></code></pre>
 <p>แบบนี้หมายความว่า HPA จะพยายาม <strong>รักษาค่าเฉลี่ย CPU utilization ของ Pod</strong> ทั้งกลุ่มไว้ที่ 60%
 <strong>Utilization = ปริมาณการใช้ resource จริง ÷ resource ที่ขอไว้ (request)</strong>
 ดูในหัวข้อ Algorithm จะมีรายละเอียดการคำนวณค่าเฉลี่ยให้</p>
