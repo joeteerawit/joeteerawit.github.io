@@ -3,7 +3,6 @@ title: 'The TC39 Process'
 description: 'The TC39 Process'
 pubDate: 'May 15 2025'
 heroImage: '/share/9745906d-875d-4806-8af6-fd0e5676f023.png'
-draft: true
 ---
 
 **TC39** หรือชื่อเต็มว่า *Ecma Technical Committee 39* คือกลุ่มคนที่ดูแลและพัฒนาภาษา **ECMAScript** รวมถึงเป็นคนเขียน *specification* อย่างเป็นทางการของภาษา ภาษา JavaScript ที่เราใช้กันทุกวันนี้ก็พัฒนามาจากที่นี่แหละ กลุ่มนี้ทำงานกันด้วยระบบ "เห็นพ้องต้องกัน" (consensus) และมีสิทธิ์ปรับเปลี่ยน spec ได้ตามที่เห็นว่าเหมาะสม
