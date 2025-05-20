@@ -1,0 +1,153 @@
+---
+import { render, type CollectionEntry } from 'astro:content'
+import type { BookCollection, TutorialCollection } from '../types/interfaces.astro'
+import {
+  findAdjacentItems,
+  gettutorialTitleFromId,
+  getChapters,
+} from '../computes/tutorial.astro'
+import BookContent from '../layouts/BookContent.astro'
+
+interface Props {
+  content: CollectionEntry<'tutorial'>
+  tutorials: TutorialCollection[]
+}
+
+const { content, tutorials } = Astro.props
+const { Content } = await render(content)
+
+const details = getChapters(tutorials, gettutorialTitleFromId(content.id))
+const { next, previous } = findAdjacentItems(details, content.id)
+---
+
+<style>
+  a {
+    color: oklch(44.6% 0.03 256.802);
+  }
+  a:hover {
+    color: oklch(44.6% 0.03 256.802);
+  }
+</style>
+
+<div class="flex flex-col md:flex-row flex-grow">
+  <!-- Sidebar -->
+  <div
+    class="w-full md:w-xs px-3 py-6 border-b md:border-r-2 md:border-b-0 border-gray-200"
+  >
+    <h3 class="text-gray-700 font-medium mb-2">{details?.tutorialTitle}</h3>
+    <ul class="space-y-1">
+      {
+        details?.chapters.map((chapter) => (
+          <div class="sidebar-item">
+            <a
+              id="chapter"
+              href={
+                Astro.originPathname.includes(chapter.path)
+                  ? Astro.originPathname
+                  : `/tutorial/${chapter.fullPath}`
+              }
+              class="w-full text-left flex items-center justify-between px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg font-medium"
+            >
+              {chapter.name}
+              {/* <ChevronLeftIon /> */}
+            </a>
+
+            {chapter.subchapters.map((subchapter) => (
+              <div class="pl-6 mt-1 space-y-1 nested-menu">
+                <a
+                  id="subchapter"
+                  href={
+                    Astro.originPathname.includes(subchapter.path)
+                      ? Astro.originPathname
+                      : `/tutorial/${subchapter.fullPath}`
+                  }
+                  class="flex w-full items-center px-3 py-1 text-gray-600 hover:bg-gray-200 rounded text-lg"
+                >
+                  {subchapter.name}
+                </a>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="flex-1 py-6 flex flex-col">
+    <BookContent {...content.data}>
+      <Content />
+    </BookContent>
+
+    <!-- Navigation buttons at bottom of content -->
+    <div class="mt-8 py-4 px-3 border-t border-gray-200">
+      <div class="grid grid-cols-2 gap-4">
+        <a
+          id="previous"
+          href={previous?.path}
+          class="w-full border border-gray-200 rounded-md p-3 hover:border-blue-600 transition-colors"
+        >
+          <div class="text-blue-600 text-lg">Previous</div>
+          <div class="text-blue-600 font-medium">
+            <span>«</span>
+            {previous?.name}
+          </div>
+        </a>
+        <a
+          id="next"
+          href={next?.path}
+          class="w-full border border-gray-200 rounded-md p-3 hover:border-blue-600 transition-colors text-right"
+        >
+          <div class="text-blue-600 text-lg">Next</div>
+          <div class="text-blue-600 font-medium">
+            {next?.name}
+            <span>»</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebarItems = document.querySelectorAll('.sidebar-item')
+    const currentPath = window.location.pathname
+
+    const lastSegment = currentPath.split('/').pop()
+
+    sidebarItems.forEach((item) => {
+      const chapter = item.querySelector('#chapter')
+      const subchapter = item.querySelector('#subchapter')
+      const addActiveStyle = 'bg-gray-200'
+
+      if (chapter?.getAttribute('href') === lastSegment) {
+        chapter?.classList.add(addActiveStyle)
+      } else {
+        chapter?.classList.remove(addActiveStyle)
+      }
+
+      if (subchapter?.getAttribute('href') === lastSegment) {
+        subchapter?.classList.add(addActiveStyle)
+      } else {
+        subchapter?.classList.remove(addActiveStyle)
+      }
+    })
+
+    const previousElem = document.getElementById('previous')
+    const previousChapterElem = previousElem?.querySelector('.font-medium')
+    const previous = previousChapterElem?.textContent?.trim().replace('«', '')
+
+    if (!previous) {
+      previousElem?.classList.add('invisible')
+    }
+
+    const nextElem = document.getElementById('next')
+    const nextChapterElem = nextElem?.querySelector('.font-medium')
+    const next = nextChapterElem?.textContent?.trim().replace('»', '')
+
+    if (!next) {
+      nextElem?.classList.add('invisible')
+    }
+  })
+</script>

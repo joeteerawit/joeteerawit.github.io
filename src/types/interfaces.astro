@@ -22,6 +22,14 @@ export interface BookCollection {
   chapters: Chapter[]
 }
 
+export interface TutorialCollection {
+  id: string
+  tutorialTitle: string
+  coverImage: string,
+  pubDate: Date
+  chapters: Chapter[]
+}
+
 export type NavigationItem =
   | {
       path: string

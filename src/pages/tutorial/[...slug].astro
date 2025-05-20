@@ -1,0 +1,32 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content'
+import BaseHead from '../../components/BaseHead.astro'
+import Header from '../../components/Header.astro'
+import TutorialSideBar from '../../components/TutorialSideBar.astro'
+import { getTutorialCollection } from '../../computes/tutorial.astro'
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts'
+
+const tutorials = await getTutorialCollection()
+export async function getStaticPaths() {
+  return (await getCollection('tutorial')).map((tutorial) => ({
+    params: { slug: tutorial.id },
+    props: tutorial,
+  }))
+}
+type Props = CollectionEntry<'tutorial'>
+
+const content = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <div class="flex flex-col min-h-screen">
+      <TutorialSideBar tutorials={tutorials} content={content} />
+    </div>
+  </body>
+</html>

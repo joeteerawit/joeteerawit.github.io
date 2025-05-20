@@ -27,6 +27,7 @@ const books: BookCollection[] = await getBookCollection()
       {
         books.map((book) => (
           <BookCover
+            category="book"
             image={book.coverImage}
             fullPath={getFirstChapterFullPath(book)}
           />

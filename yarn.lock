@@ -147,6 +147,7 @@
     cross-fetch "^3.0.4"
     fontkit "^2.0.2"
 
+<<<<<<< Updated upstream
 "@chevrotain/cst-dts-gen@11.0.3":
   version "11.0.3"
   resolved "https://registry.npmjs.org/@chevrotain/cst-dts-gen/-/cst-dts-gen-11.0.3.tgz"
@@ -179,11 +180,14 @@
   resolved "https://registry.npmjs.org/@chevrotain/utils/-/utils-11.0.3.tgz"
   integrity sha512-YslZMgtJUyuMbZ+aKvfF3x1f5liK4mWNxghFRv7jqRR9C3R3fAOGTTKvxXDa2Y1s9zSbcpuO0cAxDYsc9SrXoQ==
 
+=======
+>>>>>>> Stashed changes
 "@esbuild/darwin-arm64@0.25.2":
   version "0.25.2"
   resolved "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.25.2.tgz"
   integrity sha512-MpM6LUVTXAzOvN4KbjzU/q5smzryuoNjlriAIx+06RpecwCkL9JpenNzpKd2YMzLJFOdPqBpuub6eVRP5IgiSA==
 
+<<<<<<< Updated upstream
 "@fortawesome/fontawesome-free@^6.0.0":
   version "6.7.2"
   resolved "https://registry.npmjs.org/@fortawesome/fontawesome-free/-/fontawesome-free-6.7.2.tgz"
@@ -208,6 +212,8 @@
     local-pkg "^1.0.0"
     mlly "^1.7.4"
 
+=======
+>>>>>>> Stashed changes
 "@img/sharp-darwin-arm64@0.33.5":
   version "0.33.5"
   resolved "https://registry.npmjs.org/@img/sharp-darwin-arm64/-/sharp-darwin-arm64-0.33.5.tgz"
@@ -281,47 +287,83 @@
   resolved "https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.40.0.tgz"
   integrity sha512-GwYOcOakYHdfnjjKwqpTGgn5a6cUX7+Ra2HeNj/GdXvO2VJOOXCiYYlRFU4CubFM67EhbmzLOmACKEfvp3J1kQ==
 
+<<<<<<< Updated upstream
 "@shikijs/core@3.3.0":
   version "3.3.0"
   resolved "https://registry.npmjs.org/@shikijs/core/-/core-3.3.0.tgz"
   integrity sha512-CovkFL2WVaHk6PCrwv6ctlmD4SS1qtIfN8yEyDXDYWh4ONvomdM9MaFw20qHuqJOcb8/xrkqoWQRJ//X10phOQ==
+=======
+"@shikijs/core@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.npmjs.org/@shikijs/core/-/core-3.2.2.tgz"
+  integrity sha512-yvlSKVMLjddAGBa2Yu+vUZxuu3sClOWW1AG+UtJkvejYuGM5BVL35s6Ijiwb75O9QdEx6IkMxinHZSi8ZyrBaA==
+>>>>>>> Stashed changes
   dependencies:
     "@shikijs/types" "3.3.0"
     "@shikijs/vscode-textmate" "^10.0.2"
     "@types/hast" "^3.0.4"
     hast-util-to-html "^9.0.5"
 
+<<<<<<< Updated upstream
 "@shikijs/engine-javascript@3.3.0":
   version "3.3.0"
   resolved "https://registry.npmjs.org/@shikijs/engine-javascript/-/engine-javascript-3.3.0.tgz"
   integrity sha512-XlhnFGv0glq7pfsoN0KyBCz9FJU678LZdQ2LqlIdAj6JKsg5xpYKay3DkazXWExp3DTJJK9rMOuGzU2911pg7Q==
+=======
+"@shikijs/engine-javascript@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.npmjs.org/@shikijs/engine-javascript/-/engine-javascript-3.2.2.tgz"
+  integrity sha512-tlDKfhWpF4jKLUyVAnmL+ggIC+0VyteNsUpBzh1iwWLZu4i+PelIRr0TNur6pRRo5UZIv3ss/PLMuwahg9S2hg==
+>>>>>>> Stashed changes
   dependencies:
     "@shikijs/types" "3.3.0"
     "@shikijs/vscode-textmate" "^10.0.2"
     oniguruma-to-es "^4.2.0"
 
+<<<<<<< Updated upstream
 "@shikijs/engine-oniguruma@3.3.0":
   version "3.3.0"
   resolved "https://registry.npmjs.org/@shikijs/engine-oniguruma/-/engine-oniguruma-3.3.0.tgz"
   integrity sha512-l0vIw+GxeNU7uGnsu6B+Crpeqf+WTQ2Va71cHb5ZYWEVEPdfYwY5kXwYqRJwHrxz9WH+pjSpXQz+TJgAsrkA5A==
+=======
+"@shikijs/engine-oniguruma@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.npmjs.org/@shikijs/engine-oniguruma/-/engine-oniguruma-3.2.2.tgz"
+  integrity sha512-vyXRnWVCSvokwbaUD/8uPn6Gqsf5Hv7XwcW4AgiU4Z2qwy19sdr6VGzMdheKKN58tJOOe5MIKiNb901bgcUXYQ==
+>>>>>>> Stashed changes
   dependencies:
     "@shikijs/types" "3.3.0"
     "@shikijs/vscode-textmate" "^10.0.2"
 
+<<<<<<< Updated upstream
 "@shikijs/langs@3.3.0":
   version "3.3.0"
   resolved "https://registry.npmjs.org/@shikijs/langs/-/langs-3.3.0.tgz"
   integrity sha512-zt6Kf/7XpBQKSI9eqku+arLkAcDQ3NHJO6zFjiChI8w0Oz6Jjjay7pToottjQGjSDCFk++R85643WbyINcuL+g==
+=======
+"@shikijs/langs@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.npmjs.org/@shikijs/langs/-/langs-3.2.2.tgz"
+  integrity sha512-NY0Urg2dV9ETt3JIOWoMPuoDNwte3geLZ4M1nrPHbkDS8dWMpKcEwlqiEIGqtwZNmt5gKyWpR26ln2Bg2ecPgw==
+>>>>>>> Stashed changes
   dependencies:
     "@shikijs/types" "3.3.0"
 
+<<<<<<< Updated upstream
 "@shikijs/themes@3.3.0":
   version "3.3.0"
   resolved "https://registry.npmjs.org/@shikijs/themes/-/themes-3.3.0.tgz"
   integrity sha512-tXeCvLXBnqq34B0YZUEaAD1lD4lmN6TOHAhnHacj4Owh7Ptb/rf5XCDeROZt2rEOk5yuka3OOW2zLqClV7/SOg==
+=======
+"@shikijs/themes@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.npmjs.org/@shikijs/themes/-/themes-3.2.2.tgz"
+  integrity sha512-Zuq4lgAxVKkb0FFdhHSdDkALuRpsj1so1JdihjKNQfgM78EHxV2JhO10qPsMrm01FkE3mDRTdF68wfmsqjt6HA==
+>>>>>>> Stashed changes
   dependencies:
     "@shikijs/types" "3.3.0"
 
+<<<<<<< Updated upstream
 "@shikijs/transformers@^3.3.0":
   version "3.3.0"
   resolved "https://registry.npmjs.org/@shikijs/transformers/-/transformers-3.3.0.tgz"
@@ -334,6 +376,12 @@
   version "3.3.0"
   resolved "https://registry.npmjs.org/@shikijs/types/-/types-3.3.0.tgz"
   integrity sha512-KPCGnHG6k06QG/2pnYGbFtFvpVJmC3uIpXrAiPrawETifujPBv0Se2oUxm5qYgjCvGJS9InKvjytOdN+bGuX+Q==
+=======
+"@shikijs/types@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.npmjs.org/@shikijs/types/-/types-3.2.2.tgz"
+  integrity sha512-a5TiHk7EH5Lso8sHcLHbVNNhWKP0Wi3yVnXnu73g86n3WoDgEra7n3KszyeCGuyoagspQ2fzvy4cpSc8pKhb0A==
+>>>>>>> Stashed changes
   dependencies:
     "@shikijs/vscode-textmate" "^10.0.2"
     "@types/hast" "^3.0.4"
@@ -701,7 +749,11 @@ acorn-jsx@^5.0.0:
   resolved "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz"
   integrity sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==
 
+<<<<<<< Updated upstream
 "acorn@^6.0.0 || ^7.0.0 || ^8.0.0", acorn@^8.0.0, acorn@^8.14.0, acorn@^8.14.1:
+=======
+"acorn@^6.0.0 || ^7.0.0 || ^8.0.0", acorn@^8.0.0, acorn@^8.14.1:
+>>>>>>> Stashed changes
   version "8.14.1"
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.14.1.tgz"
   integrity sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==
@@ -1459,6 +1511,14 @@ dset@^3.1.4:
   resolved "https://registry.npmjs.org/dset/-/dset-3.1.4.tgz"
   integrity sha512-2QF/g9/zTaPDc3BjNcVTGoBbXBgYfMTTceLaYcFJ/W9kggFUkhxD/hMEeuLKbugyef9SqAx8cpgwlIP/jinUTA==
 
+<<<<<<< Updated upstream
+=======
+emoji-regex-xs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/emoji-regex-xs/-/emoji-regex-xs-1.0.0.tgz"
+  integrity sha512-LRlerrMYoIDrT6jgpeZ2YYl/L8EulRTt5hQcYjy5AInh7HWXKimpqx68aknBFpGL2+/IcogTcaydJEgaTmOpDg==
+
+>>>>>>> Stashed changes
 emoji-regex@^10.3.0:
   version "10.4.0"
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-10.4.0.tgz"
@@ -2809,6 +2869,7 @@ ohash@^2.0.0:
   resolved "https://registry.npmjs.org/ohash/-/ohash-2.0.11.tgz"
   integrity sha512-RdR9FQrFwNBNXAr4GixM8YaRZRJ5PUWbKYbE5eOsrwAjJW0q2REGcf79oYPsLyskQCZG1PLN+S/K1V00joZAoQ==
 
+<<<<<<< Updated upstream
 oniguruma-parser@^0.12.0:
   version "0.12.0"
   resolved "https://registry.npmjs.org/oniguruma-parser/-/oniguruma-parser-0.12.0.tgz"
@@ -2818,6 +2879,17 @@ oniguruma-to-es@^4.2.0:
   version "4.3.1"
   resolved "https://registry.npmjs.org/oniguruma-to-es/-/oniguruma-to-es-4.3.1.tgz"
   integrity sha512-VtX1kepWO+7HG7IWV5v72JhiqofK7XsiHmtgnvurnNOTdIvE5mrdWYtsOrQyrXCv1L2Ckm08hywp+MFO7rC4Ug==
+=======
+oniguruma-parser@^0.11.0:
+  version "0.11.2"
+  resolved "https://registry.npmjs.org/oniguruma-parser/-/oniguruma-parser-0.11.2.tgz"
+  integrity sha512-F7Ld4oDZJCI5/wCZ8AOffQbqjSzIRpKH7I/iuSs1SkhZeCj0wS6PMZ4W6VA16TWHrAo0Y9bBKEJOe7tvwcTXnw==
+
+oniguruma-to-es@^4.1.0:
+  version "4.2.0"
+  resolved "https://registry.npmjs.org/oniguruma-to-es/-/oniguruma-to-es-4.2.0.tgz"
+  integrity sha512-MDPs6KSOLS0tKQ7joqg44dRIRZUyotfTy0r+7oEEs6VwWWP0+E2PPDYWMFN0aqOjRyWHBYq7RfKw9GQk2S2z5g==
+>>>>>>> Stashed changes
   dependencies:
     oniguruma-parser "^0.12.0"
     regex "^6.0.1"
@@ -3231,11 +3303,14 @@ retext@^9.0.0:
     retext-stringify "^4.0.0"
     unified "^11.0.0"
 
+<<<<<<< Updated upstream
 robust-predicates@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npmjs.org/robust-predicates/-/robust-predicates-3.0.2.tgz"
   integrity sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==
 
+=======
+>>>>>>> Stashed changes
 rollup@^1.20.0||^2.0.0||^3.0.0||^4.0.0, rollup@^4.34.9:
   version "4.40.0"
   resolved "https://registry.npmjs.org/rollup/-/rollup-4.40.0.tgz"
@@ -3324,10 +3399,17 @@ sharp@^0.33.3:
     "@img/sharp-win32-ia32" "0.33.5"
     "@img/sharp-win32-x64" "0.33.5"
 
+<<<<<<< Updated upstream
 shiki@^3.0.0, shiki@^3.2.1, shiki@^3.3.0:
   version "3.3.0"
   resolved "https://registry.npmjs.org/shiki/-/shiki-3.3.0.tgz"
   integrity sha512-j0Z1tG5vlOFGW8JVj0Cpuatzvshes7VJy5ncDmmMaYcmnGW0Js1N81TOW98ivTFNZfKRn9uwEg/aIm638o368g==
+=======
+shiki@^3.0.0, shiki@^3.2.1:
+  version "3.2.2"
+  resolved "https://registry.npmjs.org/shiki/-/shiki-3.2.2.tgz"
+  integrity sha512-0qWBkM2t/0NXPRcVgtLhtHv6Ak3Q5yI4K/ggMqcgLRKm4+pCs3namgZlhlat/7u2CuqNtlShNs9lENOG6n7UaQ==
+>>>>>>> Stashed changes
   dependencies:
     "@shikijs/core" "3.3.0"
     "@shikijs/engine-javascript" "3.3.0"
@@ -3502,7 +3584,7 @@ tsconfck@^3.1.5:
   resolved "https://registry.npmjs.org/tsconfck/-/tsconfck-3.1.5.tgz"
   integrity sha512-CLDfGgUp7XPswWnezWwsCRxNmgQjhYq3VXHM0/XIRxhVrKw0M1if9agzryh1QS3nxjCROvV+xWxoJO1YctzzWg==
 
-tslib@^2.4.0, tslib@^2.8.0:
+tslib@^2.8.0:
   version "2.8.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==
@@ -3693,7 +3775,11 @@ vfile@^6.0.0, vfile@^6.0.3:
     "@types/unist" "^3.0.0"
     vfile-message "^4.0.0"
 
+<<<<<<< Updated upstream
 "vite@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0", "vite@^5.2.0 || ^6", vite@^6.2.6:
+=======
+"vite@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0", vite@^6.2.6:
+>>>>>>> Stashed changes
   version "6.3.2"
   resolved "https://registry.npmjs.org/vite/-/vite-6.3.2.tgz"
   integrity sha512-ZSvGOXKGceizRQIZSz7TGJ0pS3QLlVY/9hwxVh17W3re67je1RKYzFHivZ/t0tubU78Vkyb9WnHPENSBCzbckg==

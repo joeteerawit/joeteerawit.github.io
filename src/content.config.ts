@@ -29,6 +29,17 @@ const book = defineCollection({
     draft: z.boolean().optional(),
   }),
 })
-const tutorial = createCollection('./src/content/tutorial')
+const tutorial = defineCollection({
+  loader: glob({ base: './src/content/tutorial', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    bookTitle: z.string().optional(),
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    coverImage: z.string().optional(),
+    draft: z.boolean().optional(),
+  }),
+})
 
 export const collections = { blog, book, tutorial }

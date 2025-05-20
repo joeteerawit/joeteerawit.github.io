@@ -1,13 +1,16 @@
 ---
 interface Props {
   image: string
+  category: string
   fullPath: string
 }
 
-const { image, fullPath } = Astro.props
+const { image, category, fullPath } = Astro.props
+console.log(fullPath);
+
 ---
 
-<a href={`/book/${fullPath}`}>
+<a href={`/${category}/${fullPath}`}>
   <div class="relative max-w-sm rounded overflow-hidden shadow-lg">
     <!-- Image -->
     <img

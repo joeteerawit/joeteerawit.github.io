@@ -1,0 +1,262 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content'
+import type {
+  NavigationItem,
+  Subchapter,
+  TutorialCollection,
+} from '../types/interfaces.astro'
+
+/**
+ * 
+ * {
+  id: 'story_1/1-intro',
+  data: {
+    tutorialTitle: ''
+    title: 'intro',
+    description: 'intro',
+    pubDate: 2025-02-18T17:00:00.000Z
+  },
+  body: 'ลองมาอ่านเรื่องราวที่น่าสนใจเกี่ยวกับ PHP หน่อยครับ ว่ามันกากเหมือนที่ได้ยิน ได้ฟัง ได้อ่านมาหรือป่าว',
+  filePath: 'src/content/tutorial/story_1/1-intro.md',
+  digest: '4507221d3236ba78',
+  rendered: {
+    html: '<p>ลองมาอ่านเรื่องราวที่น่าสนใจเกี่ยวกับ PHP หน่อยครับ ว่ามันกากเหมือนที่ได้ยิน ได้ฟัง ได้อ่านมาหรือป่าว</p>',
+    metadata: {
+      headings: [],
+      localImagePaths: [],
+      remoteImagePaths: [],
+      frontmatter: [Object],
+      imagePaths: []
+    }
+  },
+  collection: 'tutorial'
+}
+ * 
+*/
+export const getTutorialCollection = async (): Promise<TutorialCollection[]> => {
+  const tutorialEntries: CollectionEntry<'tutorial'>[] = await getCollection('tutorial')
+  const tutorialMap: Record<
+    string,
+    {
+      id: string
+      tutorialTitle: string
+      coverImage: string
+      pubDate: Date
+      chapters: Record<
+        string,
+        {
+          id: number
+          name: string
+          path: string
+          fullPath: string
+          subchapters: Subchapter[]
+        }
+      >
+    }
+  > = {}
+
+  tutorialEntries
+    .filter((p) => (import.meta.env.PROD ? p.data.draft !== true : true))
+    .forEach((tutorial) => {
+      const [tutorialName, fileName] = tutorial.id.split('/')
+
+      // Initialize tutorial entry if it doesn't exist
+      if (!tutorialMap[tutorialName]) {
+        tutorialMap[tutorialName] = {
+          id: tutorial.id,
+          tutorialTitle: tutorial.data.title ?? '',
+          coverImage: tutorial.data.coverImage ?? '',
+          pubDate: tutorial.data?.pubDate,
+          chapters: {},
+        }
+      }
+
+      if (fileName.startsWith('0-')) {
+        tutorialMap[tutorialName].id = tutorial.id
+        tutorialMap[tutorialName].tutorialTitle = tutorial.data.title
+        tutorialMap[tutorialName].coverImage = tutorial.data.coverImage ?? ''
+        tutorialMap[tutorialName].pubDate = tutorial.data.pubDate
+        return
+      }
+
+      const parts: string[] = fileName.split('-')
+      const chapterNum: string = parts[0]
+      const chapterId: number = parseInt(chapterNum, 10)
+
+      // Check if it's a subchapter (pattern: 1-1-name)
+      if (parts.length >= 3 && parts[1].match(/^\d+$/)) {
+        // This is a subchapter (e.g., 1-1-bigjoe.md)
+        const subchapterId: string = `${chapterNum}-${parts[1]}`
+        const subchapterName: string =  tutorial.data.title
+
+        // Initialize chapter if it doesn't exist
+        if (!tutorialMap[tutorialName].chapters[chapterNum]) {
+          tutorialMap[tutorialName].chapters[chapterNum] = {
+            id: chapterId,
+            name: '',
+            path: '',
+            fullPath: '',
+            subchapters: [],
+          }
+        }
+
+        // Add subchapter
+        tutorialMap[tutorialName].chapters[chapterNum].subchapters.push({
+          id: subchapterId,
+          name: subchapterName,
+          path: fileName,
+          fullPath: tutorial.id,
+        })
+      }
+      // Handle main chapter file (pattern: 1-name)
+      else if (parts.length >= 2) {
+        // This is a main chapter (e.g., 1-intro.md)
+        const chapterName: string =  tutorial.data.title
+
+        // Initialize or update chapter
+        if (!tutorialMap[tutorialName].chapters[chapterNum]) {
+          tutorialMap[tutorialName].chapters[chapterNum] = {
+            id: chapterId,
+            name: chapterName,
+            path: fileName,
+            fullPath: tutorial.id,
+            subchapters: [],
+          }
+        } else {
+          // Update name and path if this is the actual chapter file
+          tutorialMap[tutorialName].chapters[chapterNum].name = chapterName
+          tutorialMap[tutorialName].chapters[chapterNum].path = fileName
+          tutorialMap[tutorialName].chapters[chapterNum].fullPath = tutorial.id
+        }
+      }
+    })
+
+  // Transform the map to an array structure as requested
+  const result: TutorialCollection[] = Object.values(tutorialMap).map((tutorial) => {
+    return {
+      id: tutorial.id,
+      tutorialTitle: tutorial.tutorialTitle,
+      coverImage: tutorial.coverImage,
+      pubDate: tutorial.pubDate,
+      chapters: Object.values(tutorial.chapters)
+        .map((chapter) => {
+          // Sort subchapters by their numeric ID
+          const sortedSubchapters = [...chapter.subchapters].sort((a, b) => {
+            // Extract numeric parts from the IDs (e.g., "1-1" -> [1, 1])
+            const [aChap, aSubChap] = a.id.split('-').map(Number)
+            const [bChap, bSubChap] = b.id.split('-').map(Number)
+
+            // First compare chapter numbers
+            if (aChap !== bChap) {
+              return aChap - bChap
+            }
+            // If chapter numbers are the same, compare subchapter numbers
+            return aSubChap - bSubChap
+          })
+
+          return {
+            ...chapter,
+            subchapters: sortedSubchapters,
+          }
+        })
+        .sort((a, b) => a.id - b.id), // Sort chapters by ID
+    }
+  })
+
+  return sorttutorialsByDate(result)
+}
+
+/**
+ * Sorts an array of tutorialCollection objects by their publication date
+ * @param tutorials - The array of tutorialCollection objects to sort
+ * @param order - The sort order: 'asc' for ascending (oldest first), 'desc' for descending (newest first)
+ * @returns A new sorted array of tutorialCollection objects
+ */
+export const sorttutorialsByDate = (
+  tutorials: TutorialCollection[],
+  order: 'asc' | 'desc' = 'desc'
+): TutorialCollection[] => {
+  return [...tutorials].sort((a, b) => {
+    const dateA = a.pubDate instanceof Date ? a.pubDate : new Date(a.pubDate)
+    const dateB = b.pubDate instanceof Date ? b.pubDate : new Date(b.pubDate)
+
+    return order === 'asc'
+      ? dateA.getTime() - dateB.getTime()
+      : dateB.getTime() - dateA.getTime()
+  })
+}
+
+interface Adjacent {
+  previous: NavigationItem
+  next: NavigationItem
+}
+
+export const findAdjacentItems = (
+  details: TutorialCollection | undefined,
+  currentId: string
+): Adjacent => {
+  if (!details) return { previous: undefined, next: undefined }
+
+  // Flatten the structure into a single array of items for easier navigation
+  const allItems = []
+
+  // Add all chapters and subchapters to a flat array
+  for (const chapter of details.chapters) {
+    allItems.push({
+      path: chapter.path,
+      name: chapter.name,
+      fullPath: chapter.fullPath,
+    })
+
+    for (const subchapter of chapter.subchapters) {
+      allItems.push({
+        path: subchapter.path,
+        name: subchapter.name,
+        fullPath: subchapter.fullPath,
+      })
+    }
+  }
+
+  // Find the current item's index
+  const currentIndex = allItems.findIndex((item) => item.fullPath === currentId)
+
+  // If item wasn't found
+  if (currentIndex === -1) {
+    return { previous: undefined, next: undefined }
+  }
+
+  // Get previous and next items
+  const previous =
+    currentIndex > 0
+      ? {
+          path: `/tutorial/${allItems[currentIndex - 1].fullPath}`,
+          name: allItems[currentIndex - 1].name,
+        }
+      : undefined
+
+  const next =
+    currentIndex < allItems.length - 1
+      ? {
+          path: `/tutorial/${allItems[currentIndex + 1].fullPath}`,
+          name: allItems[currentIndex + 1].name,
+        }
+      : undefined
+
+  return { previous, next }
+}
+
+export const getChapters = (
+  tutorials: TutorialCollection[],
+  tutorialTitle: string
+): TutorialCollection | undefined =>
+  tutorials.find((b) => {
+    const currenttutorial = gettutorialTitleFromId(b.id)
+    return currenttutorial === tutorialTitle
+  })
+
+export const gettutorialTitleFromId = (id: string): string =>
+  id.split('/').shift() ?? ''
+
+export const getFirstChapterFullPath = (tutorial: TutorialCollection): string =>
+  tutorial.chapters[0].fullPath
+---

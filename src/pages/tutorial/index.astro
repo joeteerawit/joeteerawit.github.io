@@ -1,19 +1,14 @@
 ---
-import { getCollection } from 'astro:content'
 import BaseHead from '../../components/BaseHead.astro'
 import Footer from '../../components/Footer.astro'
 import FormattedDate from '../../components/FormattedDate.astro'
 import Header from '../../components/Header.astro'
+
+import { getTutorialCollection } from '../../computes/tutorial.astro'
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts'
+import type { TutorialCollection } from '../../types/interfaces.astro'
 
-const posts = (await getCollection('blog'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .filter((p) => (import.meta.env.PROD ? p.data.draft !== true : true))
-
-const x = (await getCollection('book')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-)
-console.log(x[0].rendered?.metadata)
+const tutorials: TutorialCollection[] = await getTutorialCollection()
 ---
 
 <!doctype html>
@@ -38,17 +33,6 @@ console.log(x[0].rendered?.metadata)
       ul li * {
         text-decoration: none;
         transition: 0.2s ease;
-      }
-      ul li:first-child {
-        width: 100%;
-        margin-bottom: 1rem;
-        text-align: center;
-      }
-      ul li:first-child img {
-        width: 100%;
-      }
-      ul li:first-child .title {
-        font-size: 2.369rem;
       }
       ul li img {
         margin-bottom: 1.5rem;
@@ -93,26 +77,29 @@ console.log(x[0].rendered?.metadata)
           font-size: 1.563em;
         }
       }
-    </style>
-  </head>
+    </style></head
+  >
+
   <body>
     <Header />
     <main>
       <section>
         <ul>
           {
-            posts.map((post) => (
+            tutorials.map((tutorial) => (
               <li>
-                <a href={`/blog/${post.id}/`}>
+                <a href={`/tutorial/${tutorial.id}/`}>
                   <img
                     width={720}
                     height={360}
-                    src={post.data.heroImage}
+                    src={tutorial.coverImage}
                     alt=""
                   />
-                  <h4 class="title leading-relaxed">{post.data.title}</h4>
+                  <h4 class="title leading-relaxed">
+                    {tutorial.tutorialTitle}
+                  </h4>
                   <p class="date">
-                    <FormattedDate date={post.data.pubDate} />
+                    <FormattedDate date={tutorial.pubDate} />
                   </p>
                 </a>
               </li>
