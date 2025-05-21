@@ -24,7 +24,6 @@
     "playwright": "^1.52.0",
     "rehype-mermaid": "^3.0.0",
     "shiki": "^3.3.0",
-    "packageManager": "yarn@4.5.0",
     "tailwindcss": "^4.1.4"
   }
 }
